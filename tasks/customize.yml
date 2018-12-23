@@ -12,3 +12,15 @@
         - font-hack-install
   tags: font-hack-install
 
+- name: Load role to Enable Git Large File Storage
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: git-lfs-package-install
+    apply:
+      tags:
+        - git-lfs-package-install
+  tags: git-lfs-package-install
+  # 2018-12-23: On second thought, git-lfs still clones latest version
+  # locally, so does not work as I hoped; can use symlink repo instead.
+  when: False
+

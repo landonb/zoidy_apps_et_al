@@ -7,4 +7,5 @@
     tasks_from: customize
   tags:
     - font-hack-install
+    - git-lfs-package-install
 

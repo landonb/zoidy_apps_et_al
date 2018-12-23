@@ -1,0 +1,38 @@
+---
+
+# 2018-12-23: We could download the package, or we could setup a third-party repo.
+#   The package archive is at:
+#     https://github.com/git-lfs/git-lfs/releases/download/v2.6.1/git-lfs-linux-amd64-v2.6.1.tar.gz
+#   But setting up a repo means we'll get updates for free:
+#     https://packagecloud.io/github/git-lfs/install
+
+- name: 'Idempotence: Check script downloaded'
+  stat: path={{ zoidy_homefries_packagecloud_sh }}
+  register: zoidy_homefries_packagecloud_sh_f
+
+- name: Fetch the deb setup script that sets up the apt source
+  get_url:
+    url: "https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh"
+    dest: "{{ zoidy_homefries_packagecloud_sh }}"
+  when: not zoidy_homefries_packagecloud_sh_f.stat.exists
+
+- fail: msg="Review downloaded script! {{ zoidy_homefries_packagecloud_sh }}"
+  when: not zoidy_homefries_packagecloud_sh_f.stat.exists
+
+- name: Add packagecloud URI to apt sources.
+  shell: "bash {{ zoidy_homefries_downloads_dir }}/packagecloud.io-script.deb.sh"
+  become: yes
+  register: BASH_SCRIPT_DEB
+
+- debug: msg="Script output∷ {{ BASH_SCRIPT_DEB }}"
+
+- name: "Install git-lfs package"
+  become: true
+  apt: name=git-lfs
+
+- name: Enable git-lfs Git Large File Storage extension.
+  shell: "git lfs install"
+  register: GIT_LFS_INSTALL
+
+- debug: msg="git lfs install∷ {{ GIT_LFS_INSTALL }}"
+
