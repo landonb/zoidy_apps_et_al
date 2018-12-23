@@ -1,0 +1,14 @@
+---
+
+- name: Ensure opt-downloads directory exists
+  file: path={{ zoidy_homefries_downloads_dir }} state=directory
+
+- name: Install Font "Hack"
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-hack-install
+    apply:
+      tags:
+        - font-hack-install
+  tags: font-hack-install
+

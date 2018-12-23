@@ -1,2 +1,10 @@
 ---
-# tasks file for zoidy_home-fries
+# Main task: Load package installers, or not, based on tags.
+
+- name: Install Packages?
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: customize
+  tags:
+    - font-hack-install
+
