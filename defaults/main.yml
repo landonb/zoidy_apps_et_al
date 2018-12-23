@@ -1,2 +1,5 @@
 ---
 # defaults file for zoidy_home-fries
+
+zoidy_homefries_downloads_dir: "{{ ansible_env.HOME }}/.downloads"
+
