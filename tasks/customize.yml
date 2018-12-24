@@ -1,9 +1,18 @@
 ---
 
+# *** Task Setup (Ensures-Dirs)
+
 - name: Ensure opt-downloads directory exists
   file: path={{ zoidy_homefries_downloads_dir }} state=directory
+  tags: always
 
-- name: Install Font "Hack"
+- name: Ensure user ~/.local/bin directory exists
+  file: path="{{ ansible_env.HOME }}/.local/bin" state=directory
+  tags: always
+
+# *** The Tasks
+
+- name: Load role to Install Font "Hack"
   include_role:
     name: zoidy_home-fries
     tasks_from: font-hack-install
@@ -11,6 +20,28 @@
       tags:
         - font-hack-install
   tags: font-hack-install
+
+# *** Go Lang Tasks
+
+- name: Load role to Install Go Language
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: go-lang-install
+    apply:
+      tags:
+        - go-lang-install
+  tags: go-lang-install
+
+- name: Load role to Install ripgrep
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ripgrep-install
+    apply:
+      tags:
+        - ripgrep-install
+  tags: ripgrep-install
+
+# *** Disabled Tasks [that I should just delete?]
 
 - name: Load role to Enable Git Large File Storage
   include_role:
@@ -23,4 +54,5 @@
   # 2018-12-23: On second thought, git-lfs still clones latest version
   # locally, so does not work as I hoped; can use symlink repo instead.
   when: False
+
 

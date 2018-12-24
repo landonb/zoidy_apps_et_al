@@ -1,0 +1,81 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    RIPGREP_VER: '0.10.0'
+
+- set_fact:
+    RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-i686-unknown-linux-musl"
+
+- set_fact:
+    RIPGREP_TAR: "{{ RIPGREP_DIR }}.tar.gz"
+
+- set_fact:
+    RIPGREP_URI: "https://github.com/BurntSushi/ripgrep/releases/download/{{ RIPGREP_VER }}/{{ RIPGREP_TAR }}"
+
+# *** Alert user if newer version.
+
+# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
+# curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases | jq '.[] | .tag_name'
+
+# This is wrong: There's an `ignore` pacakge that is latest.
+# Also, there are multiple releases, for different platforms.
+# So need to figure out Asset ID to query, or something.
+#
+#   - name: Check for new version of ripgrep.
+#     shell: "curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | jq -r '.tag_name'"
+#     register: LATEST_VERSION
+#     args:
+#       # else, ansible bugs us to use get_url:
+#       warn: False
+#
+#   - debug: msg="Latest ripgrep∷ {{ LATEST_VERSION.stdout }}"
+#
+#   - fail: msg="Update ripgrep! / Latest∷ {{ LATEST_VERSION.stdout }} / Current∷ {{ RIPGREP_VER }}"
+#     when: RIPGREP_VER != LATEST_VERSION.stdout
+
+# *** Do the work.
+
+- name: Fetch latest ripgrep release
+  get_url:
+    url: "{{ RIPGREP_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+# FIXME/2018-12-23: It'd be nice to have checksums on all get_url's.
+#    checksum:
+
+- name: Unarchive the ripgrep release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ RIPGREP_TAR }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+- name: Symlink ripgrep binary from user bin/
+  file:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ RIPGREP_DIR }}/rg"
+    dest: "{{ ansible_env.HOME }}/.local/bin/rg"
+    state: link
+
+# ***
+
+- set_fact:
+    go_install:
+      - "github.com/aykamko/tag"
+
+- name: "Go-Lang | Run get commands"
+  shell: "{{ ansible_env.HOME }}/.local/bin/go get -u {{ item }}"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+  with_items: "{{ go_install }}"
+
+- name: "Go-Lang | Run install commands"
+  shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+#  loop:
+#    - url: "github.com/aykamko/tag"
+  with_items: "{{ go_install }}"
+# When a shell/command or other module runs it will typically report “changed” status based on whether it thinks it affected machine state.
+# Sometimes you will know, based on the return code or output that it did not make any changes, and wish to override the “changed” result such that it does not appear in report output or does not cause handlers to fire:
+#  changed_when: false
+

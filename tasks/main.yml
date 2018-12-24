@@ -8,4 +8,6 @@
   tags:
     - font-hack-install
     - git-lfs-package-install
+    - go-lang-install
+    - ripgrep-install
 
