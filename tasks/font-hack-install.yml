@@ -50,9 +50,5 @@
     src: "{{ zoidy_homefries_downloads_dir }}/{{ HACK_FILE }}.zip"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ HACK_FILE }}/"
     remote_src: yes
-
-# FIXME/2018-12-23: This should be a handlers/main.yml thingy
-- name: Build font information cache files.
-  become: yes
-  shell: "fc-cache -fv"
+  notify: Build font information cache files
 

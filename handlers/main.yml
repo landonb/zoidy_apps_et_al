@@ -1,2 +1,7 @@
 ---
 # handlers file for zoidy_home-fries
+
+- name: Build font information cache files
+  become: yes
+  shell: "fc-cache -fv"
+
