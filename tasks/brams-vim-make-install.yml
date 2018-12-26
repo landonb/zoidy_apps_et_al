@@ -1,0 +1,80 @@
+---
+
+# [lb]: I originally built Vim from source starting 2017-02-27 to support
+# Command-T (activiated bu <Ctrl-D>), which requires Vim be built with
+# Ruby, and that the version of Ruby match that of the OS. Or so I'm led
+# to believe.
+
+- name: Clone Vim repo
+  git:
+    repo: "ssh://git@github.com/vim/vim.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/vim"
+
+# E.g., `make clean`
+- name: Clean Vim build
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    target: clean
+
+# 2017-11-03: If commant-t does not work, Ctrl-D shows error, e.g.,:
+#
+#   Vim Ruby version: 2.3.1-p112
+#   Expected version: 2.3.3-p222
+#
+# Make sure you build command-t with the system Ruby:
+#
+#   cd ~/.vim/bundle/command-t/ruby/command-t/ext/command-t
+#   chruby system
+#   ruby extconf.rb
+#   make
+
+# 2017-11-03: I am not sure these environs do anything,
+#   since the build just uses the system ruby...
+#export RUBY_VER=23
+#export RUBY_VER_LONG=2.3.3
+
+# See `./configure --help`
+# - Add ruby for commandt
+# - Add python3 for ternjs
+# - Add python2 for vim-instanbul
+# 2 ways to install dependencies:
+# - Blindly, via
+#     sudo apt-get build-dep vim
+# - Or with familiar knowledge of required pacakges, e.g.,
+#     sudo apt install libncurses5-dev libncursesw5-dev
+# - See zoidy_mintyfresh for package installation
+#   (so you don't have to run this task with -K/credentials):
+#     tags: install-develop-vim
+
+- name: Configure Vim build
+  shell: |
+    ./configure \
+      --enable-pythoninterp=yes \
+      --enable-python3interp=yes \
+      --enable-rubyinterp=yes \
+      --prefix={{ ansible_env.HOME }}/.local
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+
+- name: Build Vim
+  # -j 3 to use 3 CPU cores to build.
+  shell: make -j 3
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+
+# E.g., `make install`
+- make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    target: install
+
+- name: Symlink gvim to vim
+  file:
+    src: "{{ ansible_env.HOME }}/.local/bin/vim"
+    dest: "{{ ansible_env.HOME }}/.local/bin/gvim"
+    state: link
+
+# Verify that the correct Ruby was enabled by comparing:
+#   :ruby puts RUBY_DESCRIPTION
+#   :!/usr/bin/ruby -v
+# MAYBE/2018-12-26: Add verification step to this task. [Meh.]
+

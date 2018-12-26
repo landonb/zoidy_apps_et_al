@@ -84,3 +84,12 @@
         - digikam-appimage
   tags: digikam-appimage
 
+- name: Load role to Clone, Build, and Install Latest Vim
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: brams-vim-make-install
+    apply:
+      tags:
+        - brams-vim-make-install
+  tags: brams-vim-make-install
+
