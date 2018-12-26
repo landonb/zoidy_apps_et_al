@@ -11,4 +11,5 @@
     - git-lfs-package-install
     - go-lang-install
     - ripgrep-install
+    - virtualbox-deb-install
 

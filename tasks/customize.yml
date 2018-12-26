@@ -66,3 +66,12 @@
         - chrome-install
   tags: chrome-install
 
+- name: Load role to Download, Get Setup, and Install VirtualBox
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: virtualbox-deb-install
+    apply:
+      tags:
+        - virtualbox-deb-install
+  tags: virtualbox-deb-install
+
