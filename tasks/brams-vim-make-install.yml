@@ -67,12 +67,6 @@
     chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
     target: install
 
-- name: Symlink gvim to vim
-  file:
-    src: "{{ ansible_env.HOME }}/.local/bin/vim"
-    dest: "{{ ansible_env.HOME }}/.local/bin/gvim"
-    state: link
-
 # Verify that the correct Ruby was enabled by comparing:
 #   :ruby puts RUBY_DESCRIPTION
 #   :!/usr/bin/ruby -v
