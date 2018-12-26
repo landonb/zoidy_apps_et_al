@@ -1,0 +1,13 @@
+---
+
+- name: Fetch Chrome installer
+  get_url:
+    url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    #checksum: "sha256:{{ XXX? }}"
+
+- name: Install Chrome Debian package
+  become: yes
+  apt:
+    deb: "{{ zoidy_homefries_downloads_dir }}/google-chrome-stable_current_amd64.deb"
+

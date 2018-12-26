@@ -6,6 +6,7 @@
     name: zoidy_home-fries
     tasks_from: customize
   tags:
+    - chrome-install
     - font-hack-install
     - git-lfs-package-install
     - go-lang-install

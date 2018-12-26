@@ -10,7 +10,7 @@
   file: path="{{ ansible_env.HOME }}/.local/bin" state=directory
   tags: always
 
-# *** The Tasks
+# *** Install Hack Font
 
 - name: Load role to Install Font "Hack"
   include_role:
@@ -55,4 +55,14 @@
   # locally, so does not work as I hoped; can use symlink repo instead.
   when: False
 
+# *** Other Tasks
+
+- name: Load role to Install Chrome browser
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: chrome-install
+    apply:
+      tags:
+        - chrome-install
+  tags: chrome-install
 
