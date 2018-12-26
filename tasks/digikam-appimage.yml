@@ -1,0 +1,30 @@
+---
+
+- set_fact:
+    zoidy_digikam_version: '5.9.0'
+    # https://download.kde.org/stable/digikam/digikam-5.9.0-01-x86-64.appimage.sha256
+    #   da14b81304ca19eb148882f2b3d5bed5146de845f87f1baa2338b26e770d9d76  digikam-5.9.0-01-x86-64.appimage
+    zoidy_digikam_sha256: 'da14b81304ca19eb148882f2b3d5bed5146de845f87f1baa2338b26e770d9d76'
+
+
+- set_fact:
+    zoidy_digikam_appimage: "digikam-{{ zoidy_digikam_version }}-01-x86-64.appimage"
+
+- name: 'Downlaod Digikam AppImage'
+  get_url:
+    # E.g.,
+    #   https://download.kde.org/stable/digikam/digikam-5.9.0-01-x86-64.appimage
+    url: "https://download.kde.org/stable/digikam/{{ zoidy_digikam_appimage }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
+
+- name: Make the AppImage executable
+  file:
+    path: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
+    mode: 0755
+
+- name: Symlink Digikam AppImage from user bin/
+  file:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/digikam"
+    state: link
+

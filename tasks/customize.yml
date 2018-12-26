@@ -75,3 +75,12 @@
         - virtualbox-deb-install
   tags: virtualbox-deb-install
 
+- name: Load role to Install Digikam
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: digikam-appimage
+    apply:
+      tags:
+        - digikam-appimage
+  tags: digikam-appimage
+
