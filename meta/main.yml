@@ -1,7 +1,7 @@
 galaxy_info:
   author: Tally Bark LLC
   description: >
-    An Ansible role
+    Ansible role to build/install apps not found in standard Aptitude or Snap repos
   company: https://tallybark.com
 
   license: GPLv3

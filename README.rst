@@ -1,7 +1,8 @@
 zoidy_home-fries
 ================
 
-An Ansible role.
+An Ansible role to build and/or install various applications
+not found in the standard Aptitude or Snap repositories.
 
 Requirements
 ------------
