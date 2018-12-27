@@ -4,7 +4,7 @@
 - name: Install Packages?
   include_role:
     name: zoidy_home-fries
-    tasks_from: customize
+    tasks_from: all
   tags:
     - font-hack-install
     - go-lang-install
