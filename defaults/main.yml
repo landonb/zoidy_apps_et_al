@@ -3,5 +3,7 @@
 
 zoidy_homefries_downloads_dir: "{{ ansible_env.HOME }}/.downloads"
 
+zoidy_homefries_user_local_dir: "{{ ansible_env.HOME }}/.local"
+
 zoidy_homefries_packagecloud_sh: "{{ zoidy_homefries_downloads_dir }}/git-lfs_packagecloud.io_script.deb.sh"
 

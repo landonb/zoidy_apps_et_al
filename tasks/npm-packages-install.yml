@@ -1,0 +1,21 @@
+---
+
+# 2018-03-28 12:15: Geolocation of your machine via its IP!
+#
+# But seems to be wayyyyy off!
+#
+#   $ whereami # from work wifi
+#   42.4645,-83.3763
+#
+#   $ whereami -f human
+#   Michigan, United States
+#
+# Google Maps puts it at "City of Farmington Hills- Heritage Park",
+# outside Detroit... but I'm in Minnesota!
+#
+# So not really sure the utility of this app!
+- name: Install "@rafaelrinaldi/whereami" node.js package globally.
+  npm:
+    path: "{{ zoidy_homefries_user_local_dir }}"
+    name: "@rafaelrinaldi/whereami"
+

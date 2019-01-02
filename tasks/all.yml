@@ -102,3 +102,12 @@
         - xrandr-invert-colors
   tags: xrandr-invert-colors
 
+- name: NPM Package Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: npm-packages-install
+    apply:
+      tags:
+        - npm-packages-install
+  tags: npm-packages-install
+
