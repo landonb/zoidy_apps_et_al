@@ -17,4 +17,5 @@
     - brams-vim-make-install
     - xrandr-invert-colors
     - npm-packages-install
+    - direnv-install
 

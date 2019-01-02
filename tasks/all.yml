@@ -111,3 +111,12 @@
         - npm-packages-install
   tags: npm-packages-install
 
+- name: Install Direnv Development Utility
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: direnv-install
+    apply:
+      tags:
+        - direnv-install
+  tags: direnv-install
+
