@@ -18,13 +18,13 @@
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
 
-- name: Clone Vim repo
+- name: Clone xrandr-invert-colors repo
   git:
     repo: "ssh://git@github.com/zoltanp/xrandr-invert-colors.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
 
 # E.g., `sudo make deps-apt`
-- name: 'Install dependencies'
+- name: 'Install xrandr-invert-colors dependencies'
   become: true
   # Essentially same as:
   #   apt: name=libxcb-randr0-dev
@@ -35,7 +35,7 @@
   #  when: False
 
 # E.g., `make clean`
-- name: Clean Vim build
+- name: Clean xrandr-invert-colors build
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
     target: clean
@@ -46,7 +46,8 @@
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
 
 # Install locally to user, bruh.
-- lineinfile:
+- name: Fix xrandr-invert-colors Makefile, Part 1
+  lineinfile:
     path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
     # Was:
     #   PREFIX=/usr/local
@@ -54,7 +55,8 @@
     line: "PREFIX={{ ansible_env.HOME }}/.local"
 
 # [lb]: This is ridonkulous. I should either just install as root, or fork the project.
-- lineinfile:
+- name: Fix xrandr-invert-colors Makefile, Part 2
+  lineinfile:
     path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
     # Remove root:root assignment.
     #   -v/--verbose, -s/--strip symbol tables, -p/--preserve-timestamps, --mode
@@ -74,7 +76,7 @@
     # but the Makefile currently hardcodes paths.
 
 # Restore changes!
-- name: Restore repo changes
+- name: Restore xrandr-invert-colors repo changes, so next clone/pull works
   shell: /usr/bin/git checkout -- Makefile
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
