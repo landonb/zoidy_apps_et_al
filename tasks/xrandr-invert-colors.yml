@@ -1,5 +1,17 @@
 ---
 
+# [lb]: On 14.04 and 16.04, I found xrandr-invert-colors to be fairly reliable
+# (ever so often, the invert wouldn't happen, so I'd have to repeat the command).
+# I had at some point installed and tested `xcalib`, but for whatever reason, it
+# didn't stick. The xcalib equivalent to `xrandr-invert-colors` is probably:
+#
+#   xcalib -invert -alter
+#
+# In any case, I'm running 18.04 now, mostly on a new T480, and it remains to be
+# seen how well xrandr-invert-colors will perform. (For reference, I use the tool
+# as a way to alert me when a locally running, automatically invoked Continuous
+# Integrataion script completes.)
+
 # Restore changes! (See lineinfile's, below.)
 - name: Restore repo changes
   shell: /usr/bin/git checkout -- Makefile
