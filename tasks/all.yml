@@ -93,3 +93,12 @@
         - brams-vim-make-install
   tags: brams-vim-make-install
 
+- name: Install Screen Color Inverter, i.e., Alert! Mechanism
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: xrandr-invert-colors
+    apply:
+      tags:
+        - xrandr-invert-colors
+  tags: xrandr-invert-colors
+

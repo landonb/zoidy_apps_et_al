@@ -15,4 +15,5 @@
     - virtualbox-deb-install
     - digikam-appimage
     - brams-vim-make-install
+    - xrandr-invert-colors
 

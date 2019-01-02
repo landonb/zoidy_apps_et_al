@@ -1,0 +1,69 @@
+---
+
+# Restore changes! (See lineinfile's, below.)
+- name: Restore repo changes
+  shell: /usr/bin/git checkout -- Makefile
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+
+- name: Clone Vim repo
+  git:
+    repo: "ssh://git@github.com/zoltanp/xrandr-invert-colors.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+
+# E.g., `sudo make deps-apt`
+- name: 'Install dependencies'
+  become: true
+  # Essentially same as:
+  #   apt: name=libxcb-randr0-dev
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+    target: deps-apt
+  # DEVs: Uncomment to be able to run task without -K password prompt.
+  #  when: False
+
+# E.g., `make clean`
+- name: Clean Vim build
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+    target: clean
+
+# E.g., `make`
+- name: Build xrandr-invert-colors
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+
+# Install locally to user, bruh.
+- lineinfile:
+    path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
+    # Was:
+    #   PREFIX=/usr/local
+    regexp: '^PREFIX='
+    line: "PREFIX={{ ansible_env.HOME }}/.local"
+
+# [lb]: This is ridonkulous. I should either just install as root, or fork the project.
+- lineinfile:
+    path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
+    # Remove root:root assignment.
+    #   -v/--verbose, -s/--strip symbol tables, -p/--preserve-timestamps, --mode
+    regexp: '^(.*)install -v -s -p -m 755 -o root -g root(.*)$'
+    line: '\1install -v -s -p -m 755\2'
+    # Enable backrefs for \1, etc., to be recognized.
+    backrefs: yes
+
+# E.g., `make install`
+- name: Install xrandr-invert-colors
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+    target: install
+    # Ideally, we could set PREFIX from without, e.g.,:
+    #   params:
+    #     PREFIX: "{{ ansible_env.HOME }}/.local"
+    # but the Makefile currently hardcodes paths.
+
+# Restore changes!
+- name: Restore repo changes
+  shell: /usr/bin/git checkout -- Makefile
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+
