@@ -156,3 +156,12 @@
         - ruby-gems-install
   tags: ruby-gems-install
 
+- name: CLOC Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cloc-install
+    apply:
+      tags:
+        - cloc-install
+  tags: cloc-install
+
