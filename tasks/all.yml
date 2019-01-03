@@ -80,6 +80,15 @@
         - app-digikam
   tags: app-digikam
 
+- name: "Load role to Install Pencil [Project]"
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-pencil-project-evolus
+    apply:
+      tags:
+        - app-pencil-project-evolus
+  tags: app-pencil-project-evolus
+
 - name: Load role to Download, Get Setup, and Install VirtualBox
   include_role:
     name: zoidy_home-fries
