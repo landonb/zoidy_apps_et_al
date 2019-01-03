@@ -183,3 +183,12 @@
         - dmn-dropbox
   tags: dmn-dropbox
 
+- name: Python PIPs Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-pip-packages
+    apply:
+      tags:
+        - python-pip-packages
+  tags: python-pip-packages
+

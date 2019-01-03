@@ -1,0 +1,26 @@
+---
+
+- name: David Bowie sings All the Young Pips
+  set_fact:
+    pip_list:
+      # You can specify exact versions, if necessary, e.g.,
+      #   - bottle==0.11
+      #   - django>1.11.0,<1.12.0
+      # but generally I prefer living on the edge. Of disaster.
+
+      - restview
+
+      - cookiecutter
+
+- name: Install User Pip2 packages
+  pip:
+    name: "{{ pip_list }}"
+    executable: /usr/bin/pip2
+    extra_args: --user
+
+- name: Install User Pip3 packages
+  pip:
+    name: "{{ pip_list }}"
+    executable: /usr/bin/pip3
+    extra_args: --user
+

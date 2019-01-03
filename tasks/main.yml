@@ -25,6 +25,8 @@
     - dmn-dropbox
     # Npms.
     - node-npm-packages
+    # Pips.
+    - python-pip-packages
     # Rbys.
     - ruby-install-base
     - ruby-install-chruby
