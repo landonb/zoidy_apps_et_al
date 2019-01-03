@@ -129,3 +129,30 @@
         - ruby-install-install
   tags: ruby-install-install
 
+- name: Ruby-Install Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ruby-chruby-install
+    apply:
+      tags:
+        - ruby-chruby-install
+  tags: ruby-chruby-install
+
+- name: Ruby Gems Package Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ruby-versions-install
+    apply:
+      tags:
+        - ruby-versions-install
+  tags: ruby-versions-install
+
+- name: Ruby Gems Package Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ruby-gems-install
+    apply:
+      tags:
+        - ruby-gems-install
+  tags: ruby-gems-install
+
