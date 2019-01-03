@@ -10,7 +10,12 @@
   file: path="{{ ansible_env.HOME }}/.local/bin" state=directory
   tags: always
 
-# *** Install Hack Font
+# *** Package Installers
+
+# ************************************************************************
+# *** Dubs Vim. ***
+
+# **** Install Hack Font
 
 - name: Load role to Install Font "Hack"
   include_role:
@@ -21,7 +26,7 @@
         - font-hack
   tags: font-hack
 
-# *** Go Lang Tasks
+# **** Set up Go Lang, for RipGrep and `tags` command
 
 - name: Load role to Install Go Language
   include_role:
@@ -32,6 +37,8 @@
         - golang-go-lang
   tags: golang-go-lang
 
+# **** Dubs is pointless without getting Ripped first
+
 - name: Load role to Install ripgrep
   include_role:
     name: zoidy_home-fries
@@ -41,8 +48,69 @@
         - cli-ripgrep
   tags: cli-ripgrep
 
-# *** Disabled Tasks [that I should just delete?]
+# **** Install gVim to enable the Dubs Vim you already put in home
 
+- name: Load role to Clone, Build, and Install Latest Vim
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-vim-brams
+    apply:
+      tags:
+        - app-vim-brams
+  tags: app-vim-brams
+
+# ************************************************************************
+# *** Apps. ***
+
+- name: Load role to Install Chrome browser
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-chrome
+    apply:
+      tags:
+        - app-chrome
+  tags: app-chrome
+
+- name: Load role to Install Digikam
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-digikam
+    apply:
+      tags:
+        - app-digikam
+  tags: app-digikam
+
+- name: Load role to Download, Get Setup, and Install VirtualBox
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-virtualbox
+    apply:
+      tags:
+        - app-virtualbox
+  tags: app-virtualbox
+
+# ************************************************************************
+# *** Clis. ***
+
+- name: CLOC Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-cloc
+    apply:
+      tags:
+        - cli-cloc
+  tags: cli-cloc
+
+- name: Install Direnv Development Utility
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-direnv
+    apply:
+      tags:
+        - cli-direnv
+  tags: cli-direnv
+
+# A Disabled Task [that I should just delete?].
 - name: Load role to Enable Git Large File Storage
   include_role:
     name: zoidy_home-fries
@@ -55,43 +123,14 @@
   # locally, so does not work as I hoped; can use symlink repo instead.
   when: False
 
-# *** Other Tasks
-
-- name: Load role to Install Chrome browser
+- name: parT Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: app-chrome
+    tasks_from: cli-parT
     apply:
       tags:
-        - app-chrome
-  tags: app-chrome
-
-- name: Load role to Download, Get Setup, and Install VirtualBox
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-virtualbox
-    apply:
-      tags:
-        - app-virtualbox
-  tags: app-virtualbox
-
-- name: Load role to Install Digikam
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-digikam
-    apply:
-      tags:
-        - app-digikam
-  tags: app-digikam
-
-- name: Load role to Clone, Build, and Install Latest Vim
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-vim-brams
-    apply:
-      tags:
-        - app-vim-brams
-  tags: app-vim-brams
+        - cli-parT
+  tags: cli-parT
 
 - name: Install Screen Color Inverter, i.e., Alert! Mechanism
   include_role:
@@ -102,6 +141,21 @@
         - cli-xrandr-invert-colors
   tags: cli-xrandr-invert-colors
 
+# ************************************************************************
+# *** Dmns. ***
+
+- name: Dropbox Daemon Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: dmn-dropbox
+    apply:
+      tags:
+        - dmn-dropbox
+  tags: dmn-dropbox
+
+# ************************************************************************
+# *** Npms. ***
+
 - name: NPM Package Installer
   include_role:
     name: zoidy_home-fries
@@ -111,14 +165,20 @@
         - node-npm-packages
   tags: node-npm-packages
 
-- name: Install Direnv Development Utility
+# ************************************************************************
+# *** Pips. ***
+
+- name: Python PIPs Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: cli-direnv
+    tasks_from: python-pip-packages
     apply:
       tags:
-        - cli-direnv
-  tags: cli-direnv
+        - python-pip-packages
+  tags: python-pip-packages
+
+# ************************************************************************
+# *** Rbys. ***
 
 - name: Ruby-Install Installer
   include_role:
@@ -155,40 +215,4 @@
       tags:
         - ruby-rubygems-packages
   tags: ruby-rubygems-packages
-
-- name: CLOC Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-cloc
-    apply:
-      tags:
-        - cli-cloc
-  tags: cli-cloc
-
-- name: parT Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-parT
-    apply:
-      tags:
-        - cli-parT
-  tags: cli-parT
-
-- name: Dropbox Daemon Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: dmn-dropbox
-    apply:
-      tags:
-        - dmn-dropbox
-  tags: dmn-dropbox
-
-- name: Python PIPs Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: python-pip-packages
-    apply:
-      tags:
-        - python-pip-packages
-  tags: python-pip-packages
 
