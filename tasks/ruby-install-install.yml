@@ -17,6 +17,9 @@
 - set_fact:
     RUBY_INSTALL_DIR: "{{ zoidy_homefries_downloads_dir }}/ruby-install"
 
+- set_fact:
+    RUBY_INSTALL_ASC: "https://raw.github.com/postmodern/ruby-install/master/pkg/{{ RUBY_INSTALL_NOM }}.tar.gz.asc"
+
 # *** Alert user if newer version.
 
 # FIXME/2019-01-02: Run this and other curl's, or check GitHubs, for latest versions (of things).
@@ -75,6 +78,24 @@
   get_url:
     url: "{{ RUBY_INSTALL_URI }}"
     dest: "{{ RUBY_INSTALL_TAR }}"
+
+# ***
+
+- name: "Fetch Postmodern's PGP ASCII Armored file"
+  get_url:
+    url: "{{ RUBY_INSTALL_ASC }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ RUBY_INSTALL_NOM }}.tar.gz.asc"
+
+# This'll fail on nonzero return code.
+- name: "Verify ruby-install download"
+  command: "gpg --verify {{ RUBY_INSTALL_NOM }}.tar.gz.asc {{ RUBY_INSTALL_NOM }}.tar.gz"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
+#  register: gpg_verify_result
+
+#- debug: msg="{{ gpg_verify_result }}"
+
+# ***
 
 - name: Ensure ruby-install unpack directory exists
   file: path={{ RUBY_INSTALL_DIR }} state=directory
