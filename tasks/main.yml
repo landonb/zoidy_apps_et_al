@@ -6,22 +6,26 @@
     name: zoidy_home-fries
     tasks_from: all
   tags:
-    - font-hack-install
-    - go-lang-install
-    - ripgrep-install
-    - git-lfs-package-install
-    #
-    - chrome-install
-    - virtualbox-deb-install
-    - digikam-appimage
-    - brams-vim-make-install
-    - xrandr-invert-colors
-    - npm-packages-install
-    - direnv-install
-    - ruby-install-install
-    - ruby-chruby-install
-    - ruby-versions-install
-    - ruby-gems-install
-    - cloc-install
-    - parT-install
+    # Dubs Vim.
+    - font-hack
+    - golang-go-lang
+    - cli-ripgrep
+    - app-vim-brams
+    # Apps.
+    - app-chrome
+    - app-digikam
+    - app-virtualbox
+    # Clis.
+    - cli-cloc
+    - cli-direnv
+    - cli-git-lfs
+    - cli-parT
+    - cli-xrandr-invert-colors
+    # Npms.
+    - node-npm-packages
+    # Rbys.
+    - ruby-install-base
+    - ruby-install-chruby
+    - ruby-install-versions
+    - ruby-rubygems-packages
 

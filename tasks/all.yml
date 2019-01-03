@@ -15,42 +15,42 @@
 - name: Load role to Install Font "Hack"
   include_role:
     name: zoidy_home-fries
-    tasks_from: font-hack-install
+    tasks_from: font-hack
     apply:
       tags:
-        - font-hack-install
-  tags: font-hack-install
+        - font-hack
+  tags: font-hack
 
 # *** Go Lang Tasks
 
 - name: Load role to Install Go Language
   include_role:
     name: zoidy_home-fries
-    tasks_from: go-lang-install
+    tasks_from: golang-go-lang
     apply:
       tags:
-        - go-lang-install
-  tags: go-lang-install
+        - golang-go-lang
+  tags: golang-go-lang
 
 - name: Load role to Install ripgrep
   include_role:
     name: zoidy_home-fries
-    tasks_from: ripgrep-install
+    tasks_from: cli-ripgrep
     apply:
       tags:
-        - ripgrep-install
-  tags: ripgrep-install
+        - cli-ripgrep
+  tags: cli-ripgrep
 
 # *** Disabled Tasks [that I should just delete?]
 
 - name: Load role to Enable Git Large File Storage
   include_role:
     name: zoidy_home-fries
-    tasks_from: git-lfs-package-install
+    tasks_from: cli-git-lfs
     apply:
       tags:
-        - git-lfs-package-install
-  tags: git-lfs-package-install
+        - cli-git-lfs
+  tags: cli-git-lfs
   # 2018-12-23: On second thought, git-lfs still clones latest version
   # locally, so does not work as I hoped; can use symlink repo instead.
   when: False
@@ -60,117 +60,117 @@
 - name: Load role to Install Chrome browser
   include_role:
     name: zoidy_home-fries
-    tasks_from: chrome-install
+    tasks_from: app-chrome
     apply:
       tags:
-        - chrome-install
-  tags: chrome-install
+        - app-chrome
+  tags: app-chrome
 
 - name: Load role to Download, Get Setup, and Install VirtualBox
   include_role:
     name: zoidy_home-fries
-    tasks_from: virtualbox-deb-install
+    tasks_from: app-virtualbox
     apply:
       tags:
-        - virtualbox-deb-install
-  tags: virtualbox-deb-install
+        - app-virtualbox
+  tags: app-virtualbox
 
 - name: Load role to Install Digikam
   include_role:
     name: zoidy_home-fries
-    tasks_from: digikam-appimage
+    tasks_from: app-digikam
     apply:
       tags:
-        - digikam-appimage
-  tags: digikam-appimage
+        - app-digikam
+  tags: app-digikam
 
 - name: Load role to Clone, Build, and Install Latest Vim
   include_role:
     name: zoidy_home-fries
-    tasks_from: brams-vim-make-install
+    tasks_from: app-vim-brams
     apply:
       tags:
-        - brams-vim-make-install
-  tags: brams-vim-make-install
+        - app-vim-brams
+  tags: app-vim-brams
 
 - name: Install Screen Color Inverter, i.e., Alert! Mechanism
   include_role:
     name: zoidy_home-fries
-    tasks_from: xrandr-invert-colors
+    tasks_from: cli-xrandr-invert-colors
     apply:
       tags:
-        - xrandr-invert-colors
-  tags: xrandr-invert-colors
+        - cli-xrandr-invert-colors
+  tags: cli-xrandr-invert-colors
 
 - name: NPM Package Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: npm-packages-install
+    tasks_from: node-npm-packages
     apply:
       tags:
-        - npm-packages-install
-  tags: npm-packages-install
+        - node-npm-packages
+  tags: node-npm-packages
 
 - name: Install Direnv Development Utility
   include_role:
     name: zoidy_home-fries
-    tasks_from: direnv-install
+    tasks_from: cli-direnv
     apply:
       tags:
-        - direnv-install
-  tags: direnv-install
+        - cli-direnv
+  tags: cli-direnv
 
 - name: Ruby-Install Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: ruby-install-install
+    tasks_from: ruby-install-base
     apply:
       tags:
-        - ruby-install-install
-  tags: ruby-install-install
+        - ruby-install-base
+  tags: ruby-install-base
 
 - name: Ruby-Install Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: ruby-chruby-install
+    tasks_from: ruby-install-chruby
     apply:
       tags:
-        - ruby-chruby-install
-  tags: ruby-chruby-install
+        - ruby-install-chruby
+  tags: ruby-install-chruby
 
 - name: Ruby Gems Package Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: ruby-versions-install
+    tasks_from: ruby-install-versions
     apply:
       tags:
-        - ruby-versions-install
-  tags: ruby-versions-install
+        - ruby-install-versions
+  tags: ruby-install-versions
 
 - name: Ruby Gems Package Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: ruby-gems-install
+    tasks_from: ruby-rubygems-packages
     apply:
       tags:
-        - ruby-gems-install
-  tags: ruby-gems-install
+        - ruby-rubygems-packages
+  tags: ruby-rubygems-packages
 
 - name: CLOC Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: cloc-install
+    tasks_from: cli-cloc
     apply:
       tags:
-        - cloc-install
-  tags: cloc-install
+        - cli-cloc
+  tags: cli-cloc
 
-- name: CLOC Installer
+- name: parT Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: parT-install
+    tasks_from: cli-parT
     apply:
       tags:
-        - parT-install
-  tags: parT-install
+        - cli-parT
+  tags: cli-parT
 
