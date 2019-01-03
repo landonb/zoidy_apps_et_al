@@ -18,4 +18,5 @@
     - xrandr-invert-colors
     - npm-packages-install
     - direnv-install
+    - ruby-install-install
 

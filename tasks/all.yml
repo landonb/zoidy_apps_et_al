@@ -120,3 +120,12 @@
         - direnv-install
   tags: direnv-install
 
+- name: Ruby-Install Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ruby-install-install
+    apply:
+      tags:
+        - ruby-install-install
+  tags: ruby-install-install
+
