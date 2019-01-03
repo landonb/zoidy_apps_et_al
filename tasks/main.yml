@@ -23,4 +23,5 @@
     - ruby-versions-install
     - ruby-gems-install
     - cloc-install
+    - parT-install
 

@@ -165,3 +165,12 @@
         - cloc-install
   tags: cloc-install
 
+- name: CLOC Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: parT-install
+    apply:
+      tags:
+        - parT-install
+  tags: parT-install
+
