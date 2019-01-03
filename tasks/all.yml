@@ -174,3 +174,12 @@
         - cli-parT
   tags: cli-parT
 
+- name: Dropbox Daemon Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: dmn-dropbox
+    apply:
+      tags:
+        - dmn-dropbox
+  tags: dmn-dropbox
+

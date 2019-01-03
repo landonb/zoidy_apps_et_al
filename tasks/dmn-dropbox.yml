@@ -1,0 +1,77 @@
+---
+
+# See also source under:
+#
+#   https://linux.dropbox.com/packages/
+
+- set_fact:
+    DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
+
+- set_fact:
+    DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
+
+- name: Check if Dropbox installed
+  shell: command -v dropbox >/dev/null 2>&1
+  register: dropbox_exists
+  ignore_errors: yes
+
+- name: Fetch Dropbox 64-bit Debian package installer
+  get_url:
+    # The package is a simple script to download the latest actual Dropbox code.
+    url: "https://www.dropbox.com/download?dl=packages/ubuntu/{{ DROPBOX_DEB }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    #checksum: "sha256:{{ XXX? }}"
+  when: dropbox_exists.rc != 0
+
+- name: Install Dropbox Debian package
+  # [lb]: MEH: I'd rather not have sudo command in Home Fries (prefer user installs),
+  # but Aptitude only installs as root. We could install from source, e.g., resurrect
+  #   0005__stage_4_dropbox_install.sh
+  # At least we can use a "when" to make this task reentrant without sudo.
+  become: yes
+  apt:
+    deb: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_DEB }}"
+  when: dropbox_exists.rc != 0
+
+- name: Install python-gpg, so propreitary daemon downloader can verify signatures
+  become: true
+  apt: name={{ item }}
+  loop:
+    - python-gpg
+    - python3-gpg
+  when: dropbox_exists.rc != 0
+
+- name: Check if Dropbox is running
+  command: dropbox status
+  register: dropbox_status
+
+- debug: msg={{ dropbox_status.stdout }}
+
+# MEH: We could check `ps aux` for the daemon, e.g.,
+#
+#   ${HOME}/.dropbox-dist/dropbox-lnx.x86_64-63.4.107/dropbox
+#
+# or we could look for the executable in the user home, e.g.,
+#
+#   ${HOME}/.dropbox-dist/dropboxd
+#
+# but this script won't be rerun regularly, so why bother;
+# just always tell the user to run the manual setup.
+
+- set_fact:
+    DROPBOX_MANUALLY: "{{ zoidy_homefries_downloads_dir }}/dropbox-manually.sh"
+
+# If you wanted to select both "Don't show this again" and "OK", you could do, e.g.,
+#   ... && xdotool windowactivate --sync $(...) key alt+d key alt+o windowactivate ...
+- name: Create Dropbox script to manually finish installation
+  shell: >
+    echo '(sleep 0.25 && xdotool windowactivate --sync $(xdotool search --name "Dropbox Installation") key alt+o windowactivate $(xdotool getactivewindow) &) ; dropbox start -i' > {{ DROPBOX_MANUALLY }}
+
+- name: Make Manually Install Dropbox script executable
+  file:
+    path: "{{ DROPBOX_MANUALLY }}"
+    mode: 0775
+
+- name: Run Dropbox, after Downloading Proprietary Daemon
+  debug: msg="You have to run Dropbox manually to install the proproetary daemon∷ {{ DROPBOX_MANUALLY }}"
+

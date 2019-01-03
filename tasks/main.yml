@@ -21,6 +21,8 @@
     - cli-git-lfs
     - cli-parT
     - cli-xrandr-invert-colors
+    # Dmns.
+    - dmn-dropbox
     # Npms.
     - node-npm-packages
     # Rbys.
