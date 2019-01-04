@@ -1,5 +1,14 @@
 ---
 
+- set_fact:
+    zoidy_distrib_codename_: 'bionic'
+  when: ansible_lsb.codename == 'tara'
+  tags: always
+
+- fail: msg="Unexpected distro∷ “{{ ansible_facts.lsb.codename }}”"
+  when: zoidy_distrib_codename_ is not defined
+  tags: always
+
 # *** Task Setup (Ensures-Dirs)
 
 - name: Ensure opt-downloads directory exists
@@ -114,6 +123,8 @@
     apply:
       tags:
         - app-virtualbox
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
   tags: app-virtualbox
 
 # ************************************************************************

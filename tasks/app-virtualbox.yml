@@ -6,13 +6,6 @@
 # MAYBE/2018-12-26: For now, manually install Ext Pack from within app
 #   (need to agree to EULA). Not sure if way to automate or not.
 
-- set_fact:
-    zoidy_distrib_codename: 'bionic'
-  when: ansible_lsb.codename == 'tara'
-
-- fail: msg="Unexpected distro∷ “{{ ansible_facts.lsb.codename }}”"
-  when: zoidy_distrib_codename is not defined
-
 # ***
 
 #- debug: var=ansible_facts
