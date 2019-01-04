@@ -12,6 +12,39 @@
 
       - cookiecutter
 
+      # argcomplete - Bash tab completion for argparse
+      #
+      #   https://argcomplete.readthedocs.io/en/latest/#activating-global-completion%20argcomplete
+      - argcomplete
+
+      # https://packaging.python.org/distributing/
+      # FIXME/2019-01-03: Still need setuptools? What about twine? wheels?
+      - setuptools
+
+      # "Twine is a utility for publishing Python packages on PyPI."
+      # https://pypi.org/project/twine/
+      - twine
+
+      # 2019-01-03: Include ((the)) wheel for completeness?
+      - wheel
+
+      # 2016-11-22 PyYAML
+      - PyYAML
+
+      # 2017-04-19: sha512_crypt wrapper [mkpasshash.py]
+      - passlib
+
+      # 2018-03-26: glances (`top`/`htop` alternative).
+      - glances
+
+      # 2016-12-07: Pyonep.
+      # https://github.com/exosite-labs/pyonep
+      # 2019-09-14: Buh bye.
+      #- pyonep
+
+      # 2016-11-12: Using Trippy/Travel instead of uncommitted.
+      #- uncommitted
+
 - name: Install User Pip2 packages
   pip:
     name: "{{ pip_list }}"
@@ -22,5 +55,9 @@
   pip:
     name: "{{ pip_list }}"
     executable: /usr/bin/pip3
-    extra_args: --user
+    extra_args: --user --upgrade
+
+- name: Activate argcomplete bash tab completion
+  become: yes
+  command: activate-global-python-argcomplete
 
