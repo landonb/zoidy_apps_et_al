@@ -31,6 +31,8 @@
     - font-mania
     # Glng.
     - golang-go-lang
+    # Plat.
+    - hardware-platform-arduino
     # Npms.
     - node-npm-packages
     # Pips.

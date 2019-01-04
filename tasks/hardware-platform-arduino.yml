@@ -1,0 +1,42 @@
+---
+
+- set_fact:
+    ARDUINO_VER: "1.8.8"
+
+- set_fact:
+    ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}"
+
+- set_fact:
+    ARDUINO_NOM: "{{ ARDUINO_DIR }}-linux64"
+
+- set_fact:
+    ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_NOM }}.tar.xz"
+
+# ***
+
+- name: Fetch Arduino archive
+  get_url:
+    # The package is a simple script to download the latest actual Dropbox code.
+    url: "{{ ARDUINO_URL }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_NOM }}.tar.xz"
+
+- name: Unarchive Arduino archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_NOM }}.tar.xz"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+- name: Install Arduino
+  # "Adding desktop shortcut, menu item and file associations for Arduino IDE... done!"
+  command: ./install.sh
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}"
+
+# Fix it so normal users can hook US port (otherwise you have to `sudo arduino`, blech).
+- name: 'Add user to dialout group'
+  become: true
+  user:
+    name: "{{ ansible_env.LOGNAME }}"
+    groups: dialout
+    append: yes
+

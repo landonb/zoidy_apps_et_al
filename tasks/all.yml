@@ -209,6 +209,18 @@
   tags: font-mania
 
 # ************************************************************************
+# *** Pltfs. ***
+
+- name: Arduino Platform Developer Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: hardware-platform-arduino
+    apply:
+      tags:
+        - hardware-platform-arduino
+  tags: hardware-platform-arduino
+
+# ************************************************************************
 # *** Npms. ***
 
 - name: NPM Package Installer
