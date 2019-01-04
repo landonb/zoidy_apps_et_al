@@ -19,33 +19,10 @@
   file: path="{{ ansible_env.HOME }}/.local/bin" state=directory
   tags: always
 
-# *** Package Installers
-
 # ************************************************************************
-# *** Dubs Vim. ***
+# *** Go Lang. ***
 
-# **** Install Hack Font
-
-- name: Load role to Install Font "Hack"
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: font-hack
-    apply:
-      tags:
-        - font-hack
-  tags: font-hack
-
-- name: Load role to Install Fonts
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: font-mania
-    apply:
-      tags:
-        - font-mania
-  tags: font-mania
-
-# **** Set up Go Lang, for RipGrep and `tags` command
-
+# Dubs Vim: Set up Go Lang, for RipGrep and `tags` command
 - name: Load role to Install Go Language
   include_role:
     name: zoidy_home-fries
@@ -53,29 +30,7 @@
     apply:
       tags:
         - golang-go-lang
-  tags: golang-go-lang
-
-# **** Dubs is pointless without getting Ripped first
-
-- name: Load role to Install ripgrep
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-ripgrep
-    apply:
-      tags:
-        - cli-ripgrep
-  tags: cli-ripgrep
-
-# **** Install gVim to enable the Dubs Vim you already put in home
-
-- name: Load role to Clone, Build, and Install Latest Vim
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-vim-brams
-    apply:
-      tags:
-        - app-vim-brams
-  tags: app-vim-brams
+  tags: golang-go-lang, dubs-vim
 
 # ************************************************************************
 # *** Apps. ***
@@ -126,6 +81,16 @@
       tags:
         - app-pencil-project-evolus
   tags: app-pencil-project-evolus
+
+# Dubs Vim: Install gVim to enable the Dubs Vim you already put in home.
+- name: Load role to Clone, Build, and Install Latest Vim
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-vim-brams
+    apply:
+      tags:
+        - app-vim-brams
+  tags: app-vim-brams, dubs-vim
 
 - name: Load role to Download, Get Setup, and Install VirtualBox
   include_role:
@@ -190,6 +155,16 @@
         - cli-parT
   tags: cli-parT
 
+# Dubs Vim: is pointless without getting Ripped first.
+- name: Load role to Install ripgrep
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-ripgrep
+    apply:
+      tags:
+        - cli-ripgrep
+  tags: cli-ripgrep, dubs-vim
+
 - name: Install Screen Color Inverter, i.e., Alert! Mechanism
   include_role:
     name: zoidy_home-fries
@@ -210,6 +185,28 @@
       tags:
         - dmn-dropbox
   tags: dmn-dropbox
+
+# ************************************************************************
+# *** Font 'ackch. ***
+
+# Dubs Vim: Install Hack Font
+- name: Load role to Install Font "Hack"
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-hack
+    apply:
+      tags:
+        - font-hack
+  tags: font-hack, dubs-vim
+
+- name: Load role to Install Fonts
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-mania
+    apply:
+      tags:
+        - font-mania
+  tags: font-mania
 
 # ************************************************************************
 # *** Npms. ***

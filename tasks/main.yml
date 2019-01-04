@@ -7,17 +7,14 @@
     tasks_from: all
   tags:
     # Dubs Vim.
-    - font-hack
-    - font-mania
-    - golang-go-lang
-    - cli-ripgrep
-    - app-vim-brams
+    - dubs-vim
     # Apps.
     - app-chrome
     - app-darktable
     - app-digikam
     - app-openjump
     - app-pencil-project-evolus
+    - app-vim-brams
     - app-virtualbox
     # Clis.
     - cli-cloc
@@ -25,9 +22,15 @@
     - cli-git-lfs
     - cli-optipng
     - cli-parT
+    - cli-ripgrep
     - cli-xrandr-invert-colors
     # Dmns.
     - dmn-dropbox
+    # Fnts.
+    - font-hack
+    - font-mania
+    # Glng.
+    - golang-go-lang
     # Npms.
     - node-npm-packages
     # Pips.
