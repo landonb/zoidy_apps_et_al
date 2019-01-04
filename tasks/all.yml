@@ -150,6 +150,15 @@
   # locally, so does not work as I hoped; can use symlink repo instead.
   when: False
 
+- name: OptiPNG Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-optipng
+    apply:
+      tags:
+        - cli-optipng
+  tags: cli-optipng
+
 - name: parT Installer
   include_role:
     name: zoidy_home-fries

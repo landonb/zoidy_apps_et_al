@@ -1,0 +1,47 @@
+---
+
+# OptiPNG: Advanced PNG Optimizer
+# http://optipng.sourceforge.net/
+
+- set_fact:
+    OPTIPNG_VER: '0.7.6'
+
+- set_fact:
+    OPTIPNG_NOM: "optipng-{{ OPTIPNG_VER }}"
+
+- set_fact:
+    OPTIPNG_URI: "http://downloads.sourceforge.net/project/optipng/OptiPNG/{{ OPTIPNG_NOM }}/{{ OPTIPNG_NOM }}.tar.gz"
+
+- name: Fetch OptiPNG package
+  get_url:
+    url: "{{ OPTIPNG_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    #checksum: "sha256:{{ XXX? }}"
+
+- name: Unarchive OptiPNG archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ OPTIPNG_NOM }}.tar.gz"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+# ***
+
+- name: Configure OptiPNG build
+  command: "./configure --prefix={{ ansible_env.HOME }}/.local"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ OPTIPNG_NOM }}"
+
+- name: Run OptiPNG build
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ OPTIPNG_NOM }}"
+
+- name: Run OptiPNG build
+  make:
+    target: test
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ OPTIPNG_NOM }}"
+
+- name: Install OptiPNG locally
+  make:
+    target: install
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ OPTIPNG_NOM }}"
+

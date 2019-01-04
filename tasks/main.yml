@@ -22,6 +22,7 @@
     - cli-cloc
     - cli-direnv
     - cli-git-lfs
+    - cli-optipng
     - cli-parT
     - cli-xrandr-invert-colors
     # Dmns.
