@@ -350,6 +350,18 @@
   tags: python-sources
 
 # ************************************************************************
+# *** Pycs. ***
+
+- name: Python Chjson Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-chjson
+    apply:
+      tags:
+        - python-chjson
+  tags: python-chjson
+
+# ************************************************************************
 # *** Rbys. ***
 
 - name: Ruby-Install Installer

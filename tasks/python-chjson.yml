@@ -1,0 +1,78 @@
+---
+
+- name: Install chjson prerequisites
+  become: true
+  apt: name={{ item }}
+  loop:
+    - libpython3-dev
+#
+  when: False
+
+- name: Clone chjson repo
+  git:
+    repo: "ssh://git@github.com/landonb/chjson.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+# *** Python3
+
+- name: Cleanup chjson build artifacts
+  file:
+    state: absent
+    path: "{{ zoidy_homefries_downloads_dir }}/chjson/{{ item }}/"
+  loop:
+    - build
+    - dist
+    - python_chjson.egg-info
+
+- name: Setup chjson clean
+  command: python3 ./setup.py clean
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+- name: Setup chjson build
+  command: python3 ./setup.py build
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+- name: Setup chjson install
+  command: python3 ./setup.py install --user
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+# *** Python2
+
+- name: Cleanup chjson build artifacts
+  file:
+    state: absent
+    path: "{{ zoidy_homefries_downloads_dir }}/chjson/{{ item }}/"
+  loop:
+    - build
+    - dist
+    - python_chjson.egg-info
+
+- name: Setup chjson clean
+  command: python2 ./setup.py clean
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+- name: Setup chjson build
+  command: python2 ./setup.py build
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+- name: Setup chjson install
+  command: python2 ./setup.py install --user
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/chjson"
+
+# *** Third and Final Clean
+
+- name: Cleanup chjson build artifacts
+  file:
+    state: absent
+    path: "{{ zoidy_homefries_downloads_dir }}/chjson/{{ item }}/"
+  loop:
+    - build
+    - dist
+    - python_chjson.egg-info
+

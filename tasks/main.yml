@@ -48,6 +48,8 @@
     # Pips.
     - python-pip-packages
     - python-sources
+    # Pyc.
+    - python-chjson
     # Rbys.
     - ruby-install-base
     - ruby-install-chruby
