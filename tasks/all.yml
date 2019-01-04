@@ -277,6 +277,15 @@
         - golang-delve-debugger
   tags: golang-delve-debugger
 
+- name: Load role to Install Go Lang Projects
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: golang-go-get-packages
+    apply:
+      tags:
+        - golang-go-get-packages
+  tags: golang-go-get-packages
+
 # ************************************************************************
 # *** Pltfs. ***
 

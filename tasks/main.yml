@@ -38,6 +38,7 @@
     - golang-go-lang
     # Glng apps.
     - golang-delve-debugger
+    - golang-go-get-packages
     # Plat.
     - hardware-platform-arduino
     # Npms.

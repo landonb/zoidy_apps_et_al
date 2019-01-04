@@ -1,0 +1,23 @@
+- name: List of Go Lang projects to install
+  set_fact:
+    go_get_list:
+      # These projects install to, e.g.,
+      #   ~/.gopath/src/{{ item }}
+
+      - github.com/jmoiron/jsonq
+
+      # 2017-01-05
+      - github.com/landonb/gocovmerge
+
+      # This is somewhat cute. Not sure how useful.
+      # FIXME/2018-02-09 18:37: Add to Travel migrate, not once-setup!
+      - github.com/jingweno/ccat
+
+- name: Install Go Lang projects
+  # Specify "-u"/update to always update projects previously got.
+  command: "go get -u {{ item }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+  loop: "{{ go_get_list }}"
+
