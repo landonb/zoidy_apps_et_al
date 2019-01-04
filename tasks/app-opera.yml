@@ -1,0 +1,19 @@
+---
+
+- set_fact:
+    # 2019-01-04: The obscured direct-download link:
+    OPERA_URL: "https://www.opera.com/download/get/?id=44732&amp;location=415&amp;nothanks=yes&amp;sub=marine&utm_tryagain=yes"
+    # 2019-01-04: The archive name as seen once download starts:
+    OPERA_DEB: "opera-stable_57.0.3098.110_amd64.deb"
+
+- name: Fetch Opera Debian package
+  get_url:
+    url: "{{ OPERA_URL }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
+    #checksum: "sha256:{{ XXX }}"
+
+- name: Install Opera Debian package
+  become: yes
+  apt:
+    deb: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
+

@@ -82,6 +82,15 @@
         - app-openjump
   tags: app-openjump
 
+- name: Load role to Install Opera
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-opera
+    apply:
+      tags:
+        - app-opera
+  tags: app-opera
+
 - name: "Load role to Install Pencil [Project]"
   include_role:
     name: zoidy_home-fries
