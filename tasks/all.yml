@@ -26,6 +26,15 @@
         - font-hack
   tags: font-hack
 
+- name: Load role to Install Fonts
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-mania
+    apply:
+      tags:
+        - font-mania
+  tags: font-mania
+
 # **** Set up Go Lang, for RipGrep and `tags` command
 
 - name: Load role to Install Go Language

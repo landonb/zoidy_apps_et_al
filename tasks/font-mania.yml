@@ -1,0 +1,59 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    FONT_URL_ZIPS:
+      # 2019-01-03: Skip it: The complete Noto family zip is 1.1G.
+      #   And the extracted directory is 1.5G. Get only what's relevant.
+      #   - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+      #     zip_base: "Noto-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoSans-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoSerif-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoSansDisplay-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoSerifDisplay-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoMono-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoSansMono-hinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoColorEmoji-unhinted"
+      - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
+        zip_base: "NotoEmoji-unhinted"
+
+      - url_base: http://dl.1001fonts.com
+        zip_base: santos-dumont
+      - url_base: http://dl.1001fonts.com
+        zip_base: pinewood
+      - url_base: http://dl.1001fonts.com
+        zip_base: open-sans
+
+# ***
+
+- name: Ensure font download directory exists
+  file: path="{{ zoidy_homefries_dls_fonts_dir }}/" state=directory
+
+- name: Ensure destination font directories exist
+  file: path="{{ ansible_env.HOME }}/.fonts/{{ item.zip_base }}/" state=directory
+  loop: "{{ FONT_URL_ZIPS }}"
+
+# ***
+
+- name: Fetch font archives
+  get_url:
+    url: "{{ item.url_base }}/{{ item.zip_base }}.zip"
+    dest: "{{ zoidy_homefries_dls_fonts_dir }}/"
+  loop: "{{ FONT_URL_ZIPS }}"
+
+- name: Unarchive the font archives
+  unarchive:
+    src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}.zip"
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base }}/"
+    remote_src: yes
+  loop: "{{ FONT_URL_ZIPS }}"
+  notify: Build font information cache files
+
