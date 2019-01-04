@@ -1,0 +1,19 @@
+---
+
+- name: Load pip_list
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-pip-pkg-list
+    apply:
+      tags:
+        - python-pip-pkg-list
+  tags: python-pip-pkg-list
+
+- name: Install User Pip3 packages
+  #pip:
+  #  name: "{{ pip_list }}"
+  #  executable: /usr/bin/pip3
+  #  extra_args: --user --upgrade
+  command: "/usr/bin/pip3 install --user --upgrade {{ item }}"
+  loop: "{{ pip_list }}"
+

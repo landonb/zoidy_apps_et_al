@@ -1,63 +1,23 @@
 ---
 
-- name: David Bowie sings All the Young Pips
-  set_fact:
-    pip_list:
-      # You can specify exact versions, if necessary, e.g.,
-      #   - bottle==0.11
-      #   - django>1.11.0,<1.12.0
-      # but generally I prefer living on the edge. Of disaster.
+- name: Run pip3 installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-pip-pip3-user
+    apply:
+      tags:
+        - python-pip-pip3-user
+  tags: python-pip-pip3-user
 
-      - restview
-
-      - cookiecutter
-
-      # argcomplete - Bash tab completion for argparse
-      #
-      #   https://argcomplete.readthedocs.io/en/latest/#activating-global-completion%20argcomplete
-      - argcomplete
-
-      # https://packaging.python.org/distributing/
-      # FIXME/2019-01-03: Still need setuptools? What about twine? wheels?
-      - setuptools
-
-      # "Twine is a utility for publishing Python packages on PyPI."
-      # https://pypi.org/project/twine/
-      - twine
-
-      # 2019-01-03: Include ((the)) wheel for completeness?
-      - wheel
-
-      # 2016-11-22 PyYAML
-      - PyYAML
-
-      # 2017-04-19: sha512_crypt wrapper [mkpasshash.py]
-      - passlib
-
-      # 2018-03-26: glances (`top`/`htop` alternative).
-      - glances
-
-      # 2016-12-07: Pyonep.
-      # https://github.com/exosite-labs/pyonep
-      # 2019-09-14: Buh bye.
-      #- pyonep
-
-      # 2016-11-12: Using Trippy/Travel instead of uncommitted.
-      #- uncommitted
-
-- name: Install User Pip2 packages
-  pip:
-    name: "{{ pip_list }}"
-    executable: /usr/bin/pip2
-    extra_args: --user
-
-- name: Install User Pip3 packages
-  pip:
-    name: "{{ pip_list }}"
-    executable: /usr/bin/pip3
-    extra_args: --user --upgrade
+- name: Run pip2 installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-pip-pip2-user
+    apply:
+      tags:
+        - python-pip-pip2-user
+  tags: python-pip-pip2-user
 
 - name: Activate argcomplete bash tab completion
-  become: yes
-  command: activate-global-python-argcomplete
+  command: "{{ zoidy_homefries_user_local_dir }}/bin/activate-global-python-argcomplete --user"
 
