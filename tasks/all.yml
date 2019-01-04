@@ -89,6 +89,17 @@
         - app-chrome
   tags: app-chrome
 
+- name: Load role to Install Darktable
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-darktable
+    apply:
+      tags:
+        - app-darktable
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+  tags: app-darktable
+
 - name: Load role to Install Digikam
   include_role:
     name: zoidy_home-fries
