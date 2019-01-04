@@ -64,6 +64,15 @@
         - app-digikam
   tags: app-digikam
 
+- name: Load role to Fix Firefox Click-Scrolling Behavior
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-firefox-fix_scroll
+    apply:
+      tags:
+        - app-firefox-fix_scroll
+  tags: app-firefox-fix_scroll
+
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_home-fries
