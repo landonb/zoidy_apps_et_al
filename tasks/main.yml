@@ -36,6 +36,8 @@
     - font-mania
     # Glng.
     - golang-go-lang
+    # Glng apps.
+    - golang-delve-debugger
     # Plat.
     - hardware-platform-arduino
     # Npms.

@@ -266,6 +266,18 @@
   tags: font-mania
 
 # ************************************************************************
+# *** Glng apps. ***
+
+- name: Load role to Install Delve
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: golang-delve-debugger
+    apply:
+      tags:
+        - golang-delve-debugger
+  tags: golang-delve-debugger
+
+# ************************************************************************
 # *** Pltfs. ***
 
 - name: Arduino Platform Developer Installer

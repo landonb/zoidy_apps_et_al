@@ -1,0 +1,25 @@
+---
+
+# 2019-01-04: You'd think a simple `go get` would work,
+# but I had issues in the past, and this is what I have.
+# I'm not sure if this funny business is still necessary.
+
+- set_fact:
+    gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/derekparker"
+
+- name: Ensure Delve Go directory exists
+  file: path="{{ gopath_src_delve }}" state=directory
+
+- name: Clone delve repo
+  git:
+    repo: "ssh://git@github.com/derekparker/delve.git"
+    dest: "{{ gopath_src_delve }}/delve"
+
+- name: Install delve
+  make:
+    chdir: "{{ gopath_src_delve }}/delve"
+    target: install
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+
