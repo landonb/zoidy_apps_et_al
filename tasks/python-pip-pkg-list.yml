@@ -6,12 +6,7 @@
       #   - django>1.11.0,<1.12.0
       # but generally I prefer living on the edge. Of disaster.
 
-      - restview
-
-      # argcomplete - Bash tab completion for argparse
-      #
-      #   https://argcomplete.readthedocs.io/en/latest/#activating-global-completion%20argcomplete
-      - argcomplete
+      # *** Package tools
 
       # https://packaging.python.org/distributing/
       # FIXME/2019-01-03: Still need setuptools? What about twine? wheels?
@@ -24,11 +19,28 @@
       # 2019-01-03: Include ((the)) wheel for completeness?
       - wheel
 
-      # 2017-04-19: sha512_crypt wrapper [mkpasshash.py]
-      - passlib
+      # *** Development tools
+
+      # argcomplete - Bash tab completion for argparse
+      #
+      #   https://argcomplete.readthedocs.io/en/latest/#activating-global-completion%20argcomplete
+      - argcomplete
+
+      # [lb]: 2019-01-03: I don't really use cookiecutter, but it's
+      # nice to have available on the rare occasion it comes up.
+      - cookiecutter
 
       # 2018-03-26: glances (`top`/`htop` alternative).
       - glances
+
+      # 2017-04-19: sha512_crypt wrapper [mkpasshash.py]
+      - passlib
+
+      # reStructured Text file2html server.
+      - restview
+
+      - virtualenv
+      - virtualenvwrapper
 
       # 2016-12-07: Pyonep.
       # https://github.com/exosite-labs/pyonep
@@ -37,10 +49,6 @@
 
       # 2016-11-12: Using Trippy/Travel instead of uncommitted.
       #- uncommitted
-
-      # [lb]: 2019-01-03: I don't really use cookiecutter, but it's
-      # nice to have available on the rare occasion it comes up.
-      - cookiecutter
 
       # 2016-11-22 PyYAML
       # 2019-01-03: Do not -- cannot -- install PyYAML. See below.
