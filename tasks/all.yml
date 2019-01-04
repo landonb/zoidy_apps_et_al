@@ -283,3 +283,15 @@
         - ruby-rubygems-packages
   tags: ruby-rubygems-packages
 
+# ************************************************************************
+# *** Vids. ***
+
+- name: ttygif Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: vid-ttygif
+    apply:
+      tags:
+        - vid-ttygif
+  tags: vid-ttygif
+

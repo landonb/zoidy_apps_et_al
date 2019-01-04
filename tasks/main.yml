@@ -38,4 +38,6 @@
     - ruby-install-chruby
     - ruby-install-versions
     - ruby-rubygems-packages
+    # Vids.
+    - vid-ttygif
 

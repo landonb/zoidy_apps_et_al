@@ -1,0 +1,28 @@
+---
+
+- name: Install ttygif prerequisites
+  become: true
+  apt: name={{ item }}
+  loop:
+    - imagemagick
+    - ttyrec
+    - gcc
+    - x11-apps
+
+- name: Clone ttygif repo
+  git:
+    repo: "ssh://git@github.com/icholy/ttygif.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/ttygif"
+
+- name: Build ttygif
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/ttygif"
+
+- name: Install ttygif
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/ttygif"
+    target: install
+  args:
+    params:
+      PREFIX: "{{ ansible_env.HOME }}/.local"
+
