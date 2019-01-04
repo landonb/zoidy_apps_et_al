@@ -1,0 +1,21 @@
+---
+
+- name: Clone gimp-plugin-export-layers repo
+  git:
+    repo: "ssh://git@github.com/khalim19/gimp-plugin-export-layers.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers"
+
+- name: Copy export_layers.py to GIMP plug-ins
+  copy:
+    src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers.py"
+    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/"
+    remote_src: yes
+
+- name: Synchronize Home Directories and Files
+  synchronize:
+    src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers/"
+    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/export_layers/"
+    delete: yes
+  # Copy from remote to remote.
+  delegate_to: "{{ inventory_hostname }}"
+

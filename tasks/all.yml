@@ -94,6 +94,15 @@
         - app-gimp-docs
   tags: app-gimp-docs
 
+- name: Load role to Install GIMP Export Layers Plug-in
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-gimp-plugin-export-layers
+    apply:
+      tags:
+        - app-gimp-plugin-export-layers
+  tags: app-gimp-plugin-export-layers
+
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_home-fries
