@@ -64,6 +64,15 @@
         - app-digikam
   tags: app-digikam
 
+- name: Load role to Install Google Earth
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-google-earth
+    apply:
+      tags:
+        - app-google-earth
+  tags: app-google-earth
+
 - name: Load role to Install OpenJUMP
   include_role:
     name: zoidy_home-fries
