@@ -235,6 +235,15 @@
         - python-pip-packages
   tags: python-pip-packages
 
+- name: Python Sources Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-sources
+    apply:
+      tags:
+        - python-sources
+  tags: python-sources
+
 # ************************************************************************
 # *** Rbys. ***
 

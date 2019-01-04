@@ -32,6 +32,7 @@
     - node-npm-packages
     # Pips.
     - python-pip-packages
+    - python-sources
     # Rbys.
     - ruby-install-base
     - ruby-install-chruby

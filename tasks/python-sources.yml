@@ -1,0 +1,39 @@
+---
+
+- name: List Python Sources to Download
+  set_fact:
+    python_versions:
+      - 2.7.15
+      - 3.3.7
+      - 3.4.9
+      - 3.5.6
+      - 3.6.8
+      - 3.7.2
+
+- set_fact:
+    zoidy_homefries_dls_pydls_dir: "{{ zoidy_homefries_downloads_dir }}/python-dls"
+    zoidy_homefries_dls_pysrc_dir: "{{ zoidy_homefries_downloads_dir }}/python-src"
+
+# ***
+
+- name: Ensure Python sources download directory exists
+  file: path="{{ zoidy_homefries_dls_pydls_dir }}" state=directory
+
+- name: Ensure Python sources unpack directory exists
+  file: path="{{ zoidy_homefries_dls_pysrc_dir }}" state=directory
+
+# ***
+
+- name: Fetch Python source archives
+  get_url:
+    url: "https://www.python.org/ftp/python/{{ item }}/Python-{{ item }}.tar.xz"
+    dest: "{{ zoidy_homefries_dls_pydls_dir }}/"
+  loop: "{{ python_versions }}"
+
+- name: Unarchive the Python source archives
+  unarchive:
+    src: "{{ zoidy_homefries_dls_pydls_dir }}/Python-{{ item }}.tar.xz"
+    dest: "{{ zoidy_homefries_dls_pysrc_dir }}/"
+    remote_src: yes
+  loop: "{{ python_versions }}"
+
