@@ -319,6 +319,15 @@
         - node-nvm-version-mgr
   tags: node-nvm-version-mgr
 
+- name: Install various Node.js versions using nvm
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: node-nvm-versions
+    apply:
+      tags:
+        - node-nvm-versions
+  tags: node-nvm-versions
+
 # ************************************************************************
 # *** Pips. ***
 

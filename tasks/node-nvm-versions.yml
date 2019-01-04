@@ -1,0 +1,24 @@
+---
+
+- name: "Install Nodes"
+  shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install v{{ item }}
+  loop:
+    - 6.9.4
+    - 8.9.1
+  args:
+    # Run Bash so `source` works.
+    executable: /bin/bash
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+
+# For some reason, NVM default to v6.9.4.
+#   $ cat ~/.nvm/alias/default
+#   v6.9.4
+- name: "Set Default Node.js"
+  shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm alias default system
+  args:
+    # Run Bash so `source` works.
+    executable: /bin/bash
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+

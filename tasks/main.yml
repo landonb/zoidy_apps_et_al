@@ -44,6 +44,7 @@
     # Npms.
     - node-npm-packages
     - node-nvm-version-mgr
+    - node-nvm-versions
     # Pips.
     - python-pip-packages
     - python-sources
