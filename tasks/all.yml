@@ -80,6 +80,15 @@
         - app-digikam
   tags: app-digikam
 
+- name: Load role to Install OpenJUMP
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-openjump
+    apply:
+      tags:
+        - app-openjump
+  tags: app-openjump
+
 - name: "Load role to Install Pencil [Project]"
   include_role:
     name: zoidy_home-fries
