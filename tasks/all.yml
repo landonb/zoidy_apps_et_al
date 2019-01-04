@@ -73,6 +73,15 @@
         - app-firefox-fix_scroll
   tags: app-firefox-fix_scroll
 
+- name: Load role to Install GIMP docs
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-gimp-docs
+    apply:
+      tags:
+        - app-gimp-docs
+  tags: app-gimp-docs
+
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_home-fries

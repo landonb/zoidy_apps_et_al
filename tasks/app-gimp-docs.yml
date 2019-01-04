@@ -1,0 +1,24 @@
+---
+
+# https://docs.gimp.org/download.html
+
+# Bah, why no PDF of the help for 2.8?
+# http://docs.gimp.org/2.8/en/
+- name: Download GIMP 2.4 Manual (PDF)
+  get_url:
+    url: "https://docs.gimp.org/2.4/pdf/en.pdf"
+    dest: "{{ zoidy_homefries_user_docs_dir }}/gimp-2.4-en.pdf"
+
+- name: Download GIMP Keys and Mouse Quickreference (PDF)
+  get_url:
+    url: "https://docs.gimp.org/2.8/quickreference/gimp-keys-en.pdf"
+    dest: "{{ zoidy_homefries_user_docs_dir }}/"
+  # FIXME/2019-01-04: URL currently returning 404.
+  when: False
+
+# - 2019-01-04: Dead link. From 31 Aug 2014:
+#   wget -N http://gimp.linux.it/www/meta/gimp-en.pdf
+
+# - From 1999:
+#   wget -N ftp://ftp.ccsf.edu/pub/Util/gimp-User_Manual.pdf
+
