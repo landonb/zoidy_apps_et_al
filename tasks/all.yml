@@ -42,7 +42,7 @@
     apply:
       tags:
         - golang-go-lang
-  tags: golang-go-lang, dubs-vim
+  tags: golang-go-lang, dubs-vim, cli-direnv, cli-ripgrep
 
 # ************************************************************************
 # *** Apps. ***
@@ -301,7 +301,7 @@
 # ************************************************************************
 # *** Npms. ***
 
-- name: NPM Package Installer
+- name: Node.js npm Package Installer
   include_role:
     name: zoidy_home-fries
     tasks_from: node-npm-packages
@@ -309,6 +309,15 @@
       tags:
         - node-npm-packages
   tags: node-npm-packages
+
+- name: Node.js nvm Version Manager Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: node-nvm-version-mgr
+    apply:
+      tags:
+        - node-nvm-version-mgr
+  tags: node-nvm-version-mgr
 
 # ************************************************************************
 # *** Pips. ***

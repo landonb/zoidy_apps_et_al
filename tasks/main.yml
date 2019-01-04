@@ -43,6 +43,7 @@
     - hardware-platform-arduino
     # Npms.
     - node-npm-packages
+    - node-nvm-version-mgr
     # Pips.
     - python-pip-packages
     - python-sources
