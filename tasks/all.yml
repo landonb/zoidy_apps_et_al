@@ -11,12 +11,24 @@
 
 # *** Task Setup (Ensures-Dirs)
 
-- name: Ensure opt-downloads directory exists
+- name: Ensure ~/.downloads directory exists
   file: path={{ zoidy_homefries_downloads_dir }} state=directory
   tags: always
 
-- name: Ensure user ~/.local/bin directory exists
-  file: path="{{ ansible_env.HOME }}/.local/bin" state=directory
+- name: Ensure ~/.downloads/fonts directory exists
+  file: path={{ zoidy_homefries_dls_fonts_dir }} state=directory
+  tags: always
+
+- name: Ensure ~/.local directory exists
+  file: path="{{ zoidy_homefries_user_local_dir }}" state=directory
+  tags: always
+
+- name: Ensure ~/.local/bin directory exists
+  file: path="{{ zoidy_homefries_user_local_bin_dir }}" state=directory
+  tags: always
+
+- name: Ensure ~/.local/docs directory exists
+  file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
   tags: always
 
 # ************************************************************************

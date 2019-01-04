@@ -7,5 +7,7 @@ zoidy_homefries_dls_fonts_dir: "{{ zoidy_homefries_downloads_dir }}/fonts"
 
 zoidy_homefries_user_local_dir: "{{ ansible_env.HOME }}/.local"
 
-zoidy_homefries_packagecloud_sh: "{{ zoidy_homefries_downloads_dir }}/git-lfs_packagecloud.io_script.deb.sh"
+zoidy_homefries_user_local_bin_dir: "{{ zoidy_homefries_user_local_dir }}/bin"
+
+zoidy_homefries_user_docs_dir: "{{ ansible_env.HOME }}/.local/docs"
 

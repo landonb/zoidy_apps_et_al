@@ -1,5 +1,8 @@
 ---
 
+- set_fact:
+    zoidy_homefries_packagecloud_sh: "{{ zoidy_homefries_downloads_dir }}/git-lfs_packagecloud.io_script.deb.sh"
+
 # 2018-12-23: We could download the package, or we could setup a third-party repo.
 #   The package archive is at:
 #     https://github.com/git-lfs/git-lfs/releases/download/v2.6.1/git-lfs-linux-amd64-v2.6.1.tar.gz
