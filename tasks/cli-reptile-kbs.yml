@@ -4,19 +4,19 @@
     reptile_keybindings:
       - name: "'Reptile Left'"
         binding: "'<Mod4>Left'"
-        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile --left'"
+        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile left'"
 
       - name: "'Reptile Up'"
         binding: "'<Mod4>Up'"
-        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile --up'"
+        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile top'"
 
       - name: "'Reptile Right'"
         binding: "'<Mod4>Right'"
-        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile --right'"
+        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile right'"
 
       - name: "'Reptile Down'"
         binding: "'<Mod4>Down'"
-        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile --down'"
+        action: "'{{ zoidy_homefries_user_local_dir }}/bin/reptile bottom'"
 
 - name: Compute next available custom keybinding
   # [lb]: Not sure why, but pipe is considered illegal character

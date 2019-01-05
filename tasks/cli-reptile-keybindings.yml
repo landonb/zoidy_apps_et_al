@@ -1,7 +1,7 @@
 ---
 
 - name: Determine if keys already bound/binded
-  shell: dconf dump /org/mate/desktop/keybindings/ | grep "action=reptile" >/dev/null 2>&1
+  shell: dconf dump /org/mate/desktop/keybindings/ | grep "^action='.*\/reptile " >/dev/null 2>&1
   register: mate_kb_wired
   ignore_errors: yes
 

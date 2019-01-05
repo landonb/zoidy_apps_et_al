@@ -19,13 +19,19 @@
   make:
     target: install
     chdir: "{{ zoidy_hfs_dls_dir }}/reputed-tiler"
-  when: "{{ not zoidy_homefries_poutine_dev_dir }}"
+  args:
+    params:
+      PREFIX: "{{ ansible_env.HOME }}/.local"
+  when: not zoidy_homefries_poutine_dev_dir
 
 - name: "reputed-tiler∷ link app (for development)"
   make:
     target: link
     chdir: "{{ zoidy_hfs_dls_dir }}/reputed-tiler"
-  when: "{{ zoidy_homefries_poutine_dev_dir != '' }}"
+  args:
+    params:
+      PREFIX: "{{ ansible_env.HOME }}/.local"
+  when: "zoidy_homefries_poutine_dev_dir != ''"
 
 # ***
 
