@@ -310,11 +310,11 @@
 - name: Arduino Platform Developer Installer
   include_role:
     name: zoidy_home-fries
-    tasks_from: hardware-platform-arduino
+    tasks_from: hardware-arduino
     apply:
       tags:
-        - hardware-platform-arduino
-  tags: hardware-platform-arduino
+        - hardware-arduino
+  tags: hardware-arduino
 
 # ************************************************************************
 # *** Npms. ***

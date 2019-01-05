@@ -42,7 +42,7 @@
     - golang-delve-debugger
     - golang-go-get-packages
     # Plat.
-    - hardware-platform-arduino
+    - hardware-arduino
     # Npms.
     - node-npm-packages
     - node-nvm-version-mgr
