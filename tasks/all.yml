@@ -40,7 +40,7 @@
     apply:
       tags:
         - all-first
-  tags: all-first
+  tags: all-first, always
 
 - name: Load role to run final task wave
   include_role:
@@ -49,5 +49,5 @@
     apply:
       tags:
         - all-tasks
-  tags: all-tasks
+  tags: all-tasks, always
 
