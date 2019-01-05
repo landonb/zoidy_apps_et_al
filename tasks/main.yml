@@ -59,6 +59,8 @@
     - ruby-install-chruby
     - ruby-install-versions
     - ruby-rubygems-packages
+    # Secs.
+    - sec-pass-plug-tomb
     # Vids.
     - vid-ttygif
     # Virt.

@@ -431,6 +431,18 @@
   tags: ruby-rubygems-packages
 
 # ************************************************************************
+# *** Secs. ***
+
+- name: Pass Store Tomb Plugin Extenstion Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: sec-pass-plug-tomb
+    apply:
+      tags:
+        - sec-pass-plug-tomb
+  tags: sec-pass-plug-tomb
+
+# ************************************************************************
 # *** Vids. ***
 
 - name: ttygif Installer

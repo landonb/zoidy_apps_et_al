@@ -1,0 +1,65 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    PASS_TOMB_VER: "1.1"
+    
+- set_fact:
+    PASS_TOMB_NOM: "pass-tomb-{{ PASS_TOMB_VER }}"
+
+- set_fact:
+    PASS_TOMB_TAR: "{{ PASS_TOMB_NOM }}.tar.gz"
+
+- set_fact:
+    PASS_TOMB_URI: "https://github.com/roddhjav/pass-tomb/releases/download/v{{ PASS_TOMB_VER }}/{{ PASS_TOMB_TAR }}"
+
+- set_fact:
+    PASS_TOMB_ASC: "{{ PASS_TOMB_URI }}.asc"
+
+# ***
+
+- name: "Fetch pass tomb release archive"
+  get_url:
+    url: "{{ PASS_TOMB_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_TAR }}"
+
+- name: "Fetch roddhjav's PGP ASCII Armored file"
+  get_url:
+    url: "{{ PASS_TOMB_ASC }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_TAR }}.asc"
+
+# ***
+
+- name: "Import roddhjav's key"
+  command: "gpg --keyserver pgp.mit.edu --recv-keys 06A26D531D56C42D66805049C5469996F0DF68EC"
+
+- name: "Verify armor"
+  command: "gpg --verify {{ PASS_TOMB_TAR }}.asc"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/"
+
+# ***
+
+# Fail if download cannot be verified.
+- name: "Verify pass tomb release archive"
+  command: "gpg --verify {{ PASS_TOMB_TAR }}.asc {{ PASS_TOMB_TAR }}"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
+
+# ***
+
+- name: Unarchive the pass tomb release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_TAR }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+- name: Install pass tomb
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_NOM }}"
+    target: install
+  args:
+    params:
+      PREFIX: "{{ ansible_env.HOME }}/.local"
+
