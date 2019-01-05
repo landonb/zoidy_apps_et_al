@@ -1,0 +1,67 @@
+---
+
+# [lb]: Personal preference: I like Chrome to be ready early, especially
+# if I need to troubleshoot anything as I go through the stand up process.
+
+- name: Load role to Install Chrome browser
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-chrome
+    apply:
+      tags:
+        - app-chrome
+  tags: app-chrome
+
+# [lb]: Personal preference: I would prefer that Dubs Vim is the first
+# application setup by Zoidy Pooh (the set of Ansible roles to stand up
+# a development machine), but Chrome is a cinch to install, and Dubs Vim
+# is a little more complicated, so tally the easy win first, then set about
+# standing up Dubs Vim.
+
+# Dubs Vim: Set up Go Lang, for RipGrep and `tags` command
+- name: Load role to Install Go Language
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: golang-go-lang
+    apply:
+      tags:
+        - golang-go-lang
+  tags:
+    - golang-go-lang
+    # A number of other tasks rely on Go being available.
+    - cli-direnv
+    - cli-ripgrep
+    - dubs-vim
+    - golang-delve-debugger
+    - golang-go-get-packages
+
+# Dubs Vim: is pointless without getting Ripped first.
+- name: Load role to Install ripgrep
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-ripgrep
+    apply:
+      tags:
+        - cli-ripgrep
+  tags: cli-ripgrep, dubs-vim
+
+# Dubs Vim: Install Hack Font
+- name: Load role to Install Font "Hack"
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-hack
+    apply:
+      tags:
+        - font-hack
+  tags: font-hack, dubs-vim
+
+# Dubs Vim: Install gVim to enable the Dubs Vim you already put in home.
+- name: Load role to Clone, Build, and Install Latest Vim
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-vim-brams
+    apply:
+      tags:
+        - app-vim-brams
+  tags: app-vim-brams, dubs-vim
+
