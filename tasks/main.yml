@@ -61,4 +61,6 @@
     - ruby-rubygems-packages
     # Vids.
     - vid-ttygif
+    # Virt.
+    - virt-vagrant
 

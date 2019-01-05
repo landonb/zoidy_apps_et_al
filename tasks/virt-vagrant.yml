@@ -1,0 +1,35 @@
+---
+
+- set_fact:
+    vagrant_ver: "2.2.2"
+
+- set_fact:
+    hashicorp_com_sha: "vagrant_2.2.2_SHA256SUMS"
+    hashicorp_com_sig: "vagrant_2.2.2_SHA256SUMS.sig"
+    vargrant_deb: "vagrant_{{ vagrant_ver }}_x86_64.deb"
+
+- set_fact:
+    vagrant_url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ vargrant_deb }}"
+
+- name: Downlaod Hashicorp.com SHA list
+  get_url:
+    url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sha }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sha }}"
+
+- name: Downlaod Hashicorp.com Signature
+  get_url:
+    url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sig }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sig }}"
+
+- name: Downlaod Vagrant package
+  get_url:
+    url: "{{ vagrant_url }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
+    # https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_SHA256SUMS
+    checksum: "sha256:4dec711612c4350733e01745ab9f5acee2fbf9756ab9728b19a4664cae5c275d"
+
+- name: Install Vagrant package
+  become: yes
+  apt:
+    deb: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
+

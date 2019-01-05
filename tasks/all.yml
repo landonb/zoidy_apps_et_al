@@ -442,3 +442,15 @@
         - vid-ttygif
   tags: vid-ttygif
 
+# ************************************************************************
+# *** Virt. ***
+
+- name: Vagrant Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: virt-vagrant
+    apply:
+      tags:
+        - virt-vagrant
+  tags: virt-vagrant
+
