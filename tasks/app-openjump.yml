@@ -41,7 +41,7 @@
 # ***
 
 - name: Ensure OpenJUMP unpack directory exists
-  file: path={{ OPENJUMP_DIR }} state=directory
+  file: path="{{ OPENJUMP_DIR }}" state=directory
 
 - name: Unarchive the OpenJUMP release archive
   unarchive:
@@ -51,7 +51,7 @@
 
 # ***
 
-- name: Symlink OpenJUMP from user bin
+- name: Symlink oj_linux.sh from user bin
   file:
     src: "{{ zoidy_homefries_downloads_dir }}/OpenJUMP/{{ OPENJUMP_PLUS_DIR }}/bin/oj_linux.sh"
     dest: "{{ ansible_env.HOME }}/.local/bin/oj_linux.sh"
