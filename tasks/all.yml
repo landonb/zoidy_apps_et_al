@@ -307,6 +307,15 @@
 # ************************************************************************
 # *** Pltfs. ***
 
+- name: Android Studio Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: hardware-android-studio
+    apply:
+      tags:
+        - hardware-android-studio
+  tags: hardware-android-studio
+
 - name: Arduino Platform Developer Installer
   include_role:
     name: zoidy_home-fries

@@ -42,6 +42,7 @@
     - golang-delve-debugger
     - golang-go-get-packages
     # Plat.
+    - hardware-android-studio
     - hardware-arduino
     # Npms.
     - node-npm-packages

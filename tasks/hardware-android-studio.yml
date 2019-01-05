@@ -1,0 +1,52 @@
+---
+
+- set_fact:
+    ANDROID_STUDIO_VER: "3.2.1.0"
+    ANDROID_STUDIO_BLD: "181.5056338"
+    ANDROID_STUDIO_SHA: "b9ec0d44f2feaafe1e3fbd1ed696bf325f9e05cfb6c1ace84dbf87ae249efa84"
+    
+- set_fact:
+    ANDROID_STUDIO_NOM: "android-studio-ide-{{ ANDROID_STUDIO_BLD }}-linux"
+
+- set_fact:
+    ANDROID_STUDIO_ZIP: "{{ ANDROID_STUDIO_NOM }}.zip"
+
+- set_fact:
+    ANDROID_STUDIO_URI: "https://dl.google.com/dl/android/studio/ide-zips/{{ ANDROID_STUDIO_VER }}/{{ ANDROID_STUDIO_ZIP }}"
+
+# ***
+
+# FIXME/2019-01-05: What happens on upgrade? Remove old download?
+- name: Stat Android Studio archive file
+  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ ANDROID_STUDIO_ZIP }}"
+  register: android_studio_zip_f
+
+- name: "Fetch Android Studio release archive"
+  get_url:
+    url: "{{ ANDROID_STUDIO_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ANDROID_STUDIO_ZIP }}"
+    checksum: "sha256:{{ ANDROID_STUDIO_SHA }}"
+  when: not android_studio_zip_f.stat.exists
+
+# ***
+
+# FIXME/2019-01-05: What happens on upgrade? Remove old directory?
+- name: Stat Android Studio unpacked directory
+  stat: path="{{ zoidy_homefries_downloads_dir }}/android-studio"
+  register: android_studio_dir_f
+
+- name: Unarchive the Android Studio release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ ANDROID_STUDIO_ZIP }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+  when: not android_studio_dir_f.stat.exists
+
+# ***
+
+- name: Symlink studio.sh from user bin
+  file:
+    src: "{{ zoidy_homefries_downloads_dir }}/android-studio/bin/studio.sh"
+    dest: "{{ ansible_env.HOME }}/.local/bin/studio.sh"
+    state: link
+
