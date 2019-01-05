@@ -188,6 +188,8 @@
       tags:
         - dev-hamster-dob-nark
   tags: dev-hamster-dob-nark
+  # This tasks only runs in user sets the path to the dev dir.
+  when: zoidy_homefries_dob_dev_dir != ''
 
 # ************************************************************************
 # *** Dmns. ***

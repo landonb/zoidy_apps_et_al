@@ -15,3 +15,6 @@ zoidy_homefries_user_docs_dir: "{{ ansible_env.HOME }}/.local/docs"
 # rather than installing poutine apps from scratch in ~/.downloads.
 zoidy_homefries_poutine_dev_dir: ""
 
+# DEVS: Set these to setup Hamster Dob & Nark for development.
+zoidy_homefries_dob_dev_dir: ""
+
