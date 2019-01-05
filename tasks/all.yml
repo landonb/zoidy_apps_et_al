@@ -251,6 +251,18 @@
   tags: cli-xrandr-invert-colors
 
 # ************************************************************************
+# *** Devr. ***
+
+- name: Hamster Dob/Nark Development Environment Setup
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: dev-hamster-dob-nark
+    apply:
+      tags:
+        - dev-hamster-dob-nark
+  tags: dev-hamster-dob-nark
+
+# ************************************************************************
 # *** Dmns. ***
 
 - name: Dropbox Daemon Installer

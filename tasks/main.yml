@@ -32,6 +32,8 @@
     - reset-keybindings
     - cli-ripgrep
     - cli-xrandr-invert-colors
+    # Devg.
+    - dev-hamster-dob-nark
     # Dmns.
     - dmn-dropbox
     # Fnts.
