@@ -380,6 +380,18 @@
   tags: python-chjson
 
 # ************************************************************************
+# *** Refs. ***
+
+- name: Webster Dictionary Fetcher
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: ref-dictionary
+    apply:
+      tags:
+        - ref-dictionary
+  tags: ref-dictionary
+
+# ************************************************************************
 # *** Rbys. ***
 
 - name: Ruby-Install Installer

@@ -1,0 +1,106 @@
+---
+
+# https://stackoverflow.com/questions/6441975/
+#   where-can-i-download-english-dictionary-database-in-a-text-format
+
+# ***
+
+- set_fact:
+    zoidy_homefries_dls_dicts_dir: "{{ zoidy_homefries_downloads_dir }}/dicts-en"
+
+- name: Ensure Dictionaries download directory exists
+  file: path="{{ zoidy_homefries_dls_dicts_dir }}" state=directory
+
+# ***
+
+# Gutenberg Project
+#   Webster's Unabridged English Dictionary (2009 copyright, but 1913 edition)
+#     http://www.gutenberg.org/ebooks/29765
+
+- set_fact:
+    zoidy_hf_ref_websters_1913: "{{ zoidy_homefries_dls_dicts_dir }}/websters-unabridged-29765.txt.utf-8"
+
+- name: Stat Websters 1913 Txt
+  stat: path="{{ zoidy_hf_ref_websters_1913 }}"
+  register: dict_websters_1913_f
+
+- name: Fetch Websters 1913 Txt
+  get_url:
+    url: "https://www.gutenberg.org/ebooks/29765.txt.utf-8"
+    dest: "{{ zoidy_hf_ref_websters_1913 }}"
+  when: not dict_websters_1913_f.stat.exists
+
+# ***
+
+- set_fact:
+    zoidy_hf_ref_vulgar_tongue: "{{ zoidy_homefries_dls_dicts_dir }}/dict_of_the_Vulgar_Tongue-5402.txt.utf-8"
+
+- name: Stat Websters 1913 Txt
+  stat: path="{{ zoidy_hf_ref_vulgar_tongue }}"
+  register: dict_vulgar_tongue_f
+
+# Gutenberg Project
+#   1811 Dictionary of the Vulgar Tongue by Francis Grose
+#     https://www.gutenberg.org/ebooks/5402
+- name: Fetch '1811 Dictionary of the Vulgar Tongue by Francis Grose'
+  get_url:
+    url: "https://www.gutenberg.org/ebooks/5402.txt.utf-8"
+    dest: "{{ zoidy_hf_ref_vulgar_tongue }}"
+  when: not dict_vulgar_tongue_f.stat.exists
+
+# ***
+
+# Wikitionary database
+# [lb]: Not sure how much I care; it's ~800 MB archived.
+#   Is it worth 1% of my SSD? Possibly.
+
+- set_fact:
+    # 2019-01-05: 792M compressed. 5.4G decompressed. Doesn't seem useful for what I want.
+    zoidy_hf_ref_wikitionary_ver: "20190101"
+
+- set_fact:
+    zoidy_hf_ref_wikitionary_fil: "enwiktionary-{{ zoidy_hf_ref_wikitionary_ver }}-pages-articles-multistream.xml"
+
+- set_fact:
+    zoidy_hf_ref_wikitionary_pck: "{{ zoidy_hf_ref_wikitionary_fil }}.bz2"
+
+- set_fact:
+    zoidy_hf_ref_wikitionary_url: "https://dumps.wikimedia.org/enwiktionary/{{ zoidy_hf_ref_wikitionary_ver }}/{{ zoidy_hf_ref_wikitionary_pck }}"
+
+- set_fact:
+    zoidy_hf_ref_wikitionary_local: "{{ zoidy_homefries_dls_dicts_dir }}/{{ zoidy_hf_ref_wikitionary_pck }}"
+
+- name: Stat Wikitionary Archive
+  stat: path="{{ zoidy_hf_ref_wikitionary_local }}"
+  register: dict_wikitionary_archive_f
+
+# https://dumps.wikimedia.org/enwiktionary/
+- name: Fetch Wikitionary dump
+  get_url:
+    url: "{{ zoidy_hf_ref_wikitionary_url }}"
+    dest: "{{ zoidy_hf_ref_wikitionary_local }}"
+  # FIXME/2019-01-05: Disable. Move to other role, or just remove.
+  when: False and not dict_wikitionary_archive_f.stat.exists
+
+- name: Stat Wikitionary Unpacked
+  stat: path="{{ zoidy_homefries_dls_dicts_dir }}/{{ zoidy_hf_ref_wikitionary_fil }}"
+  register: dict_wikitionary_xml_f
+
+# The unarchive module works on archives, not simple compressed files:
+#   https://github.com/ansible/community/wiki/Module:-unarchive
+#   - Whoa. Intense discussion. Module maintainer quit over it:
+#   https://github.com/ansible/ansible-modules-core/issues/3241
+# So this won't work: 
+#   - unarchive:
+#       src: "{{ zoidy_hf_ref_wikitionary_local }}"
+#       dest: "{{ zoidy_homefries_dls_dicts_dir }}/"
+#       remote_src: yes
+- name: Decompress the Wikitionary dump
+  #command: "bzip2 -d {{ zoidy_hf_ref_wikitionary_local }}"
+  # Preserver original:
+  command: "bzip2 -dk {{ zoidy_hf_ref_wikitionary_local }}"
+  args:
+    chdir: "{{ zoidy_homefries_dls_dicts_dir }}"
+  # FIXME/2019-01-05: Disable. Move to other role, or just remove.
+  when: False and not dict_wikitionary_xml_f.stat.exists
+

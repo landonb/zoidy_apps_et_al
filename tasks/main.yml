@@ -52,6 +52,8 @@
     - python-sources
     # Pyc.
     - python-chjson
+    # Refs.
+    - ref-dictionary
     # Rbys.
     - ruby-install-base
     - ruby-install-chruby
