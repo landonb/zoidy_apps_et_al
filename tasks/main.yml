@@ -29,6 +29,7 @@
     - cli-parT
     - cli-reptile
     - cli-reptile-keybindings
+    - reset-keybindings
     - cli-ripgrep
     - cli-xrandr-invert-colors
     # Dmns.
