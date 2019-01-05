@@ -28,6 +28,11 @@
       - rubocop
       - terminal-table
       - httparty
+      # man page compiler.
+      - ronn
+      - hpricot
+      - jaro_winkler
+      - rdiscount
   environment:
     # Show Ansible path to chruby.
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"

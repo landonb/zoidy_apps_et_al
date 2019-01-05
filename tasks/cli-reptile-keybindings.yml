@@ -1,0 +1,13 @@
+---
+
+- name: Determine if keys already bound/binded
+  shell: dconf dump /org/mate/desktop/keybindings/ | grep "action=reptile" >/dev/null 2>&1
+  register: mate_kb_wired
+  ignore_errors: yes
+
+- name: Load role to Configure Reputed Tiler keybindings
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-reptile-kbs
+  when: mate_kb_wired.rc != 0
+

@@ -212,6 +212,24 @@
         - cli-parT
   tags: cli-parT
 
+- name: Load role to Install reptile
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-reptile
+    apply:
+      tags:
+        - cli-reptile
+  tags: cli-reptile
+
+- name: Load role to Install reptile keybindings
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-reptile-keybindings
+    apply:
+      tags:
+        - cli-reptile-keybindings
+  tags: cli-reptile-keybindings
+
 # Dubs Vim: is pointless without getting Ripped first.
 - name: Load role to Install ripgrep
   include_role:
