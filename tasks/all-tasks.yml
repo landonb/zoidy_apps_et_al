@@ -183,11 +183,11 @@
 - name: Hamster Dob/Nark Development Environment Setup
   include_role:
     name: zoidy_home-fries
-    tasks_from: dev-hamster-dob-nark
+    tasks_from: dev-dob
     apply:
       tags:
-        - dev-hamster-dob-nark
-  tags: dev-hamster-dob-nark
+        - dev-dob
+  tags: dev-dob
   # This tasks only runs in user sets the path to the dev dir.
   when: zoidy_homefries_dob_dev_dir != ''
 
