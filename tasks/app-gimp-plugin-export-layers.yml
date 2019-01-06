@@ -5,11 +5,23 @@
     repo: "ssh://git@github.com/khalim19/gimp-plugin-export-layers.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers"
 
-- name: Copy export_layers.py to GIMP plug-ins
-  copy:
-    src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers.py"
-    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/"
-    remote_src: yes
+# ***
+
+# [lb]: 2019-01-06: If you download and extract the installer from GitHub,
+#   e.g., from
+#
+#     https://github.com/khalim19/gimp-plugin-export-layers/releases/download
+#       /3.2.1/export_layers-3.2.1-linux.zip
+#
+#   You'll see a single, executable file:
+#
+#     export_layers-3.2.1-linux.run
+#
+#   which copies basically the export_layers directory (but without tests/)
+#   and also the export_layers.py executable. And that's it. So keep it simple
+#   and just do the same here, and then we can run bleeding-edge code, and also
+#   not worry if anything is lurking in the single-file encoded archive (not
+#   that I audited the raw project code, but whatever, feelings are feelings).
 
 - name: Synchronize Home Directories and Files
   synchronize:
@@ -18,4 +30,12 @@
     delete: yes
   # Copy from remote to remote.
   delegate_to: "{{ inventory_hostname }}"
+
+- name: Copy export_layers.py to GIMP plug-ins
+  copy:
+    src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers.py"
+    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/"
+    remote_src: yes
+    # Even if source file is executable, copied file defaults to 0664.
+    mode: 0775
 
