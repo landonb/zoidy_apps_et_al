@@ -126,6 +126,7 @@
     apply:
       tags:
         - cli-git-lfs
+        - never
   tags: cli-git-lfs
   # 2018-12-23: On second thought, git-lfs still clones latest version
   # locally, so does not work as I hoped; can use symlink repo instead.

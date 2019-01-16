@@ -1,5 +1,22 @@
 ---
 
+# [lb]: 2019-01-15: Disabled. Not useful in the way I thought it'd be
+#   (for my purposes, I can just add symlinks to a git repo that point
+#   to large files outside it, and then I have an Ansible synchronize
+#   task somewhere that manages the large files across machines).
+#
+# I'm also now getting a key verification error on apt-update
+# that I don't care to resolve:
+#
+#   W: An error occurred during the signature verification.
+#   The repository is not updated and the previous index files will be used.
+#   GPG error: https://packagecloud.io/github/git-lfs/linuxmint tara InRelease:
+#     The following signatures couldn't be verified because the public key is not available:
+#       NO_PUBKEY 6B05F25D762E3157
+#   W: Failed to fetch https://packagecloud.io/github/git-lfs/linuxmint/dists/tara/InRelease
+#     The following signatures couldn't be verified because the public key is not available:
+#       NO_PUBKEY 6B05F25D762E3157
+
 - set_fact:
     zoidy_homefries_packagecloud_sh: "{{ zoidy_homefries_downloads_dir }}/git-lfs_packagecloud.io_script.deb.sh"
 
