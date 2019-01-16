@@ -20,3 +20,27 @@
   apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ GOOGLE_EARTH_DEB }}"
 
+# Fix the sources file. By default:
+#
+#   $ cat /etc/apt/sources.list.d/google-earth-pro.list
+#   #  # # THIS FILE IS AUTOMATICALLY CONFIGURED ###
+#   # You may comment out this entry, but any other modifications may be lost.
+#   deb http://dl.google.com/linux/earth/deb/ stable main
+#
+# but something something 32-bit issues:
+#
+#   $ sudo apt-get update
+#   ...
+#   N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository
+#     'http://dl.google.com/linux/earth/deb stable InRelease' doesn't support architecture 'i386'
+#   ...
+#
+# So be blatant:
+#
+#   deb [arch=amd64] http://dl.google.com/linux/earth/deb/ stable main
+- name: Fix Google Earch apt sources file archictecture issue
+  lineinfile:
+    path: "/etc/apt/sources.list.d/google-earth-pro.list"
+    regexp: '^deb http://dl.google.com/linux/earth/deb/ (.*)'
+    line: "deb [arch=amd64] http://dl.google.com/linux/earth/deb/ \1"
+
