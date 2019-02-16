@@ -289,6 +289,20 @@
   tags: node-nvm-versions
 
 # ************************************************************************
+# *** Pys. ***
+
+- name: Python Vers Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: python-deadsnakes
+    apply:
+      tags:
+        - python-deadsnakes
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+  tags: python-deadsnakes
+
+# ************************************************************************
 # *** Pips. ***
 
 - name: Python PIPs Installer

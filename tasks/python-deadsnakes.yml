@@ -1,0 +1,39 @@
+---
+
+# https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+# https://github.com/deadsnakes/issues
+
+- name: List Python Versions to Install
+  set_fact:
+    python_versions:
+      - 2.7
+      - 3.3
+      - 3.4
+      - 3.5
+      #- 3.6
+      - 3.7
+
+- name: Add "deadsnakes" repo
+  become: true
+  apt_repository:
+    # /etc/apt/sources.list.d/XXX
+    repo: ppa:deadsnakes/ppa
+    codename: "{{ zoidy_distrib_codename }}"
+
+- name: Run command "apt-get update"
+  become: true
+  apt:
+    update_cache: yes
+    # Skip the cache time so that the new repo gets picked up.
+    #   cache_valid_time: 3600
+
+- name: Install Python Versions
+  become: true
+  apt: name="python{{ item }}"
+  loop: "{{ python_versions }}"
+
+- name: Install Python Versions-Dev
+  become: true
+  apt: name="python{{ item }}-dev"
+  loop: "{{ python_versions }}"
+
