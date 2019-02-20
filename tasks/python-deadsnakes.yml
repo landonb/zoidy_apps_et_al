@@ -5,9 +5,10 @@
 
 - name: List Python Versions to Install
   set_fact:
+    # FIXME/2019-02-16: (lb): Excluding 3.6 because default on bionic,
+    #   but how should this be handled more universally?
     python_versions:
       - 2.7
-      - 3.3
       - 3.4
       - 3.5
       #- 3.6
