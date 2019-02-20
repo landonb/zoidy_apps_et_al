@@ -126,3 +126,16 @@
   environment:
     PATH: "{{ ansible_env.HOME }}/.virtualenvs/dob/bin:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
 
+# ***
+
+# Setup GitHub API CLI tool.
+
+- name: Install Go Lang github-release project
+  # Specify "-u"/update to always update projects previously got.
+  command: "go get -u {{ item }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+  loop:
+    - github.com/aktau/github-release
+
