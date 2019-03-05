@@ -1,0 +1,51 @@
+---
+
+# 2019-03-05: (lb): I had been installing Spotify via snap, until I noticed
+# that its widget was missing from the MATE Panels Notification Area!
+
+# echo "deb http://repository.spotify.com stable non-free" \
+#   | sudo tee -a /etc/apt/sources.list &> /dev/null
+- name: Add Spotify proprietary repository
+  become: true
+  apt_repository:
+    repo: deb http://repository.spotify.com stable non-free
+    state: present
+    ## 2019-03-05: Disable Spotify-from-Deb!
+    #state: absent
+
+# Somewhat equivalent command:
+#   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+#     --recv-keys 94558F59
+# 2019-03-05: What Spotify says:
+#   # https://www.spotify.com/us/download/linux/
+#   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+#     --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+# TROUBLESHOOTING: If the key ID is incorrect, you'll see something like:
+#    W:GPG error: http://repository.spotify.com stable InRelease:
+#      The following signatures couldn't be verified
+#      because the public key is not available:
+#        NO_PUBKEY A87FF9DF48BF1C90
+#    E:The repository 'http://repository.spotify.com stable InRelease' is not signed.
+- name: Add Spotify keyserver and key signature to receive
+  become: true
+  apt_key:
+    id: A87FF9DF48BF1C90
+    keyserver: hkp://keyserver.ubuntu.com:80
+    state: present
+    ## 2019-03-05: Disable Spotify-from-Deb!
+    #state: absent
+
+- name: Run command "apt-get update"
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: 'Install Spotify desktop client application'
+  become: true
+  apt:
+    name: spotify-client
+    state: present
+    ## 2019-03-05: Disable Spotify-from-Deb!
+    #state: absent
+
