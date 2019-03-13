@@ -50,6 +50,15 @@
         - app-gimp-plugin-export-layers
   tags: app-gimp-plugin-export-layers
 
+- name: Load role to Install GIMP Wavelet Decompose Plug-in
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-gimp-plugin-wavelet-decompose
+    apply:
+      tags:
+        - app-gimp-plugin-wavelet-decompose
+  tags: app-gimp-plugin-wavelet-decompose
+
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_home-fries

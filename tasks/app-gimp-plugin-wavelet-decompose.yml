@@ -1,0 +1,41 @@
+---
+
+- name: Clone wavelet-decompose repo
+  git:
+    repo: "ssh://git@github.com/gimp-plugins-justice/wavelet-decompose.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
+
+# ***
+
+- name: Run command "apt-get update"
+  become: true
+  apt:
+    update_cache: yes
+    # Skip the cache time so that the new repo gets picked up.
+    #   cache_valid_time: 3600
+
+- name: Install GIMP development headers, etc.
+  become: true
+  apt: name=libgimp2.0-dev
+
+# ***
+
+- name: Build wavelet-decompose plugin
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
+
+# ***
+
+- name: Install wavelet-decompose for all users
+  become: true
+  make:
+    target: install
+    chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
+  when: False
+
+- name: Install wavelet-decompose for your user
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
+    target: userinstall
+  when: True
+
