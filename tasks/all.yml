@@ -11,21 +11,6 @@
   when: zoidy_distrib_codename_ is not defined
   tags: always
 
-# *** Verify GH SSH setup.
-
-- name: Determine if github.com is a known host
-  # (lb): Huh: If we use &> here, and not 2>&1, return code is 0, not nonzero.
-  # E.g.,
-  #   shell: ssh-keygen -F github.com &> /dev/null
-  shell: ssh-keygen -F github.com >/dev/null 2>&1
-  register: gh_known
-  ignore_errors: yes
-  tags: always
-
-- fail: msg="Please setup the machine's GitHub SSH key first, please!"
-  when: gh_known.rc != 0
-  tags: always
-
 # *** Task Setup (Ensures-Dirs)
 
 - name: Ensure ~/.downloads directory exists
