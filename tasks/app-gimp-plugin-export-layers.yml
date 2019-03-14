@@ -23,6 +23,9 @@
 #   not worry if anything is lurking in the single-file encoded archive (not
 #   that I audited the raw project code, but whatever, feelings are feelings).
 
+- name: Ensure the GIMP & Its Plug-Ins Directories exist
+  file: path="{{ ansible_env.HOME }}/.gimp-2.8/plug-ins" state=directory
+
 - name: Synchronize Home Directories and Files
   synchronize:
     src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers/"
