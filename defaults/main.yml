@@ -1,6 +1,10 @@
 ---
 # defaults file for zoidy_home-fries
 
+# YOU: Set zoidy_homefries_github_* in your playbook's group_vars/.
+zoidy_homefries_github_user: user
+zoidy_homefries_github_file: id_user_rsa
+
 zoidy_homefries_downloads_dir: "{{ ansible_env.HOME }}/.downloads"
 
 zoidy_homefries_dls_fonts_dir: "{{ zoidy_homefries_downloads_dir }}/fonts"
