@@ -1,5 +1,8 @@
 ---
 
+# FIXME/2019-03-14: Because Secure Boot (I think that's it), need to sign VirtualBox drivers.
+#   So this task will run, but you won't be able to boot any virtual machines.
+
 # FIXME/2018-12-26: Incorporate checksums.
 #   https://www.virtualbox.org/download/hashes/6.0.0/SHA256SUMS
 
@@ -133,6 +136,8 @@
   become: true
   user:
     name: "{{ ansible_env.LOGNAME }}"
-    groups: vboxsf, vboxusers
+    # 2019-03-14: Maybe add back vboxsf (I think that's the shared file system driver).
+    # groups: vboxsf, vboxusers
+    groups: vboxusers
     append: yes
 
