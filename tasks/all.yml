@@ -35,6 +35,15 @@
 
 # ***
 
+- name: Run tasks to verify or configure GitHub SSH
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: init-github-ssh
+    apply:
+      tags:
+        - init-github-ssh
+  tags: init-github-ssh, always
+
 - name: Load role to run first task wave
   include_role:
     name: zoidy_home-fries
