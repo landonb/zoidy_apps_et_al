@@ -5,7 +5,7 @@
 - name: Add Darktable release repo
   become: true
   apt_repository:
-    # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_tara.list
+    # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
     repo: ppa:pmjdebruijn/darktable-release
     codename: "{{ zoidy_distrib_codename }}"
 
