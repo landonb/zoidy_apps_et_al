@@ -46,7 +46,7 @@
   tags: cli-ripgrep, dubs-vim
 
 # Dubs Vim: Install Hack Font
-- name: Load role to Install Font "Hack"
+- name: Load role to Install Font “Hack”
   include_role:
     name: zoidy_home-fries
     tasks_from: font-hack
