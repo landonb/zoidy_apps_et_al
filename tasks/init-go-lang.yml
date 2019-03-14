@@ -1,6 +1,6 @@
 ---
 
-# Ensure that Go is setup, for other tasks to use/rely upon.
+# *** Ensure that Go is setup, for other tasks to use/rely upon.
 
 - name: Load role to Install Go Language
   include_role:

@@ -44,16 +44,16 @@
         - init-github-ssh
   tags: init-github-ssh, always
 
-- name: Load role to run first task wave
+- name: Run tasks to ensure Go is good to go
   include_role:
     name: zoidy_home-fries
-    tasks_from: all-first
+    tasks_from: init-go-lang
     apply:
       tags:
-        - all-first
-  tags: all-first, always
+        - init-go-lang
+  tags: init-go-lang, always
 
-- name: Load role to run final task wave
+- name: Run all the tasks to do all the things
   include_role:
     name: zoidy_home-fries
     tasks_from: all-tasks
