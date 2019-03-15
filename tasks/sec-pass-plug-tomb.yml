@@ -114,11 +114,22 @@
     dest: "{{ zoidy_homefries_downloads_dir }}/"
     remote_src: yes
 
-- name: Install pass tomb
+# Because `pass` was installed system-wide, so need to be the extensions.
+#
+# Othewise, if you were to install pass locally, you could do so, too, with
+# the extension, e.g.,:
+#
+#   - name: Install pass tomb (user-local)
+#     make:
+#       chdir: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_NOM }}"
+#       target: install
+#     args:
+#       params:
+#         PREFIX: "{{ ansible_env.HOME }}/.local"
+
+- name: Install pass tomb (system-wide)
+  become: yes
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/{{ PASS_TOMB_NOM }}"
     target: install
-  args:
-    params:
-      PREFIX: "{{ ansible_env.HOME }}/.local"
 
