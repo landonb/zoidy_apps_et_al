@@ -15,11 +15,3 @@ zoidy_homefries_user_local_bin_dir: "{{ zoidy_homefries_user_local_dir }}/bin"
 
 zoidy_homefries_user_docs_dir: "{{ ansible_env.HOME }}/.local/docs"
 
-# DEVS: Set these to setup Hamster Dob & Nark for development.
-zoidy_homefries_dob_dev_dir: ""
-# DEVS: List paths to third party libraries you also hack on,
-# i.e., list projects you want to `pip install -U -e .`.
-zoidy_homefries_dob_dev_pip: []
-# DEVS: A list of dob plugins on which to run: `<dob-plugin-xxx> install`.
-zoidy_homefries_dob_install_plugins: []
-
