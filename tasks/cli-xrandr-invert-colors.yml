@@ -12,11 +12,20 @@
 # as a way to alert me when a locally running, automatically invoked Continuous
 # Integrataion script completes.)
 
+# ***
+
+- name: Stat xrandr-invert-colors Makefile
+  stat: path="{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
+  register: makefile_f
+
 # Restore changes! (See lineinfile's, below.)
-- name: Restore repo changes
+- name: Restore xrandr-invert-colors Makefile changes
   shell: /usr/bin/git checkout -- Makefile
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
+  when: makefile_f.stat.exists
+
+# ***
 
 - name: Clone xrandr-invert-colors repo
   git:
