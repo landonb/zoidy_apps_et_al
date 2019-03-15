@@ -4,7 +4,7 @@
 
 - set_fact:
     PASS_TOMB_VER: "1.1"
-    
+
 - set_fact:
     PASS_TOMB_NOM: "pass-tomb-{{ PASS_TOMB_VER }}"
 
@@ -31,8 +31,67 @@
 
 # ***
 
+# 2019-03-14: (lb): I had been grabbing keys from the MIT keyserver, e.g.,
+#
+#     command: "gpg --keyserver pgp.mit.edu --recv-keys 06A26D531D56C42D66805049C5469996F0DF68EC"
+#
+# but now my machines cannot reach the MIT keyserver.
+#
+# Some posts online suggest switching from pgp.mit.edu to pool.sks-keyservers.net,
+# the SKS key server pool.
+#
+# I cannot verify the trustworthiness of that keyserver other than a few posts I found, like:
+#
+#   - "Why am I unable to fetch PGP keys from commandline?"
+#
+#     https://superuser.com/questions/1250681/why-am-i-unable-to-fetch-pgp-keys-from-commandline
+#
+#     Suggestion:
+#
+#        try one of the following keyservers:
+#
+#        hkp://pgp.mit.edu:80
+#        hkps://pgp.mit.edu
+#        hkp://p80.pool.sks-keyservers.net:80
+#        hkps://hkps.pool.sks-keyservers.net
+#
+#   - Or, "pgp.mit.edu is down, this should prevent that (#156)"
+#
+#     https://github.com/nginxinc/docker-nginx/issues/156
+#
+#     Suggestion:
+#
+#       I would recommend changing from pgp.mit.edu, to pool.sks-keyservers.net,
+#       which is the SKS key server pool that pgp.mit.edu is a part of. This will
+#       generally be more reliable since any member servers (including pgp.mit.edu)
+#       could answer the key request.
+#
+#   - Or, "OpenPGP keyserver URLs: what are typical or meaningful use-cases?"
+#
+#     https://security.stackexchange.com/questions/48147/
+#       openpgp-keyserver-urls-what-are-typical-or-meaningful-use-cases
+#
+#     Suggestion (nothing new at this point):
+#
+#       Even better, use the SKS key server pool MIT is participating in:
+#       hkp://pool.sks-keyservers.net. ... Using the pool is recommended,
+#       as it contains all relevant key servers and increases availability.
+#
+# You can find a list of the different key pools on the parent domain:
+#
+#   - "Overview of the pools"
+#
+#     https://sks-keyservers.net/overview-of-pools.php
+#
+# However, the web server at the same domain as the keyserver does not instill
+# any trust in me -- in face the opposite -- because it's the exposed, broken
+# remnants of a neglected web app that still sorta serves a few research
+# students' bio pages.
+#
+#   http://pool.sks-keyservers.net/
+
 - name: "Import roddhjav's key"
-  command: "gpg --keyserver pgp.mit.edu --recv-keys 06A26D531D56C42D66805049C5469996F0DF68EC"
+  command: "gpg --keyserver pool.sks-keyservers.net --recv-keys 06A26D531D56C42D66805049C5469996F0DF68EC"
 
 - name: "Verify armor"
   command: "gpg --verify {{ PASS_TOMB_TAR }}.asc"
