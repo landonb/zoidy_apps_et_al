@@ -1,41 +1,19 @@
 ---
 
-- set_fact:
-    # Use user's directory of development sources; or download to ~/.downloads.
-    zoidy_hfs_dls_dir: "{{ zoidy_homefries_poutine_dev_dir and zoidy_homefries_poutine_dev_dir or zoidy_homefries_downloads_dir}}"
-
-# ***
-
 - name: "reputed-tiler∷ fetch repo"
   git:
     repo: "ssh://git@github.com/landonb/reputed-tiler.git"
-    dest: "{{ zoidy_hfs_dls_dir }}/reputed-tiler"
-#
-  when: False
+    dest: "{{ zoidy_homefries_downloads_dir }}/reputed-tiler"
 
-# ***
-
-- name: "reputed-tiler∷ install app (for normally)"
+- name: "reputed-tiler∷ install app"
   make:
     target: install
-    chdir: "{{ zoidy_hfs_dls_dir }}/reputed-tiler"
+    chdir: "{{ zoidy_homefries_downloads_dir }}/reputed-tiler"
   args:
     params:
       PREFIX: "{{ ansible_env.HOME }}/.local"
-  when: not zoidy_homefries_poutine_dev_dir
 
-- name: "reputed-tiler∷ link app (for development)"
-  make:
-    target: link
-    chdir: "{{ zoidy_hfs_dls_dir }}/reputed-tiler"
-  args:
-    params:
-      PREFIX: "{{ ansible_env.HOME }}/.local"
-  when: "zoidy_homefries_poutine_dev_dir != ''"
-
-# ***
-
-- name: Load role to Configure Reputed Tiler keybindings
+- name: "reputed-tiler∷ configure keybindings"
   include_role:
     name: zoidy_home-fries
     tasks_from: cli-reptile-keybindings
