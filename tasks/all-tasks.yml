@@ -122,7 +122,7 @@
     apply:
       tags:
         - app-vim-brams
-  tags: app-vim-brams, dubs-vim
+  tags: app-vim-brams
 
 - name: Load role to Download, Get Setup, and Install VirtualBox
   include_role:
@@ -200,7 +200,7 @@
     apply:
       tags:
         - cli-ripgrep
-  tags: cli-ripgrep, dubs-vim
+  tags: cli-ripgrep
 
 - name: Install Screen Color Inverter, i.e., Alert! Mechanism
   include_role:
