@@ -41,8 +41,6 @@
 
 - name: Clone direnv repo
   git:
-# FIXME/2019-01-02: Add upstream direnv to list of repos to check for new releases.
-# See ripgrep-install.yml and other tasks with similar needs.
     repo: "ssh://git@github.com/landonb/direnv.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/direnv"
     # [lb]: 2019-01-02: My working branch fixes an issue...
@@ -51,12 +49,15 @@
 # ***
 
 # E.g., `make`
-- name: Build direnv
+- name: Build direnv (make)
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_env.HOME }}/.gopath"
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/direnv"
 
 # E.g., `DESTDIR=${HOME}/.local make install`
-- name: Build direnv
+- name: Build direnv (make install)
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/direnv"
     target: install
