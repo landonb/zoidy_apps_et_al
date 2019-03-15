@@ -5,14 +5,14 @@
 # I'm not sure if this funny business is still necessary.
 
 - set_fact:
-    gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/derekparker"
+    gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/go-delve"
 
 - name: Ensure Delve Go directory exists
   file: path="{{ gopath_src_delve }}" state=directory
 
 - name: Clone delve repo
   git:
-    repo: "ssh://git@github.com/derekparker/delve.git"
+    repo: "ssh://git@github.com/go-delve/delve.git"
     dest: "{{ gopath_src_delve }}/delve"
 
 - name: Install delve
