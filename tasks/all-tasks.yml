@@ -145,6 +145,15 @@
         - cli-direnv
   tags: cli-direnv
 
+- name: Install Latest gocryptfs release
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-gocryptfs
+    apply:
+      tags:
+        - cli-gocryptfs
+  tags: cli-gocryptfs
+
 - name: OptiPNG Installer
   include_role:
     name: zoidy_home-fries
