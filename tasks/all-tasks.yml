@@ -124,17 +124,6 @@
         - app-vim-brams
   tags: app-vim-brams
 
-- name: Load role to Download, Get Setup, and Install VirtualBox
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-virtualbox
-    apply:
-      tags:
-        - app-virtualbox
-  vars:
-    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
-  tags: app-virtualbox
-
 # ************************************************************************
 # *** Clis. ***
 
