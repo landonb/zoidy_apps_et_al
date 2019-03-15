@@ -5,6 +5,13 @@
     node_npm_list:
       - mocha
 
+- name: Ensure npm installed
+  become: true
+  apt: name={{ item }}
+  loop:
+    - nodejs
+    - npm
+
 - name: Install Node NPM projects
   npm:
     path: "{{ zoidy_homefries_user_local_dir }}"
