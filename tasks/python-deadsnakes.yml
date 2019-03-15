@@ -7,11 +7,11 @@
   set_fact:
     # FIXME/2019-02-16: (lb): Excluding 3.6 because default on bionic,
     #   but how should this be handled more universally?
+    # 2019-03-14: Or should we just install it anyway?
     python_versions:
-      - 2.7
       - 3.4
       - 3.5
-      #- 3.6
+      - 3.6
       - 3.7
 
 - name: Add "deadsnakes" repo
