@@ -1,0 +1,102 @@
+---
+
+# MKPATH: ~/.ssh/
+
+- name: Ensure User Home SSH Directory Exists
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/"
+    state: directory
+
+# RMLINKS: ~/.ssh/*
+
+- name: Remove symlinks from ~/.ssh/
+  command: "find . -maxdepth 1 -type l -exec /bin/rm {} +"
+  args:
+    chdir: "{{ ansible_env.HOME }}/.ssh/"
+
+# MKLINKS: ~/.ssh/id_*
+
+- name: Replace with symlinks from private repo .ssh/
+  shell: >
+    find {{ zoidy_homefries_ssh_root_dir }}/.ssh/ -maxdepth 1 -type f \
+      -iname "id_*" -exec /bin/ln -s {} \;
+  args:
+    chdir: "{{ ansible_env.HOME }}/.ssh/"
+
+# MKLINK: ~/.ssh/config
+
+- name: Symlink .ssh config
+  file:
+    src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
+    dest: "{{ ansible_env.HOME }}/.ssh/config"
+    state: link
+
+# So that ~/.ssh/authorized_keys remains if the fuse is unmounted,
+# copy it (it contains public keys, so nothing to worry about).
+
+- name: Stat SSH host-specific authorized_keys
+  stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_hostname }}"
+  register: ssh_authorized_keys_host_f
+
+- name: Copy GitHub SSH key (private)
+  copy:
+    src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_hostname }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+  when: ssh_authorized_keys_host_f.stat.exists
+
+# Skip ~/.ssh/known_hosts, which SSH will manage and we don't need to store.
+
+# ***
+
+# Note the git does not store permissions.
+# (Although some 3rd party tools do, e.g.,
+#   git-cache-meta
+#     https://gist.github.com/andris9/1978266
+#   metastore
+#     https://david.hardeman.nu/software.php#metastore
+# ) But it's just as easy to fix them here, while we're at it.
+
+- name: Ensure proper permissions for SSH on .ssh files
+  # NOTE: Because wildcard*, use shell module, not command.
+  shell: "chmod 400 {{ ansible_env.HOME }}/.ssh/*"
+
+- name: Ensure proper permissions for SSH on .ssh public keys
+  shell: "chmod 440 {{ ansible_env.HOME }}/.ssh/*.pub"
+
+- name: Ensure proper permissions for SSH on .ssh public keys
+  command: "chmod 600 authorized_keys config environment known_hosts"
+  args:
+    chdir: "{{ ansible_env.HOME }}/.ssh/"
+
+- name: Ensure proper permissions for SSH on home .ssh
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    mode: 2700
+
+- name: Ensure proper permissions for SSH on user home
+  file:
+    path: "{{ ansible_env.HOME }}"
+    #state: touch
+    mode: "g-w,o-w"
+
+# ***
+
+- name: List identity fingerprints currently being managed
+  shell: ssh-add -l | grep "^The agent has no identities.$"
+  register: ssh_add_l
+  ignore_errors: yes
+
+- name: Restart SSH agent and point at new stuff
+  command: ssh-agent -k
+  when: ssh_add_l.rc == 0
+
+- name: Kick the SSH agent
+  shell: >
+    source "{{ ansible_env.HOME }}/.fries/lib/ssh_util.sh"
+    SSH_SECRETS="{{ zoidy_homefries_ssh_root_dir }}/.cheat" ssh_agent_kick
+  when: ssh_add_l.rc == 0
+
+# Verify by connecting to a server, e.g., try connecting to GitHub:
+#  $ ssh -T git@github.com
+#  Hi user! You've successfully authenticated, but GitHub does not provide shell access.
+
