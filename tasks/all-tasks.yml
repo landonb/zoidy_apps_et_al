@@ -424,7 +424,10 @@
     apply:
       tags:
         - sec-pass-plug-tomb
-  tags: sec-pass-plug-tomb
+  tags:
+    - sec-pass-plug-tomb
+    # Opt-in task. (Easier to `tomb` than to `pass open` (also `pass close` broken).)
+    - never
 
 # ************************************************************************
 # *** Vids. ***
