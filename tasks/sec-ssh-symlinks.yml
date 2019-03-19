@@ -90,15 +90,22 @@
   with_items: "{{ pub_files.stdout_lines }}"
 
 - name: Ensure proper permissions for SSH on .ssh public meta
-  file:
-    path: "{{ item }}"
-    mode: 0600
-  # (lb): So, what, args: chdir: does not work. Huh.
+  # Two reasons not to use `file` module and `mode` option-
+  # - `args: chdir:` is not a thing, so need full paths;
+  # - file fails on changed `state: absent`, i.e., no way
+  #   to handle missing files except failing.
+  #   file:
+  #     path: "{{ item }}"
+  #     mode: 0600
+  shell: '[[ -f "{{ item }}" ]] && chmod 600 "{{ item }}" || true'
+  args:
+    chdir: "{{ ansible_env.HOME }}/.ssh"
+    executable: /bin/bash
   loop:
-    - "{{ ansible_env.HOME }}/.ssh/authorized_keys"
-    - "{{ ansible_env.HOME }}/.ssh/config"
-    - "{{ ansible_env.HOME }}/.ssh/environment"
-    - "{{ ansible_env.HOME }}/.ssh/known_hosts"
+    - "authorized_keys"
+    - "config"
+    - "environment"
+    - "known_hosts"
 
 - name: Ensure proper permissions for SSH on home .ssh
   file:
