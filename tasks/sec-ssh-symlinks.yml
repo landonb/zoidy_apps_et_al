@@ -26,7 +26,7 @@
 
 # MKLINK: ~/.ssh/config
 
-- name: Stat SSH config
+- name: Stat SSH config (setup SSH)
   stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
   register: ssh_config_f
 
