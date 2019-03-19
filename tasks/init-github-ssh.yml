@@ -88,7 +88,6 @@
 # It's easier to use the actual command built to produce known_hosts entries,
 # ssh-keyscan.
 - name: Add GitHub to known_hosts, perhaps
-  tags: always
   shell: |
     ssh-keyscan github.com >> "{{ ansible_env.HOME }}/.ssh/known_hosts"
   args:
