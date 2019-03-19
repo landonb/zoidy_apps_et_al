@@ -52,24 +52,6 @@
         - app-gimp-docs
   tags: app-gimp-docs
 
-- name: Load role to Install GIMP Export Layers Plug-in
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-gimp-plugin-export-layers
-    apply:
-      tags:
-        - app-gimp-plugin-export-layers
-  tags: app-gimp-plugin-export-layers
-
-- name: Load role to Install GIMP Wavelet Decompose Plug-in
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-gimp-plugin-wavelet-decompose
-    apply:
-      tags:
-        - app-gimp-plugin-wavelet-decompose
-  tags: app-gimp-plugin-wavelet-decompose
-
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_home-fries
@@ -117,35 +99,8 @@
   # 2019-03-05 13:32: Disabled. Snap installation works great.
   when: False
 
-- name: Load role to Clone, Build, and Install Latest Vim
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-vim-brams
-    apply:
-      tags:
-        - app-vim-brams
-  tags: app-vim-brams
-
 # ************************************************************************
 # *** Clis. ***
-
-- name: CLOC Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-cloc
-    apply:
-      tags:
-        - cli-cloc
-  tags: cli-cloc
-
-- name: Install Direnv Development Utility
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-direnv
-    apply:
-      tags:
-        - cli-direnv
-  tags: cli-direnv
 
 - name: Install Latest gocryptfs release
   include_role:
@@ -165,24 +120,6 @@
         - cli-optipng
   tags: cli-optipng
 
-- name: parT Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-parT
-    apply:
-      tags:
-        - cli-parT
-  tags: cli-parT
-
-- name: Load role to Install reptile
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-reptile
-    apply:
-      tags:
-        - cli-reptile
-  tags: cli-reptile
-
 - name: Load role to Install reptile keybindings
   include_role:
     name: zoidy_home-fries
@@ -201,15 +138,6 @@
       tags:
         - cli-ripgrep
   tags: cli-ripgrep
-
-- name: Install Screen Color Inverter, i.e., Alert! Mechanism
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: cli-xrandr-invert-colors
-    apply:
-      tags:
-        - cli-xrandr-invert-colors
-  tags: cli-xrandr-invert-colors
 
 # ************************************************************************
 # *** Dmns. ***
@@ -246,15 +174,6 @@
 
 # ************************************************************************
 # *** Glng apps. ***
-
-- name: Load role to Install Delve
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: golang-delve-debugger
-    apply:
-      tags:
-        - golang-delve-debugger
-  tags: golang-delve-debugger
 
 - name: Load role to Install Go Lang Projects
   include_role:
@@ -352,18 +271,6 @@
   tags: python-sources
 
 # ************************************************************************
-# *** Pycs. ***
-
-- name: Python Chjson Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: python-chjson
-    apply:
-      tags:
-        - python-chjson
-  tags: python-chjson
-
-# ************************************************************************
 # *** Refs. ***
 
 - name: Webster Dictionary Fetcher
@@ -428,18 +335,6 @@
     - sec-pass-plug-tomb
     # Opt-in task. (Easier to `tomb` than to `pass open` (also `pass close` broken).)
     - never
-
-# ************************************************************************
-# *** Vids. ***
-
-- name: ttygif Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: vid-ttygif
-    apply:
-      tags:
-        - vid-ttygif
-  tags: vid-ttygif
 
 # ************************************************************************
 # *** Virt. ***

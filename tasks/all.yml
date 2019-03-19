@@ -35,25 +35,6 @@
 
 # ***
 
-- name: SSH directory symlink populator
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: sec-ssh-symlinks
-    apply:
-      tags:
-        - sec-ssh-symlinks
-  tags: sec-ssh-symlinks, always
-  when: "{{ zoidy_homefries_ssh_root_dir != '' }}"
-
-- name: Run tasks to verify or configure GitHub SSH
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: init-github-ssh
-    apply:
-      tags:
-        - init-github-ssh
-  tags: init-github-ssh, always
-
 - name: Run tasks to ensure Go is good to go
   include_role:
     name: zoidy_home-fries
@@ -62,6 +43,51 @@
       tags:
         - init-go-lang
   tags: init-go-lang, always
+
+- name: Run tasks related to GitHub SSH
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: all-github
+    apply:
+      tags:
+        - all-github
+        # If ensuring SSH ready.
+        - sec-ssh-symlinks
+        # If ensuring GH SSH present.
+        - init-github-ssh
+        # If running any task expecting GH key.
+        - app-gimp-plugin-export-layers
+        - app-gimp-plugin-wavelet-decompose
+        - app-vim-brams
+        - cli-cloc
+        - cli-direnv
+        - cli-parT
+        - cli-reptile
+        - cli-xrandr-invert-colors
+        - golang-delve-debugger
+        - python-chjson
+        - vid-ttygif
+  # We could simplify this and specify not all the tags, e.g.,
+  #   tags: all-github, always
+  # but then the task name will always appear in any play.
+  tags:
+    - all-github
+    # If ensuring SSH ready.
+    - sec-ssh-symlinks
+    # If ensuring GH SSH present.
+    - init-github-ssh
+    # If running any task expecting GH key.
+    - app-gimp-plugin-export-layers
+    - app-gimp-plugin-wavelet-decompose
+    - app-vim-brams
+    - cli-cloc
+    - cli-direnv
+    - cli-parT
+    - cli-reptile
+    - cli-xrandr-invert-colors
+    - golang-delve-debugger
+    - python-chjson
+    - vid-ttygif
 
 - name: Run all the tasks to do all the things
   include_role:
