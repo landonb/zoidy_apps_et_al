@@ -25,15 +25,20 @@
 
 # *** Alert user if newer version.
 
-# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
+# NOTE: 2019-03-19: Surprisingly, fetching golang archive can be a while, e.g., 17.09s.
+# So skip if already downloaded.
+- name: Stat golang release archive
+  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_TAR }}"
+  register: golang_tar_f
 
-# *** Do the work.
+# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
 
 - name: Fetch latest golang release
   get_url:
     url: "{{ GOLANG_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
     checksum: "sha256:{{ GOLANG_XSUM }}"
+  when: not golang_tar_f.stat.exists
 
 # The archive is contained within a directory not named with the version,
 # i.e., simply 'go', so use the full archive name.
