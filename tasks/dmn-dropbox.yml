@@ -73,5 +73,5 @@
     mode: 0775
 
 - name: Run Dropbox, after Downloading Proprietary Daemon
-  debug: msg="You have to run Dropbox manually to install the proproetary daemon∷ {{ DROPBOX_MANUALLY }}"
+  debug: msg="YOU– Run Dropbox manually (from terminal with display access) to install proproetary daemon∷ {{ DROPBOX_MANUALLY }}"
 
