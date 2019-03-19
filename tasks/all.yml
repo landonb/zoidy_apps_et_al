@@ -48,25 +48,6 @@
   include_role:
     name: zoidy_home-fries
     tasks_from: all-github
-    apply:
-      tags:
-        - all-github
-        # If ensuring SSH ready.
-        - sec-ssh-symlinks
-        # If ensuring GH SSH present.
-        - init-github-ssh
-        # If running any task expecting GH key.
-        - app-gimp-plugin-export-layers
-        - app-gimp-plugin-wavelet-decompose
-        - app-vim-brams
-        - cli-cloc
-        - cli-direnv
-        - cli-parT
-        - cli-reptile
-        - cli-xrandr-invert-colors
-        - golang-delve-debugger
-        - python-chjson
-        - vid-ttygif
   # We could simplify this and specify not all the tags, e.g.,
   #   tags: all-github, always
   # but then the task name will always appear in any play.
