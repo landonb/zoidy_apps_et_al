@@ -21,9 +21,11 @@
   stat: path="{{ zoidy_homefries_downloads_dir }}/{{ PENCIL_DEB }}"
   register: local_bin_pencil_f
 
-- debug: msg="{{ local_bin_pencil_f }}"
+# If you're curious about the few dozen of so stat attributes, uncomment:
+#  - debug: msg="{{ local_bin_pencil_f }}"
 
-- debug: msg="{{ PENCIL_URI }}"
+# E.g., http://pencil.evolus.vn/dl/V3.0.4/Pencil_3.0.4_amd64.deb
+#  - debug: msg="{{ PENCIL_URI }}"
 
 - name: Fetch Pencil Debian package
   get_url:
