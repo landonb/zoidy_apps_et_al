@@ -77,7 +77,7 @@
 - name: Ensure proper permissions for SSH on home .ssh
   file:
     path: "{{ ansible_env.HOME }}/.ssh"
-    mode: 2750
+    mode: 02750
 
 - name: Ensure proper permissions for SSH on user home
   file:
