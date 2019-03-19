@@ -9,7 +9,7 @@
     repo: ppa:pmjdebruijn/darktable-release
     codename: "{{ zoidy_distrib_codename }}"
 
-- name: Run command "apt-get update"
+- name: Run command "apt-get update" (app-darktable)
   become: true
   apt:
     update_cache: yes

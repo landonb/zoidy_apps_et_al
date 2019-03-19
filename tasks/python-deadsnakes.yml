@@ -21,7 +21,7 @@
     repo: ppa:deadsnakes/ppa
     codename: "{{ zoidy_distrib_codename }}"
 
-- name: Run command "apt-get update"
+- name: Run command "apt-get update" (python-deadsnakes)
   become: true
   apt:
     update_cache: yes

@@ -7,7 +7,7 @@
 
 # ***
 
-- name: Run command "apt-get update"
+- name: Run command "apt-get update" (app-gimp-plugin-wavelet-decompose)
   become: true
   apt:
     update_cache: yes

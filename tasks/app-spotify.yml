@@ -35,7 +35,7 @@
     ## 2019-03-05: Disable Spotify-from-Deb!
     #state: absent
 
-- name: Run command "apt-get update"
+- name: Run command "apt-get update" (app-spotify)
   become: true
   apt:
     update_cache: yes
