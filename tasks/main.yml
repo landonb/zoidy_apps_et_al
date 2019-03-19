@@ -5,5 +5,66 @@
   include_role:
     name: zoidy_home-fries
     tasks_from: all
-  tags: always
+  # (lb): Yes, this tags list could be removed, e.g.,
+  #
+  #   tags: always
+  #
+  # but then you always see this task run! (and any
+  # task therein that is also tagged always). So best
+  # to add a fragile list of all tasks in the role,
+  # and then the playbook run list is much cleaner
+  # (i.e. when just running specific --tags).
+  tags:
+    # *** From all.yml:
+    - init-go-lang
+    - all-github
+    - all-tasks
+    # *** From all-github.yml:
+    - sec-ssh-symlinks
+    - init-github-ssh
+    - app-gimp-plugin-export-layers
+    - app-gimp-plugin-wavelet-decompose
+    - app-vim-brams
+    - cli-cloc
+    - cli-direnv
+    - cli-parT
+    - cli-reptile
+    - cli-xrandr-invert-colors
+    - golang-delve-debugger
+    - python-chjson
+    - vid-ttygif
+    # *** From all-tasks.yml:
+    - app-chrome
+    - app-darktable
+    - app-digikam
+    - app-firefox-fix_scroll
+    - app-gimp-docs
+    - app-google-earth
+    - app-openjump
+    - app-opera
+    - app-pencil-project-evolus
+    - app-spotify
+    - cli-gocryptfs
+    - cli-optipng
+    - cli-reptile-keybindings, reset-keybindings
+    - cli-ripgrep
+    - dmn-dropbox
+    - font-hack, dubs-vim
+    - font-mania
+    - golang-go-get-packages
+    - hardware-android-studio
+    - hardware-arduino
+    - node-npm-packages
+    - node-nvm-version-mgr
+    - node-nvm-versions
+    - python-deadsnakes
+    - python-pip-packages
+    - python-sources
+    - ref-dictionary
+    - ruby-install-base
+    - ruby-install-chruby
+    - ruby-install-versions
+    - ruby-rubygems-packages
+    # NEVER: sec-pass-plug-tomb
+    - virt-vagrant
 
