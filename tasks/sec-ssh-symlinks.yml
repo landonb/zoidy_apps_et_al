@@ -80,6 +80,7 @@
 
 - name: Find all SSH public keys on remote host
   shell: /bin/ls {{ ansible_env.HOME }}/.ssh/*.pub
+  ignore_errors: yes
   register: pub_files
 
 - name: Ensure proper permissions for SSH on .ssh public keys
