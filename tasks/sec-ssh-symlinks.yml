@@ -62,17 +62,42 @@
 #     https://david.hardeman.nu/software.php#metastore
 # ) But it's just as easy to fix them here, while we're at it.
 
+# Note that there's a with_fileglob: option, e.g.,
+#   with_fileglob:
+#     - "{{ ansible_env.HOME }}/.ssh/*.pub"
+# but it only works on the local host, unfortch.
+# But we can work around with a prior lookup.
+
+- name: Find all SSH files on remote host
+  shell: /bin/ls {{ ansible_env.HOME }}/.ssh/*
+  register: ssh_files
+
 - name: Ensure proper permissions for SSH on .ssh files
-  # NOTE: Because wildcard*, use shell module, not command.
-  shell: "chmod 400 {{ ansible_env.HOME }}/.ssh/*"
+  file:
+    path: "{{ item }}"
+    mode: 0400
+  with_items: "{{ ssh_files.stdout_lines }}"
+
+- name: Find all SSH public keys on remote host
+  shell: /bin/ls {{ ansible_env.HOME }}/.ssh/*.pub
+  register: pub_files
 
 - name: Ensure proper permissions for SSH on .ssh public keys
-  shell: "chmod 440 {{ ansible_env.HOME }}/.ssh/*.pub"
+  file:
+    path: "{{ item }}"
+    mode: 0440
+  with_items: "{{ pub_files.stdout_lines }}"
 
-- name: Ensure proper permissions for SSH on .ssh public keys
-  command: "chmod 600 authorized_keys config environment known_hosts"
-  args:
-    chdir: "{{ ansible_env.HOME }}/.ssh/"
+- name: Ensure proper permissions for SSH on .ssh public meta
+  file:
+    path: "{{ item }}"
+    mode: 0600
+  # (lb): So, what, args: chdir: does not work. Huh.
+  loop:
+    - "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    - "{{ ansible_env.HOME }}/.ssh/config"
+    - "{{ ansible_env.HOME }}/.ssh/environment"
+    - "{{ ansible_env.HOME }}/.ssh/known_hosts"
 
 - name: Ensure proper permissions for SSH on home .ssh
   file:
