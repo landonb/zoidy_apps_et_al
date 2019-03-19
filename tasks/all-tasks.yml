@@ -283,45 +283,6 @@
   tags: ref-dictionary
 
 # ************************************************************************
-# *** Rbys. ***
-
-- name: Ruby-Install Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: ruby-install-base
-    apply:
-      tags:
-        - ruby-install-base
-  tags: ruby-install-base
-
-- name: Ruby-Install Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: ruby-install-chruby
-    apply:
-      tags:
-        - ruby-install-chruby
-  tags: ruby-install-chruby
-
-- name: Ruby Gems Package Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: ruby-install-versions
-    apply:
-      tags:
-        - ruby-install-versions
-  tags: ruby-install-versions
-
-- name: Ruby Gems Package Installer
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: ruby-rubygems-packages
-    apply:
-      tags:
-        - ruby-rubygems-packages
-  tags: ruby-rubygems-packages
-
-# ************************************************************************
 # *** Secs. ***
 
 - name: Pass Store Tomb Plugin Extenstion Installer
