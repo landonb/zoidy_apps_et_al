@@ -43,6 +43,7 @@
 
 # ***
 
+# PROFILING: 2019-03-19: Task took: 22.51s (currently penutimate slowest task).
 - name: Fetch font archives
   get_url:
     url: "{{ item.url_base }}/{{ item.zip_base }}.zip"

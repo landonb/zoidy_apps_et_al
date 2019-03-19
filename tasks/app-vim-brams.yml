@@ -56,6 +56,7 @@
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
 
+# PROFILING: 2019-03-19: Task took: 24.74s (currently slowest task in ZP-HF).
 - name: Build Vim
   # -j 3 to use 3 CPU cores to build.
   shell: make -j 3
