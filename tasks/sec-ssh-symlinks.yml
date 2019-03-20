@@ -26,16 +26,20 @@
 
 # MKLINK: ~/.ssh/config
 
-- name: Stat SSH config (setup SSH)
+- name: Check file private SSH config
   stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
-  register: ssh_config_f
+  register: ssh_config_src_f
+
+- name: Check file user home SSH config
+  stat: path="{{ ansible_env.HOME }}/.ssh/config"
+  register: ssh_config_dest_f
 
 - name: Symlink .ssh config
   file:
     src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
     dest: "{{ ansible_env.HOME }}/.ssh/config"
     state: link
-  when: ssh_config_f.stat.exists
+  when: ssh_config_src_f.stat.exists and not ssh_config_dest_f.stat.exists
 
 # So that ~/.ssh/authorized_keys remains if the fuse is unmounted,
 # copy it (it contains public keys, so nothing to worry about).
