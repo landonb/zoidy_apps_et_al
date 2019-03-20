@@ -2,7 +2,7 @@
 
 # *** Verify/Setup ~/.ssh/config
 
-- name: Stat SSH config (init GH key)
+- name: Check SSH config or create fresh, for GitHub key
   stat: path="{{ ansible_env.HOME }}/.ssh/config"
   register: ssh_config_f
   tags: always
