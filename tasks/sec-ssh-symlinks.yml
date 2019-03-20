@@ -115,7 +115,6 @@
 - name: Ensure proper permissions for SSH on user home
   file:
     path: "{{ ansible_env.HOME }}"
-    #state: touch
     mode: "g-w,o-w"
 
 # ***
