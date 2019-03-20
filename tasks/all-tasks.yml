@@ -205,6 +205,17 @@
         - hardware-arduino
   tags: hardware-arduino
 
+- name: “Realtek 8812AU/8821AU USB WiFi driver for AC1200 (801.11ac) Wireless Dual-Band USB Adapter” Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: hardware-ac1200-udb-wi-fi
+    apply:
+      tags:
+        - hardware-ac1200-udb-wi-fi
+  tags:
+    - never
+    - hardware-ac1200-udb-wi-fi
+
 # ************************************************************************
 # *** Npms. ***
 

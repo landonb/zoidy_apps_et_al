@@ -1,0 +1,56 @@
+---
+
+# Refs:
+#
+#   https://ubuntuforums.org/showthread.php?t=2346803
+#
+#   http://cfyves.com/2015/03/17/how-to-install-d-link-dwa-182-wireless-ac1200-dual-band-usb-adapter-on-linux-ubuntu/
+#
+#   https://github.com/abperiasamy/rtl8812AU_8821AU_linux
+
+# PROFILING: 2019-03-19: Task took: 42.34s.
+- name: 'Install distro package(s)∷ ‘rtl8812au-dkms’'
+  become: true
+  apt: name=rtl8812au-dkms
+
+- name: Clone GitHub project∷ ‘rtl8812AU_8821AU_linux’
+  git:
+    repo: "ssh://git@github.com/abperiasamy/rtl8812AU_8821AU_linux.git"
+    dest: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+
+# PROFILING: 2019-03-19: Task took: 38.82s.
+- name: Build Wi-Fi driver∷ ‘make clean’
+  make:
+    target: clean
+    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+
+- name: Build Wi-Fi driver∷ ‘make’
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+
+- name: Uninstall Wi-Fi driver∷ ‘sudo make install’
+  become: yes
+  make:
+    target: uninstall
+    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+
+- name: Install Wi-Fi driver∷ ‘sudo make install’
+  become: yes
+  make:
+    target: install
+    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+
+# 2019-03-19: (lb): In docs, I saw:
+#
+#   sudo modprobe -a rtl8812au
+#
+# but this failed for me:
+#
+#   An exception occurred during task execution.
+#   To see the full traceback, use -vvv.
+#   The error was: IOError: [Errno 2] No such file or directory:
+#     '/lib/modules/4.15.0-20-generic\n/modules.builtin'
+#
+# but no worries, the driver worked for me as soon as I plugged
+# in the USB Wi-Fi device.
+
