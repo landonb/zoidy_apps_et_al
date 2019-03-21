@@ -24,6 +24,12 @@
     target: clean
     chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
 
+# 2019-03-21: NOTE: (lb): On my laptop, which doesn't use this driver,
+# I had a line commented out in the Makefile. I've since run this task
+# without making the modification, so I doubt it's necessary.
+# In `rtl8812AU_8821AU_linux/Makefile` at line 5, nix `extra`:
+#   #EXTRA_CFLAGS += -Wextra
+
 - name: Build Wi-Fi driver∷ ‘make’
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
