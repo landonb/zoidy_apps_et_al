@@ -34,7 +34,7 @@
   make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
 
-- name: Uninstall Wi-Fi driver∷ ‘sudo make install’
+- name: Uninstall Wi-Fi driver∷ ‘sudo make uninstall’
   become: yes
   make:
     target: uninstall
