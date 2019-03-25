@@ -27,3 +27,6 @@ zoidy_homefries_postfix_fqdn: ""
 zoidy_homefries_postfix_user: ""
 zoidy_homefries_postfix_pass: ""
 
+# YOU: Set this to your real email address, e.g., user@gmail.com.
+zoidy_homefries_email_forward: ""
+
