@@ -46,17 +46,11 @@
     target: install
     chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
 
-# 2019-03-19: (lb): In docs, I saw:
-#
-#   sudo modprobe -a rtl8812au
-#
-# but this failed for me:
-#
-#   An exception occurred during task execution.
-#   To see the full traceback, use -vvv.
-#   The error was: IOError: [Errno 2] No such file or directory:
-#     '/lib/modules/4.15.0-20-generic\n/modules.builtin'
-#
-# but no worries, the driver worked for me as soon as I plugged
-# in the USB Wi-Fi device.
+# E.g., `sudo modprobe -a rtl8812au`
+# 2019-03-25: (lb): This failed for me when I ran it manually,
+# but that could have been because the device was not inserted?
+- name: Add the rtl8812au module
+  modprobe:
+    name: rtl8812au
+    state: present
 
