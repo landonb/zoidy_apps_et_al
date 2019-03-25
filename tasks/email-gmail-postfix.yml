@@ -57,6 +57,7 @@
               line="[smtp.gmail.com]:587 {{ zoidy_homefries_postfix_user }}@gmail.com:{{ zoidy_homefries_postfix_pass }}"
               state=present
               create=yes
+  when: zoidy_homefries_postfix_pass != ''
 
 - name: Create the Postfix hash db file
   become: true
