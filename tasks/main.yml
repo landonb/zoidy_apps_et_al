@@ -49,6 +49,7 @@
     - cli-reptile-keybindings, reset-keybindings
     - cli-ripgrep
     - dmn-dropbox
+    - email-gmail-postfix
     - font-hack, dubs-vim
     - font-mania
     - golang-go-get-packages

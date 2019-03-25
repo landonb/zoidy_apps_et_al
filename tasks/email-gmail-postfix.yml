@@ -1,0 +1,175 @@
+---
+
+# ***
+
+# NOTE: (lb): postfix already installed, so not necessary to run these apt tasks.
+# (I think I was prompted during initial Linux Mint installation process.)
+# You can see the postfix defaults you choose when it was installed using:
+#   debconf-show postfix
+
+# I.e., debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
+- name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘mailname’"
+  debconf:
+    name: postfix
+    question: postfix/mailname
+    value: "{{ zoidy_homefries_postfix_fqdn }}"
+    vtype: string
+  when: False
+
+# I.e., debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+- name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘main_mailer_type’"
+  debconf:
+    name: postfix
+    question: postfix/main_mailer_type
+    value: Internet Site
+    vtype: string
+  when: False
+
+- name: Install Postfix and related packages
+  become: true
+  apt: name={{ item }}
+  loop:
+    - libsasl2-modules
+    - postfix
+    # (lb): Not sure if we need; found to be already installed on my machine.
+    # - ca-certificates
+    # - libsasl2-2
+    # (lb): Not sure if we need; not already installed on my machine.
+    # - mailutils
+  when: False
+
+# ***
+
+- name: "Configure the Postfix main.cf: Set ‘myhostname’"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^myhostname = "
+              line="myhostname = {{ zoidy_homefries_postfix_fqdn }}"
+              state=present
+  notify: Restart Postfix
+
+# ***
+
+- name: "Configure the Postfix sasl_passwd: Set TLS credentials"
+  become: true
+  lineinfile: dest=/etc/postfix/sasl/sasl_passwd
+              regexp="^\[smtp.gmail.com\]:587"
+              line="[smtp.gmail.com]:587 {{ zoidy_homefries_postfix_user }}@gmail.com:{{ zoidy_homefries_postfix_pass }}"
+              state=present
+              create=yes
+
+- name: Create the Postfix hash db file
+  become: true
+  command: postmap /etc/postfix/sasl/sasl_passwd
+
+- name: "Verify the Postfix hash db created/exists: run command"
+  command: "ls -la /etc/postfix/sasl/sasl_passwd.db"
+  register: ls_la_out
+
+- name: "Verify the Postfix hash db created/exists: echo results"
+  debug: var={{ item }}
+  with_items: ls_la_out.stdout_lines
+
+- name: "Ensure the Postfix hash db secure: chown and chmod ’em"
+  become: true
+  file:
+    path: "{{ item }}"
+    mode: 0600
+    owner: postfix
+    group: postfix
+  with_items:
+    - /etc/postfix/sasl/sasl_passwd
+    - /etc/postfix/sasl/sasl_passwd.db
+
+# ***
+
+- name: "Configure the Postfix main.cf: Set ‘relayhost’"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^relayhost = "
+              line="relayhost = [smtp.gmail.com]:587"
+              state=present
+  notify: Restart Postfix
+
+# ***
+
+- name: "Set main.cf: ‘smtp_sasl_auth_enable’: Enable SASL authentication"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_sasl_auth_enable = "
+              line="smtp_sasl_auth_enable = yes"
+              state=present
+  notify: Restart Postfix
+
+- name: "Set main.cf: ‘smtp_sasl_security_options’: Disallow methods that allow anonymous authentication"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_sasl_security_options = "
+              line="smtp_sasl_security_options = noanonymous"
+              state=present
+  notify: Restart Postfix
+
+- name: "Set main.cf: ‘smtp_sasl_password_maps’: Location of sasl_passwd"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_sasl_password_maps = "
+              line="smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd"
+              state=present
+  notify: Restart Postfix
+
+- name: "Set main.cf: ‘smtp_tls_security_level’: Enable STARTTLS encryption"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_tls_security_level = "
+              line="smtp_tls_security_level = encrypt"
+              state=present
+  notify: Restart Postfix
+
+- name: "Set main.cf: ‘smtp_tls_CAfile’: Location of CA certificates"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_tls_CAfile = "
+              line="smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
+              state=present
+  notify: Restart Postfix
+
+- name: "Set main.cf: ‘smtp_use_tls’: Use TLS"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^smtp_use_tls = "
+              line="smtp_use_tls = yes"
+              state=present
+  notify: Restart Postfix
+
+# ***
+
+- name: "Set main.cf: ‘message_size_limit’: Do not limit email size"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^message_size_limit = "
+              line="message_size_limit = 0"
+              state=present
+  notify: Restart Postfix
+  # 2019-03-24: (lb): Not sure I need this option. I used it years ago.
+  when: False
+
+# *** If you want more trace, add these:
+
+- name: "Set main.cf: ‘debug_peer_list’"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^debug_peer_list = "
+              line="debug_peer_list = smtp.gmail.com"
+              state=present
+  notify: Restart Postfix
+  when: False
+
+- name: "Set main.cf: ‘debug_peer_level’"
+  become: true
+  lineinfile: dest=/etc/postfix/main.cf
+              regexp="^debug_peer_level = "
+              line="debug_peer_level = 3"
+              state=present
+  notify: Restart Postfix
+  when: False
+

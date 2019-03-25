@@ -5,3 +5,11 @@
   become: yes
   shell: "fc-cache -fv"
 
+# E.g., `sudo systemctl restart postfix`.
+- name: Restart Postfix
+  become: yes
+  systemd:
+    name: postfix
+    state: restarted
+    enabled: yes
+

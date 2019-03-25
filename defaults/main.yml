@@ -20,3 +20,10 @@ zoidy_homefries_user_docs_dir: "{{ ansible_env.HOME }}/.local/docs"
 # (and you can mount/umount as necessary).
 zoidy_homefries_ssh_root_dir: ""
 
+# YOU: Set this FQDN is you want to configure Postfix to use Gmail.
+zoidy_homefries_postfix_fqdn: ""
+# REF: If you want to secure your variables, use Ansible Vault:
+#  https://docs.ansible.com/ansible/latest/user_guide/vault.html
+zoidy_homefries_postfix_user: ""
+zoidy_homefries_postfix_pass: ""
+

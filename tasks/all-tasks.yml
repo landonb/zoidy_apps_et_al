@@ -152,6 +152,19 @@
   tags: dmn-dropbox
 
 # ************************************************************************
+# *** Emai. ***
+
+- name: Gmail Email Postfix setup
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: email-gmail-postfix
+    apply:
+      tags:
+        - email-gmail-postfix
+  tags: email-gmail-postfix
+  when: zoidy_homefries_postfix_fqdn != ''
+
+# ************************************************************************
 # *** Font 'ackch. ***
 
 - name: Load role to Install Font “Hack”
