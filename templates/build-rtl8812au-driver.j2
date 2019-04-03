@@ -1,0 +1,34 @@
+#/bin/bash
+# vim:tw=0:ts=2:sw=2:et:norl:ft=bash
+
+build_driver () {
+  cd "{{ vendor_path }}"
+  make clean
+  make
+}
+
+install_driver () {
+  cd "{{ vendor_path }}"
+  sudo make uninstall
+  sudo make install
+}
+
+probe_driver () {
+  cd "{{ vendor_path }}"
+  sudo modprobe rtl8812au
+}
+
+# ***
+
+main () {
+  export -f build_driver
+  # (lb): This feels weird to me. How would this normally be accomplished?
+  # I want a process to always run on reboot, but part of the command should
+  # be done from normal user space. (Not really necessary, but seems proper.)
+  su {{ ansible_env.LOGNAME }} -c '/bin/bash -c build_driver'
+  install_driver
+  probe_driver
+}
+
+main "$@"
+

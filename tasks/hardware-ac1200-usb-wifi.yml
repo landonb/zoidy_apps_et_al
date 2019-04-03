@@ -85,10 +85,27 @@
   #       The error was: IOError: [Errno 2] No such file or directory:
   #         '/lib/modules/4.15.0-47-generic\n/modules.builtin'
   # Note the `\n` in the path. Weird.
-  when: False
+  when: False  # Anisble modprobe module broken?
 
 # In lieu of modprobe not working, use command.
 - name: Install Wi-Fi driver∷ ‘sudo make install’
   become: yes
   command: modprobe rtl8812au
+
+# To ensure that Wifi works after a reboot after, say, an unattended-upgrade,
+# always build the Wifi driver on boot.
+
+- name: Add Wifi driver build script to /root/bin
+  become: true
+  template:
+    src: build-rtl8812au-driver.j2
+    dest: /root/bin/build-rtl8812au-driver
+    mode: 0775
+
+- name: Schedule Wifi driver build on @reboot
+  become: yes
+  cron:
+    name: "build rtl8812au driver"
+    special_time: reboot
+    job: /root/bin/build-rtl8812au-driver
 
