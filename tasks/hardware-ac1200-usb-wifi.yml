@@ -107,5 +107,5 @@
   cron:
     name: "build rtl8812au driver"
     special_time: reboot
-    job: /root/bin/build-rtl8812au-driver
+    job: /bin/bash /root/bin/build-rtl8812au-driver
 
