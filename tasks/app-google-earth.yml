@@ -19,6 +19,12 @@
   become: yes
   apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ GOOGLE_EARTH_DEB }}"
+  # Note that once installed, the package will be updated normally,
+  # so if this task is run later, it'll barf with:
+  #   fatal: [thea]: FAILED! => {"changed": false, "msg": "A later version is already installed"}
+  # so just ignore errors. (A better solution would be to check the
+  # current version with dpkg, perhaps, but this work around is G.E.)
+  ignore_errors: yes
 
 # Fix the sources file. By default:
 #
