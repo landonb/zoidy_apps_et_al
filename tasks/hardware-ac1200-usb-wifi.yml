@@ -8,21 +8,47 @@
 #
 #   https://github.com/abperiasamy/rtl8812AU_8821AU_linux
 
+- name: 'Choose one of the many potential drivers to compile and install- user'
+  set_fact:
+    driver_user: 'abperiasamy'
+
+- name: 'Choose one of the many potential drivers to compile and install- proj'
+  set_fact:
+    driver_proj: 'rtl8812AU_8821AU_linux'
+
+- name: 'Form the project path'
+  set_fact:
+    project_path: "{{ driver_user }}-{{ driver_proj }}"
+
+- name: 'Form the drivers download path'
+  set_fact:
+    drivers_path: "{{ zoidy_homefries_downloads_dir }}/drivers-8812au"
+
+- name: 'Form the project download path'
+  set_fact:
+    vendor_path: "{{ drivers_path }}/{{ project_path }}"
+
+- name: Ensure 8812au drivers download directory exists
+  file: path={{ drivers_path }} state=directory
+
 # PROFILING: 2019-03-19: Task took: 42.34s.
 - name: 'Install distro package(s)∷ ‘rtl8812au-dkms’'
   become: true
   apt: name=rtl8812au-dkms
 
-- name: Clone GitHub project∷ ‘rtl8812AU_8821AU_linux’
+- name: "Clone GitHub project∷ ‘{{ driver_user }}/{{ driver_proj }}’"
   git:
-    repo: "ssh://git@github.com/abperiasamy/rtl8812AU_8821AU_linux.git"
-    dest: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+    repo: "ssh://git@github.com/{{ driver_user }}/{{ driver_proj }}.git"
+    dest: "{{ vendor_path }}"
+  # (lb): If a host loses its wifi, it may have no net, so ignore git-update
+  # so you can run this task locally.
+  ignore_errors: yes
 
 # PROFILING: 2019-03-19: Task took: 38.82s.
 - name: Build Wi-Fi driver∷ ‘make clean’
   make:
     target: clean
-    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+    chdir: "{{ vendor_path }}"
 
 # 2019-03-21: NOTE: (lb): On my laptop, which doesn't use this driver,
 # I had a line commented out in the Makefile. I've since run this task
@@ -32,19 +58,19 @@
 
 - name: Build Wi-Fi driver∷ ‘make’
   make:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+    chdir: "{{ vendor_path }}"
 
 - name: Uninstall Wi-Fi driver∷ ‘sudo make uninstall’
   become: yes
   make:
     target: uninstall
-    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+    chdir: "{{ vendor_path }}"
 
 - name: Install Wi-Fi driver∷ ‘sudo make install’
   become: yes
   make:
     target: install
-    chdir: "{{ zoidy_homefries_downloads_dir }}/rtl8812AU_8821AU_linux"
+    chdir: "{{ vendor_path }}"
 
 # E.g., `sudo modprobe -a rtl8812au`
 # 2019-03-25: (lb): This failed for me when I ran it manually,
@@ -53,4 +79,16 @@
   modprobe:
     name: rtl8812au
     state: present
+  # 2019-04-03: Disabling this task, and using command module instead, because:
+  #   An exception occurred during task execution.
+  #     To see the full traceback, use -vvv.
+  #       The error was: IOError: [Errno 2] No such file or directory:
+  #         '/lib/modules/4.15.0-47-generic\n/modules.builtin'
+  # Note the `\n` in the path. Weird.
+  when: False
+
+# In lieu of modprobe not working, use command.
+- name: Install Wi-Fi driver∷ ‘sudo make install’
+  become: yes
+  command: modprobe rtl8812au
 
