@@ -102,6 +102,15 @@
 # ************************************************************************
 # *** Clis. ***
 
+- name: Install Latest exiftool application
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-exiftool
+    apply:
+      tags:
+        - cli-exiftool
+  tags: cli-exiftool
+
 - name: Install Latest gocryptfs release
   include_role:
     name: zoidy_home-fries
