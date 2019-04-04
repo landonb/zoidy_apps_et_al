@@ -11,17 +11,17 @@
 - set_fact:
     vagrant_url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ vargrant_deb }}"
 
-- name: Downlaod Hashicorp.com SHA list
+- name: Download Hashicorp.com SHA list
   get_url:
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sha }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sha }}"
 
-- name: Downlaod Hashicorp.com Signature
+- name: Download Hashicorp.com Signature
   get_url:
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sig }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sig }}"
 
-- name: Downlaod Vagrant package
+- name: Download Vagrant package
   get_url:
     url: "{{ vagrant_url }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
