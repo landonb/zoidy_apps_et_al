@@ -144,6 +144,7 @@
 
 # ***
 
+# Remove the message_size_limit (= 10240000) restriction.
 - name: "Set main.cf: ‘message_size_limit’: Do not limit email size"
   become: true
   lineinfile: dest=/etc/postfix/main.cf
@@ -151,8 +152,6 @@
               line="message_size_limit = 0"
               state=present
   notify: Restart Postfix
-  # 2019-03-24: (lb): Not sure I need this option. I used it years ago.
-  when: False
 
 # *** If you want more trace, add these:
 
