@@ -111,6 +111,15 @@
         - cli-exiftool
   tags: cli-exiftool
 
+- name: Install Latest exiv2 application
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-exiv2
+    apply:
+      tags:
+        - cli-exiv2
+  tags: cli-exiv2
+
 - name: Install Latest gocryptfs release
   include_role:
     name: zoidy_home-fries

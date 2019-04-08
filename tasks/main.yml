@@ -45,6 +45,7 @@
     - app-pencil-project-evolus
     - app-spotify
     - cli-exiftool
+    - cli-exiv2
     - cli-gocryptfs
     - cli-optipng
     - cli-reptile-keybindings, reset-keybindings

@@ -1,0 +1,44 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    EXIV2_VER: '0.27.0'
+
+- set_fact:
+    EXIV2_XSM: 'a637104d58aefe1b3987d818d35f9913be3370da430bd0ee721ef927e5c0a508'
+
+- set_fact:
+    EXIV2_DIR: "exiv2-{{ EXIV2_VER }}-Linux64"
+
+- set_fact:
+    EXIV2_TAR: "{{ EXIV2_DIR }}.tar.gz"
+
+- set_fact:
+    EXIV2_URI: "https://www.exiv2.org/builds/{{ EXIV2_TAR }}"
+
+# ***
+
+# FIXME/2019-04-08 12:59: Alert user if newer version. (Search elsewhere for similar FIXMEs.)
+
+# ***
+
+- name: Fetch latest exiv2 release
+  get_url:
+    url: "{{ EXIV2_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    checksum: "sha256:{{ EXIV2_XSM }}"
+
+- name: Unarchive the exiv2 release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ EXIV2_TAR }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+# (lb): There are 34 apps total, but I only care about the 1.
+- name: Symlink exiv2 binary from user local bin/
+  file:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ EXIV2_DIR }}/bin/exiv2"
+    dest: "{{ ansible_env.HOME }}/.local/bin/exiv2"
+    state: link
+
