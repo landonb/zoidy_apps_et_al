@@ -26,6 +26,12 @@
   # current version with dpkg, perhaps, but this work around is G.E.)
   ignore_errors: yes
 
+# ***
+
+- name: Stat google-earth sources file
+  stat: path="/etc/apt/sources.list.d/google-earth-pro.list"
+  register: google_earth_sources_list_f
+
 # Fix the sources file. By default:
 #
 #   $ cat /etc/apt/sources.list.d/google-earth-pro.list
@@ -51,4 +57,5 @@
     regexp: '^deb http://dl.google.com/linux/earth/deb/ (.*)'
     line: "deb [arch=amd64] http://dl.google.com/linux/earth/deb/ \\1"
     backrefs: yes
+  when: google_earth_sources_list_f.stat.exists
 
