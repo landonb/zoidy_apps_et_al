@@ -30,3 +30,7 @@ zoidy_homefries_postfix_pass: ""
 # YOU: Set this to your real email address, e.g., user@gmail.com.
 zoidy_homefries_email_forward: ""
 
+# YOU: Set these values to create a /etc/openvpn/pass and configure OpenVPN.
+zoidy_homefries_openvpn_user: ""
+zoidy_homefries_openvpn_pass: ""
+

@@ -68,6 +68,7 @@
     - ruby-install-chruby
     - ruby-install-versions
     - ruby-rubygems-packages
+    - sec-net-ivpn
     # NEVER: sec-pass-plug-tomb
     - virt-vagrant
 
