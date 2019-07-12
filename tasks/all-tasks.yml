@@ -12,6 +12,15 @@
         - app-chrome
   tags: app-chrome
 
+- name: Load role to Install Cinelerra-GG
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-cinelerra-gg
+    apply:
+      tags:
+        - app-cinelerra-gg
+  tags: app-cinelerra-gg
+
 - name: Load role to Install Darktable
   include_role:
     name: zoidy_home-fries

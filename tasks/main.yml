@@ -35,6 +35,7 @@
     - vid-ttygif
     # *** From all-tasks.yml:
     - app-chrome
+    - app-cinelerra-gg
     - app-darktable
     - app-digikam
     - app-firefox-fix_scroll

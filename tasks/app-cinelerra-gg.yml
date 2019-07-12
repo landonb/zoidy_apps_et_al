@@ -1,0 +1,35 @@
+---
+
+# https://www.cinelerra-gg.org/mint-package/
+
+- name: Add Cinelerra GG Community (CINfinity) proprietary repository
+  become: true
+  apt_repository:
+    repo: deb [trusted=yes] https://cinelerra-gg.org/download/pkgs/mint19 bionic main
+    state: present
+    # To disable:
+    #  state: absent
+
+#- name: Add Spotify keyserver and key signature to receive
+#  become: true
+#  apt_key:
+#    id: A87FF9DF48BF1C90
+#    keyserver: hkp://keyserver.ubuntu.com:80
+#    state: present
+#    ## 2019-03-05: Disable Spotify-from-Deb!
+#    #state: absent
+
+- name: Run command "apt-get update" (app-cinelerra-gg)
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Cinelerra (app-cinelerra-gg)
+  become: true
+  apt:
+    name: cin
+    state: present
+    ## 2019-03-05: Disable Spotify-from-Deb!
+    #state: absent
+
