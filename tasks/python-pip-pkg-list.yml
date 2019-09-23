@@ -87,3 +87,5 @@
       #
       # in _wait_on_pending_results(), because self._pending_results > 0 indefinitely.
 
+      - awscli
+
