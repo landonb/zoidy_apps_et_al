@@ -9,7 +9,8 @@
 # *** Local variables (Facts).
 
 - set_fact:
-    GOLANG_VER: '1.11.4'
+    # FIXME/2019-10-17: Query the latest Go version and use that.
+    GOLANG_VER: '1.13.3'
 
 - set_fact:
     GOLANG_DIR: "go{{ GOLANG_VER }}.linux-amd64"
@@ -21,7 +22,7 @@
     # E.g.,
     #   https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
     GOLANG_URI: "https://dl.google.com/go/{{ GOLANG_TAR }}"
-    GOLANG_XSUM: "fb26c30e6a04ad937bbc657a1b5bba92f80096af1e8ee6da6430c045a8db3a5b"
+    GOLANG_XSUM: "0804bf02020dceaa8a7d7275ee79f7a142f1996bfd0c39216ccb405f93f994c0"
 
 # *** Alert user if newer version.
 
@@ -55,6 +56,17 @@
 # Done:
 #  - fail: msg="VERIFY UNPACK"
 
+- name: Check obsolete godoc symlink (replaced by `go doc`)
+  stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
+  register: local_bin_godoc
+  tags: always
+
+- name: Remove obsolete godoc symlink (replaced by `go doc`)
+  file:
+    state: absent
+    path: "{{ ansible_env.HOME }}/.local/bin/godoc"
+  when: local_bin_godoc.stat.exists and local_bin_godoc.stat.islnk
+
 - name: Symlink golang binary from user local bin
   file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/go/bin/{{ item }}"
@@ -62,6 +74,5 @@
     state: link
   loop:
     - go
-    - godoc
     - gofmt
 
