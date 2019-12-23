@@ -216,6 +216,18 @@
   tags: golang-go-get-packages
 
 # ************************************************************************
+# *** Javaz. ***
+
+- name: Load role to Install Java JDK
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: java-adopt-open-jdk
+    apply:
+      tags:
+        - java-adopt-open-jdk
+  tags: java-adopt-open-jdk
+
+# ************************************************************************
 # *** Pltfs. ***
 
 - name: Android Studio Installer

@@ -1,0 +1,58 @@
+---
+
+- set_fact:
+    ADOPTOPENJDK_VER: '11.0.5_10'
+
+# To fetch checksum:
+#   baseuri='https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download'
+#   curl -L ${baseuri}/jdk-11.0.5%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz.sha256.txt
+- set_fact:
+    ADOPTOPENJDK_XSM: '6dd0c9c8a740e6c19149e98034fba8e368fd9aa16ab417aa636854d40db1a161'
+
+- set_fact:
+    ADOPTOPENJDK_DIR: "OpenJDK11U-jdk_x64_linux_hotspot_{{ ADOPTOPENJDK_VER }}"
+
+- set_fact:
+    ADOPTOPENJDK_TAR: "{{ ADOPTOPENJDK_DIR }}.tar.gz"
+
+- set_fact:
+    ADOPTOPENJDK_URI_BASE: "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/"
+
+- set_fact:
+    ADOPTOPENJDK_URI: "{{ ADOPTOPENJDK_URI_BASE }}/jdk-11.0.5%2B10/{{ ADOPTOPENJDK_TAR }}"
+
+# ***
+
+# FIXME/2019-12-23 15:30: Alert user if newer version. (Search elsewhere for similar FIXMEs.)
+
+# ***
+
+- name: Fetch latest AdoptOpenJDK release
+  get_url:
+    url: "{{ ADOPTOPENJDK_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    checksum: "sha256:{{ ADOPTOPENJDK_XSM }}"
+
+- name: Ensure unpack path exists
+  file: path="{{ zoidy_homefries_downloads_dir }}/{{ ADOPTOPENJDK_DIR }}" state=directory
+  tags: always
+
+- name: Unarchive the AdoptOpenJDK release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ ADOPTOPENJDK_TAR }}"
+    # Default unpacks to: jdk-11.0.5+10/
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ADOPTOPENJDK_DIR }}"
+    remote_src: yes
+
+- name: Find all executables files under jdk-11.0.5+10/bin
+  find:
+    paths: "{{ zoidy_homefries_downloads_dir }}/{{ ADOPTOPENJDK_DIR }}/jdk-11.0.5+10/bin"
+  register: java_bin_find
+
+- name: Symlink AdoptOpenJDK binaries from user local bin/
+  file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item.path | basename }}"
+    state: link
+  with_items: "{{ java_bin_find.files }}"
+

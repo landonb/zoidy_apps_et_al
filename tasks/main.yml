@@ -58,6 +58,7 @@
     - hardware-android-studio
     - hardware-arduino
     - hardware-ac1200-usb-wifi
+    - java-adopt-open-jdk
     - node-npm-packages
     - node-nvm-version-mgr
     - node-nvm-versions
