@@ -97,6 +97,18 @@
         - app-pencil-project-evolus
   tags: app-pencil-project-evolus
 
+- name: Load role to Install Scala sbt
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-scala-sbt
+    apply:
+      tags:
+        - app-scala-sbt
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+  tags: app-scala-sbt
+#  when: False
+
 - name: "Load role to Install Spotify"
   include_role:
     name: zoidy_home-fries
