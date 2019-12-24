@@ -97,18 +97,6 @@
         - app-pencil-project-evolus
   tags: app-pencil-project-evolus
 
-- name: Load role to Install Scala sbt
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: app-scala-sbt
-    apply:
-      tags:
-        - app-scala-sbt
-  vars:
-    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
-  tags: app-scala-sbt
-#  when: False
-
 - name: "Load role to Install Spotify"
   include_role:
     name: zoidy_home-fries
@@ -226,18 +214,6 @@
       tags:
         - golang-go-get-packages
   tags: golang-go-get-packages
-
-# ************************************************************************
-# *** Javaz. ***
-
-- name: Load role to Install Java JDK
-  include_role:
-    name: zoidy_home-fries
-    tasks_from: java-adopt-open-jdk
-    apply:
-      tags:
-        - java-adopt-open-jdk
-  tags: java-adopt-open-jdk
 
 # ************************************************************************
 # *** Pltfs. ***
@@ -386,4 +362,37 @@
       tags:
         - virt-vagrant
   tags: virt-vagrant
+
+# ************************************************************************
+# *** The BFG git history cleanserer. ***
+
+- name: Load role to Install Java JDK
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: java-adopt-open-jdk
+    apply:
+      tags:
+        - java-adopt-open-jdk
+  tags: java-adopt-open-jdk
+
+- name: Load role to Install Scala sbt
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-scala-sbt
+    apply:
+      tags:
+        - app-scala-sbt
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+  tags: app-scala-sbt
+
+- name: Load role to Install The BFG
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-git-the-bfg
+    apply:
+      tags:
+        - app-git-the-bfg
+  tags: app-git-the-bfg
+
 

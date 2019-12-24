@@ -34,3 +34,6 @@ zoidy_homefries_email_forward: ""
 zoidy_homefries_openvpn_user: ""
 zoidy_homefries_openvpn_pass: ""
 
+# YOU: Set the path to your BFG fork, if you have one.
+zoidy_homefries_bfg_repo_path: ""
+

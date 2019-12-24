@@ -1,0 +1,89 @@
+---
+
+# Run these tasks first:
+#
+#   java-adopt-open-jdk
+#
+#   app-scala-sbt
+
+# ***
+
+# User can manually checkout repo and set:
+#
+#   zoidy_homefries_bfg_repo_path
+#
+# Otherwise we'll fetch it for them.
+
+- set_fact:
+    BFG_REPO_URI: "https://github.com/landonb/bfg-repo-cleaner"
+
+# ***
+
+- name: "fetch The BFG repo"
+  git:
+    repo: "{{ BFG_REPO_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/bfg-repo-cleaner"
+  when: zoidy_homefries_bfg_repo_path == ""
+
+# ***
+
+- set_fact:
+    BFG_PROJ_PATH: "{{ zoidy_homefries_downloads_dir }}/bfg-repo-cleaner"
+
+- set_fact:
+    BFG_PROJ_PATH: "{{ zoidy_homefries_bfg_repo_path }}"
+  when: zoidy_homefries_bfg_repo_path != ""
+
+- set_fact:
+    BFG_TARGET_PATH: "{{ BFG_PROJ_PATH }}/bfg/target"
+
+# ***
+
+- name: Build The BFG
+  shell: sbt bfg/assembly > {{ BFG_TARGET_PATH }}/.assembly.OUT
+  args:
+    chdir: "{{ BFG_PROJ_PATH }}"
+
+# The build produces a JAR, which you can run like, e.g.,:
+#
+#   java -jdk {{ BFG_PROJ_PATH }}/bfg/target/bfg-1.13.1-SNAPSHOT-master-aeee9e3-dirty.jar
+#
+# but we'll go to the trouble of making a symlink with a predictable name
+# by reading the Scala Build Tool (sbt) output.
+#
+# NOTE: The `sbt bfg/assembly` command's (color) output depends if the jar
+# has been previously built, in which case it indicates:
+# 
+#   [warn] Strategy 'discard' was applied to 28 files
+#   [info] Assembly up to date: /kit/working/python/bfg-repo-cleaner/bfg/target/bfg-1.13.1-SNAPSHOT-master-aeee9e3-dirty.jar
+#   [success] Total time: 6 s, completed Dec 23, 2019, 4:32:55 PM
+#
+# otherwise, when run the first time, it indicates:
+#
+#   [warn] Strategy 'discard' was applied to 28 files
+#   [info] Packaging /kit/working/python/bfg-repo-cleaner/bfg/target/bfg-1.13.1-SNAPSHOT-master-aeee9e3-dirty.jar ...
+#   [info] Done packaging.
+#   [success] Total time: 7 s, completed Dec 23, 2019, 4:33:21 PM
+
+- name: Parse the build output for the JAR name
+  # Note the first sed, which strips ANSI control characters (color and formatting).
+  shell: >
+    tail -3 .assembly.OUT |
+    sed 's/\x1b\[[0-9;]*m//g' |
+    grep ".jar" |
+    /bin/sed -e 's#^\[info\] \(Packaging\|Assembly up to date:\) ##' |
+    /bin/sed -e 's/ \.\.\.$//'
+  args:
+    chdir: "{{ BFG_TARGET_PATH }}"
+  register: bfg_jar
+
+- name: Symlink The BFG JAR from user local bin, why not
+  file:
+    src: "{{ bfg_jar.stdout }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/bfg.jar"
+    state: link
+
+# Not you can run:
+#
+#   java -jar ~/.local/bin/bfg.jar
+
