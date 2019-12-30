@@ -4,6 +4,7 @@
   set_fact:
     node_npm_list:
       - mocha
+      - parcel-bundler
 
 - name: Ensure nodejs & npm installed
   become: true
