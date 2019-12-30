@@ -5,11 +5,17 @@
     node_npm_list:
       - mocha
 
-- name: Ensure npm installed
+- name: Ensure nodejs & npm installed
   become: true
   apt: name={{ item }}
   loop:
     - nodejs
+    # 2019-12-30: libssl1.0-dev dep. for nodejs-dev.
+    - libssl1.0-dev
+    # 2019-12-30: nodejs-dev dep. for node-gyp.
+    - nodejs-dev
+    # 2019-12-30: node-gyp dep. for parcel-bundler.
+    - node-gyp
     - npm
 
 - name: Install Node NPM projects
