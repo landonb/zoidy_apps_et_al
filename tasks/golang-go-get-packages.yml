@@ -13,6 +13,9 @@
       # FIXME/2018-02-09 18:37: Add to Travel migrate, not once-setup!
       - github.com/jingweno/ccat
 
+      # 2020-01-02: tmux git status line
+      - github.com/arl/gitmux
+
 - name: Install Go Lang projects
   # Specify "-u"/update to always update projects previously got.
   command: "go get -u {{ item }}"
