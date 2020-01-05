@@ -37,6 +37,9 @@
 - set_fact:
     BFG_TARGET_PATH: "{{ BFG_PROJ_PATH }}/bfg/target"
 
+- name: Ensure {{ BFG_TARGET_PATH }} directory exists
+  file: path={{ BFG_TARGET_PATH }} state=directory
+
 # ***
 
 - name: Build The BFG
