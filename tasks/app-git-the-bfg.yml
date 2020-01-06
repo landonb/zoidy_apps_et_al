@@ -42,6 +42,8 @@
 
 # ***
 
+# This takes a few seconds. You can watch with:
+#   tail -F /kit/working/scala/bfg-repo-cleaner/bfg/target/.assembly.OUT
 - name: Build The BFG
   shell: sbt bfg/assembly > {{ BFG_TARGET_PATH }}/.assembly.OUT
   args:
