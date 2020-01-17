@@ -38,7 +38,7 @@
 
 - name: "Clone GitHub project∷ ‘{{ driver_user }}/{{ driver_proj }}’"
   git:
-    repo: "ssh://git@github.com/{{ driver_user }}/{{ driver_proj }}.git"
+    repo: "git@github.com:{{ driver_user }}/{{ driver_proj }}.git"
     dest: "{{ vendor_path }}"
   # (lb): If a host loses its wifi, it may have no net, so ignore git-update
   # so you can run this task locally.

@@ -29,7 +29,7 @@
 
 - name: Clone xrandr-invert-colors repo
   git:
-    repo: "ssh://git@github.com/zoltanp/xrandr-invert-colors.git"
+    repo: "git@github.com:zoltanp/xrandr-invert-colors.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
 
 # E.g., `sudo make deps-apt`

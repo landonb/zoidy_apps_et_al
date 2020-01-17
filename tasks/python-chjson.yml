@@ -10,7 +10,7 @@
 
 - name: Clone chjson repo
   git:
-    repo: "ssh://git@github.com/landonb/chjson.git"
+    repo: "git@github.com:landonb/chjson.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/chjson"
 
 # *** Python3

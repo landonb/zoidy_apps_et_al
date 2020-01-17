@@ -41,7 +41,7 @@
 
 - name: Clone direnv repo
   git:
-    repo: "ssh://git@github.com/landonb/direnv.git"
+    repo: "git@github.com:landonb/direnv.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/direnv"
     # [lb]: 2019-01-02: My working branch fixes an issue...
     version: working

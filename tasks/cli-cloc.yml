@@ -8,7 +8,7 @@
 
 - name: Clone cloc repo
   git:
-    repo: "ssh://git@github.com/AlDanial/cloc.git"
+    repo: "git@github.com:AlDanial/cloc.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/cloc"
 
 - name: Symlink cloc script from user bin/

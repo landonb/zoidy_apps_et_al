@@ -2,7 +2,7 @@
 
 - name: Clone wavelet-decompose repo
   git:
-    repo: "ssh://git@github.com/gimp-plugins-justice/wavelet-decompose.git"
+    repo: "git@github.com:gimp-plugins-justice/wavelet-decompose.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
 
 # ***

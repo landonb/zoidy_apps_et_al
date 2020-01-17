@@ -2,7 +2,7 @@
 
 - name: "reputed-tiler∷ fetch repo"
   git:
-    repo: "ssh://git@github.com/landonb/reputed-tiler.git"
+    repo: "git@github.com:landonb/reputed-tiler.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/reputed-tiler"
 
 - name: "reputed-tiler∷ install app"

@@ -12,7 +12,7 @@
 
 - name: Clone delve repo
   git:
-    repo: "ssh://git@github.com/go-delve/delve.git"
+    repo: "git@github.com:go-delve/delve.git"
     dest: "{{ gopath_src_delve }}/delve"
 
 - name: Install delve

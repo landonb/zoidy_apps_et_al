@@ -8,7 +8,7 @@
 
 - name: Clone parT repo
   git:
-    repo: "ssh://git@github.com/landonb/parT.git"
+    repo: "git@github.com:landonb/parT.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/parT"
 
 - name: Build parT

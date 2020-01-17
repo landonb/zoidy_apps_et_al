@@ -7,7 +7,7 @@
 
 - name: Clone Vim repo
   git:
-    repo: "ssh://git@github.com/vim/vim.git"
+    repo: "git@github.com:vim/vim.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/vim"
 
 # E.g., `make clean`

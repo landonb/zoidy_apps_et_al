@@ -2,7 +2,7 @@
 
 - name: Clone gimp-plugin-export-layers repo
   git:
-    repo: "ssh://git@github.com/khalim19/gimp-plugin-export-layers.git"
+    repo: "git@github.com:khalim19/gimp-plugin-export-layers.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers"
 
 # ***

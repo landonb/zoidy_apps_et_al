@@ -11,7 +11,7 @@
 
 - name: Clone ttygif repo
   git:
-    repo: "ssh://git@github.com/icholy/ttygif.git"
+    repo: "git@github.com:icholy/ttygif.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/ttygif"
 
 - name: Build ttygif
