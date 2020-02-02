@@ -13,6 +13,7 @@
       - 3.5
       - 3.6
       - 3.7
+      - 3.8
 
 - name: Add "deadsnakes" repo
   become: true

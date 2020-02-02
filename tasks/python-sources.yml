@@ -3,12 +3,13 @@
 - name: List Python Sources to Download
   set_fact:
     python_versions:
-      - 2.7.15
-      - 3.3.7
-      - 3.4.9
-      - 3.5.6
-      - 3.6.8
-      - 3.7.2
+      - 2.7.17  # 2019-10-19
+      - 3.3.7   # 2017-09-19
+      - 3.4.10  # 2019-03-18
+      - 3.5.8   # 2019-10-29
+      - 3.6.10  # 2019-12-18
+      - 3.7.6   # 2019-12-18
+      - 3.8.1   # 2019-12-18
 
 - set_fact:
     zoidy_homefries_dls_pydls_dir: "{{ zoidy_homefries_downloads_dir }}/python-dls"
