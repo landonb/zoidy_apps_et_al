@@ -49,8 +49,8 @@
 - name: Configure Vim build
   shell: |
     ./configure \
-	    --enable-luainterp=yes \
-	    --enable-perlinterp=yes \
+      --enable-luainterp=yes \
+      --enable-perlinterp=yes \
       --enable-pythoninterp=yes \
       --enable-python3interp=yes \
       --enable-rubyinterp=yes \
