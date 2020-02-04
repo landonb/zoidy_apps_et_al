@@ -1,0 +1,125 @@
+---
+
+# *** Local variables (Facts).
+
+# MEH/2020-02-04: We could install from a release archive. Or just clone.
+# - 1 issue with downloading archive is having to both identify when a new
+#   version is available, and then to wire it here.
+#   - With a git-clone, we can always clone, and rebuild whenever new files
+#     detected, and we don't have to change any Ansible config, i.e., we
+#     don't have to maintain a version number.
+#   - I.e., this fixme does not apply because we clone, rather than download
+#     specific release versions::
+#       FIXME/2019-04-08 12:59: Alert user if newer version. (Search elsewhere for similar FIXMEs.)
+#
+# 2020-02-04: If you did want to download the release archive, this is
+# currently current:
+#
+# # FIXME/2020-02-04: Does GitHub make checksums available?
+# #- set_fact:
+# #    KCOV_XSM: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+#
+# - set_fact:
+#     KCOV_VER: '38'
+#
+# - set_fact:
+#     KCOV_FNM: 'kcov'
+#
+# - set_fact:
+#     KCOV_TAR: "{{ KCOV_FNM }}.tar.gz"
+#
+# - set_fact:
+#     KCOV_URI: "https://github.com/SimonKagstrom/kcov/archive/{{ KCOV_VER }}.tar.gz"
+#
+# - name: Fetch kcov release
+#   get_url:
+#     url: "{{ KCOV_URI }}"
+#     dest: "{{ zoidy_homefries_downloads_dir }}/{{ KCOV_TAR }}"
+#     # checksum: "sha256:{{ KCOV_XSM }}"
+
+- set_fact:
+    KCOV_DIR: "{{ zoidy_homefries_downloads_dir }}/kcov"
+
+- set_fact:
+    KCOV_BUILD: "{{ KCOV_DIR }}/source/dir/build"
+
+# ***
+
+# Install build prerequisites that require sudo, but only run if necessary.
+#
+# Essentially, this:
+#
+#   sudo apt install binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev
+
+# So that this script can be called whenever you want to update a previous
+# installation, and so that you can do so without root credentials, only
+# try installing the prerequisites if not installed, i.e., the first time
+# this task is ran.
+# - Ug, checking individual packages seems tedious. Something like:
+#         - name: Gather the rpm|apt|etc package facts
+#           package_facts:
+#             manager: auto
+#
+#         - set_fact:
+#             KCOV_PREREQS: False
+#
+#         - set_fact:
+#             KCOV_PREREQS: True
+#           when: "'binutils-dev' not in ansible_facts.packages"
+
+- name: Stat checkout path (kcov)
+  stat: path="{{ KCOV_DIR }}/"
+  register: kcov_checkout
+
+- name: Update apt cache (kcov)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  # Only run apt install if not cloned repo before.
+  when: not kcov_checkout.stat.exists
+  become: yes
+
+- name: Install prerequisite pacakges (kcov)
+  apt: name="{{ item }}"
+  loop:
+    - binutils-dev
+    - libcurl4-openssl-dev
+    - zlib1g-dev
+    - libdw-dev
+    - libiberty-dev
+  # Only run apt install if not cloned repo before.
+  when: not kcov_checkout.stat.exists
+  become: yes
+
+# ***
+
+- name: Clone repo (kcov)
+  git:
+    repo: "git@github.com:landonb/kcov.git"
+    dest: "{{ KCOV_DIR }}"
+    # version: master
+  register: gitclone
+
+- name: Ensure build directory exists (kcov)
+  file:
+    state: directory
+    path: "{{ KCOV_BUILD }}/"
+
+# https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+# Perhaps -march=native because only run on local machine??
+# Not sure why upstream docs example shows -march=i686,
+#   which is Pentium Pro, isn't it?
+#     -DCMAKE_C_FLAGS:STRING="-O3 -march=i686" \
+
+- name: Build application (kcov)
+  command: "{{ item }} chdir={{ KCOV_BUILD }}"
+  with_items:
+    - cmake \
+      -DCMAKE_C_FLAGS:STRING="-O3 -march=native" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
+      ..
+    - make -j2
+    - make install
+  when: gitclone.changed
+

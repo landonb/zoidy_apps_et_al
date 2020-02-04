@@ -49,6 +49,7 @@
     - app-spotify
     - cli-exiftool
     - cli-exiv2
+    - cli-kcov
     - cli-optipng
     - cli-reptile-keybindings, reset-keybindings
     - cli-ripgrep

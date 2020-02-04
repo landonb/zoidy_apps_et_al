@@ -129,6 +129,15 @@
         - cli-exiv2
   tags: cli-exiv2
 
+- name: Install Latest kcov application
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: cli-kcov
+    apply:
+      tags:
+        - cli-kcov
+  tags: cli-kcov
+
 - name: OptiPNG Installer
   include_role:
     name: zoidy_home-fries
