@@ -23,7 +23,7 @@
 
 # ***
 
-- name: Fetch latest exiv2 release
+- name: Fetch specified exiv2 release
   get_url:
     url: "{{ EXIV2_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
