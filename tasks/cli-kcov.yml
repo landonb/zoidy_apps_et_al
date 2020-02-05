@@ -2,6 +2,12 @@
 
 # *** Local variables (Facts).
 
+# YOU: If you've checked out the repo elsewhere, set:
+#
+#   zoidy_homefries_kcov_repo_path
+#
+# Otherwise we'll fetch it for you.
+
 # MEH/2020-02-04: We could install from a release archive. Or just clone.
 # - 1 issue with downloading archive is having to both identify when a new
 #   version is available, and then to wire it here.
@@ -38,7 +44,11 @@
 #     # checksum: "sha256:{{ KCOV_XSM }}"
 
 - set_fact:
+    KCOV_DIR: "{{ zoidy_homefries_kcov_repo_path }}"
+
+- set_fact:
     KCOV_DIR: "{{ zoidy_homefries_downloads_dir }}/kcov"
+  when: KCOV_DIR == ""
 
 - set_fact:
     KCOV_BUILD: "{{ KCOV_DIR }}/source/dir/build"
@@ -68,7 +78,7 @@
 #           when: "'binutils-dev' not in ansible_facts.packages"
 
 - name: Stat checkout path (kcov)
-  stat: path="{{ KCOV_DIR }}/"
+  stat: path="{{ KCOV_BUILD }}"
   register: kcov_checkout
 
 - name: Update apt cache (kcov)
@@ -103,7 +113,7 @@
 - name: Ensure build directory exists (kcov)
   file:
     state: directory
-    path: "{{ KCOV_BUILD }}/"
+    path: "{{ KCOV_BUILD }}"
 
 # https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
 # Perhaps -march=native because only run on local machine??
