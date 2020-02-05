@@ -51,7 +51,7 @@
   when: KCOV_DIR == ""
 
 - set_fact:
-    KCOV_BUILD: "{{ KCOV_DIR }}/source/dir/build"
+    KCOV_BUILD: "{{ KCOV_DIR }}/build"
 
 # ***
 
@@ -105,7 +105,7 @@
 
 - name: Clone repo (kcov)
   git:
-    repo: "git@github.com:landonb/kcov.git"
+    repo: "git@github.com:SimonKagstrom/kcov.git"
     dest: "{{ KCOV_DIR }}"
     # version: master
   register: gitclone
@@ -115,21 +115,56 @@
     state: directory
     path: "{{ KCOV_BUILD }}"
 
+- name: Stat target symlink (kcov)
+  stat: path="{{ ansible_env.HOME }}/.local/bin/kcov"
+  register: kcov_symlink
+
 # https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
 # Perhaps -march=native because only run on local machine??
 # Not sure why upstream docs example shows -march=i686,
 #   which is Pentium Pro, isn't it?
 #     -DCMAKE_C_FLAGS:STRING="-O3 -march=i686" \
 
-- name: Build application (kcov)
+- name: Build application (kcov) [shell module]
+  shell: >
+    cmake \
+        -DCMAKE_C_FLAGS:STRING="-O3 -march=native" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX={{ ansible_env.HOME }}/.local \
+        .. && \
+    make -j2 && \
+    make install
+  args:
+    chdir: "{{ KCOV_BUILD }}"
+  # FIXME/2020-02-04: Find same-dated FIXMEs re: Using install tasks to update apps, too.
+  # - E.g., here, we can skip the build if we know the source has not changed.
+  # - Should probably make easy to rebuild, say, by removing the symlink.
+  when: gitclone.changed or not kcov_symlink.stat.exists
+
+# Another option is to use `command`, which is technically safer than `shell`.
+# - One downside is that it runs all items in the loop, even if an earlier
+#   item fails. E.g., if the cmake fails, make--j2 and make-install are both
+#   still called -- but the command module does not support `&&` command chaining.
+# - Another oddity is that the `DCMAKE_INSTALL_PREFIX=` and the `..` need to be
+#   on the same line, and not, e.g.,
+#         -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" \
+#          ..
+#   because then you'll see:
+#         CMake Error: The source directory \"/path/to/kcov/build/ ..\" does not exist.
+#
+# For whatever reason, capturing this for posterity.
+#
+# MAYBE/2020-02-04: Remove this sub-task someday.
+- name: Build application (kcov) [command module]
   command: "{{ item }} chdir={{ KCOV_BUILD }}"
+  args:
+    chdir: "{{ KCOV_BUILD }}"
   with_items:
     - cmake \
-      -DCMAKE_C_FLAGS:STRING="-O3 -march=native" \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
-      ..
+        -DCMAKE_C_FLAGS:STRING="-O3 -march=native" \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" ..
     - make -j2
     - make install
-  when: gitclone.changed
+  when: False
 
