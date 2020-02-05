@@ -8,11 +8,11 @@
 
 # ***
 
-# User can manually checkout repo and set:
+# YOU: If you've checked out the repo elsewhere, set:
 #
 #   zoidy_homefries_bfg_repo_path
 #
-# Otherwise we'll fetch it for them.
+# Otherwise we'll fetch it for you.
 
 - set_fact:
     BFG_REPO_URI: "https://github.com/landonb/bfg-repo-cleaner"
