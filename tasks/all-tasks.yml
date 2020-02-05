@@ -70,6 +70,15 @@
         - app-google-earth
   tags: app-google-earth
 
+- name: Load role to Install meld
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-meld
+    apply:
+      tags:
+        - app-meld
+  tags: app-meld
+
 - name: Load role to Install OpenJUMP
   include_role:
     name: zoidy_home-fries
