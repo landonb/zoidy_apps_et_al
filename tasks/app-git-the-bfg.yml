@@ -58,7 +58,7 @@
 #
 # NOTE: The `sbt bfg/assembly` command's (color) output depends if the jar
 # has been previously built, in which case it indicates:
-# 
+#
 #   [warn] Strategy 'discard' was applied to 28 files
 #   [info] Assembly up to date: /kit/working/python/bfg-repo-cleaner/bfg/target/bfg-1.13.1-SNAPSHOT-master-aeee9e3-dirty.jar
 #   [success] Total time: 6 s, completed Dec 23, 2019, 4:32:55 PM
@@ -71,13 +71,28 @@
 #   [success] Total time: 7 s, completed Dec 23, 2019, 4:33:21 PM
 
 - name: Parse the build output for the JAR name
-  # Note the first sed, which strips ANSI control characters (color and formatting).
+    # Note the first sed, which strips ANSI control characters (color and formatting).
+    # 2020-02-06: I'm seeing half the regex (after the \, before the [) spit out
+    #             when executing the command from my terminal, e.g.,
+    #
+    #               $ tail -3 .assembly.OUT |\
+    #                 sed -E 's/\x1b\[[0-9;]*m//g' |
+    #               [[0-9;]*m//g"[info] Packaging ...
+    #
+    #             and:
+    #
+    #               $ tail -3 .assembly.OUT | \
+    #                 sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" |
+    #               [([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"[info] Packaging ...
+    #
+    #             but it's on stderr, so, shouldn't matter?
+    #             - TESTME: Run this task and verify this comment.
   shell: >
     tail -3 .assembly.OUT |
-    sed 's/\x1b\[[0-9;]*m//g' |
+    sed -E 's/\x1b\[[0-9;]*m//g' |
     grep ".jar" |
-    /bin/sed -e 's#^\[info\] \(Packaging\|Assembly up to date:\) ##' |
-    /bin/sed -e 's/ \.\.\.$//'
+    sed -E 's#^\[info\] (Packaging|Assembly up to date:) ##' |
+    sed -E 's/ \.\.\.$//'
   args:
     chdir: "{{ BFG_TARGET_PATH }}"
   register: bfg_jar
