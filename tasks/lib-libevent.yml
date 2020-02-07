@@ -1,0 +1,90 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    LIBEVENT_VER: '2.1.11-stable'
+
+- set_fact:
+    LIBEVENT_DIR: "libevent-{{ LIBEVENT_VER }}"
+
+- set_fact:
+    LIBEVENT_TAR: "{{ LIBEVENT_DIR }}.tar.gz"
+
+- set_fact:
+    LIBEVENT_URI: "https://github.com/libevent/libevent/releases/download/release-{{ LIBEVENT_VER }}/{{ LIBEVENT_TAR }}"
+
+- set_fact:
+    LIBEVENT_ASC: "{{ LIBEVENT_URI }}.asc"
+
+# *** Alert user if newer version.
+
+# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
+
+# *** Download the release.
+
+- name: Fetch specified libevent release
+  get_url:
+    url: "{{ LIBEVENT_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_TAR }}"
+
+# *** Verify the release.
+
+- name: "Fetch libevent release PGP ASCII Armored file"
+  get_url:
+    url: "{{ LIBEVENT_ASC }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_TAR }}.asc"
+
+- name: "Verify armor"
+  command: "gpg --verify {{ LIBEVENT_TAR }}.asc"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/"
+
+# Fail if download cannot be verified.
+- name: "Verify libevent release archive"
+  command: "gpg --verify {{ LIBEVENT_TAR }}.asc {{ LIBEVENT_TAR }}"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
+
+# ***
+
+- name: Unarchive the libevent release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_TAR }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+# ***
+
+- name: "libevent: stat Makefile"
+  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}/Makefile"
+  register: libevent_makefile
+
+- name: "libevent: make clean"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
+    target: clean
+  when: libevent_makefile.stat.exists == True
+
+- name: "libevent: ./configure ..."
+  shell: ./configure --prefix={{ ansible_env.HOME }}/.local
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
+
+- name: "libevent: make"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
+
+- name: "libevent: make verify"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
+    target: verify
+  # 2020-02-06: Testing takes a while, and we're not installing system-wide,
+  #             so should be safe to skip.
+  when: False
+
+- name: "libevent: make install"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
+    target: install
+

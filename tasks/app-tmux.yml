@@ -1,0 +1,67 @@
+---
+
+# *** Local variables (Facts).
+
+# YOU: If you've checked out the repo elsewhere, set:
+#
+#   zoidy_homefries_tmux_repo_path
+#
+# Otherwise we'll fetch it for you.
+
+# FIXME/2020-02-06 19:57: Keep this updated! Rebuild tmux!!
+
+- set_fact:
+    TMUX_BRANCH: "3.1-rc"
+
+# ***
+
+- set_fact:
+    TMUX_DIR: "{{ zoidy_homefries_tmux_repo_path }}"
+
+- set_fact:
+    TMUX_DIR: "{{ zoidy_homefries_downloads_dir }}/tmux"
+  when: TMUX_DIR == ""
+
+# ***
+
+- name: Clone repo (tmux)
+  git:
+    repo: "git@github.com:tmux/tmux.git"
+    dest: "{{ TMUX_DIR }}"
+    version: "{{ TMUX_BRANCH }}"
+  register: gitclone
+
+- name: sh autogen.sh (tmux)
+  shell: sh autogen.sh
+  args:
+    chdir: "{{ TMUX_DIR }}"
+#  when: gitclone.changed or not kcov_symlink.stat.exists
+
+- name: sh autogen.sh (tmux)
+  shell: >
+    CPPFLAGS="-I{{ ansible_env.HOME }}/.local/include" \
+      LDFLAGS="-L{{ ansible_env.HOME }}/.local/lib" \
+      ./configure --prefix={{ ansible_env.HOME }}/.local
+  args:
+    chdir: "{{ TMUX_DIR }}"
+
+- name: make (ncurses)
+  make:
+    chdir: "{{ TMUX_DIR }}"
+
+- name: make install (ncurses)
+  make:
+    chdir: "{{ TMUX_DIR }}"
+    target: install
+
+# ***
+
+- name: Symlink man (tmux)
+  file:
+    src: "{{ TMUX_DIR }}/tmux.1"
+    dest: "{{ ansible_env.HOME }}/.local/man/man1/tmux.1"
+    state: link
+
+- name: Regenerate local man (tmux)
+  shell: mandb
+

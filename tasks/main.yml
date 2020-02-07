@@ -33,6 +33,10 @@
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
+    # tmux et al:
+    - lib-libevent
+    - lib-ncurses
+    - app-tmux
     # *** From all-tasks.yml:
     - app-chrome
     - app-cinelerra-gg

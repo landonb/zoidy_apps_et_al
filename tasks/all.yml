@@ -69,6 +69,10 @@
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
+    # tmux et al.
+    - lib-libevent
+    - lib-ncurses
+    - app-tmux
 
 - name: Run all the tasks to do all the things
   include_role:

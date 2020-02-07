@@ -78,6 +78,36 @@
   tags: app-vim-brams
 
 # ************************************************************************
+# *** Tmux. ***
+
+- name: Load role to install libevent
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: lib-libevent
+    apply:
+      tags:
+        - lib-libevent
+  tags: lib-libevent
+
+- name: Load role to install ncurses
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: lib-ncurses
+    apply:
+      tags:
+        - lib-ncurses
+  tags: lib-ncurses
+
+- name: Load role to Clone, Build, and Install tmux
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-tmux
+    apply:
+      tags:
+        - app-tmux
+  tags: app-tmux
+
+# ************************************************************************
 # *** Clis. ***
 
 - name: CLOC Installer

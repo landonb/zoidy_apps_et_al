@@ -1,0 +1,87 @@
+---
+
+# *** Local variables (Facts).
+
+- set_fact:
+    NCURSES_VER: '6.1'
+
+- set_fact:
+    NCURSES_DIR: "ncurses-{{ NCURSES_VER }}"
+
+- set_fact:
+    NCURSES_TAR: "{{ NCURSES_DIR }}.tar.gz"
+
+- set_fact:
+    NCURSES_URI: "https://invisible-mirror.net/archives/ncurses/{{ NCURSES_TAR }}"
+
+- set_fact:
+    NCURSES_ASC: "{{ NCURSES_URI }}.asc"
+
+# *** Alert user if newer version.
+
+# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
+
+# *** Download the release.
+
+- name: Fetch specified ncurses release
+  get_url:
+    url: "{{ NCURSES_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_TAR }}"
+
+# *** Verify the release.
+
+- name: "Fetch ncurses release PGP ASCII Armored file"
+  get_url:
+    url: "{{ NCURSES_ASC }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_TAR }}.asc"
+
+- name: "Verify armor"
+  command: "gpg --verify {{ NCURSES_TAR }}.asc"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/"
+
+# Fail if download cannot be verified.
+- name: "Verify ncurses release archive"
+  command: "gpg --verify {{ NCURSES_TAR }}.asc {{ NCURSES_TAR }}"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
+
+# ***
+
+- name: Unarchive the ncurses release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_TAR }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    remote_src: yes
+
+# ***
+
+- name: "ncurses: stat Makefile"
+  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}/Makefile"
+  register: ncurses_makefile
+
+- name: "ncurses: make clean"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}"
+    target: clean
+  when: ncurses_makefile.stat.exists == True
+
+- name: "ncurses: ./configure ..."
+  shell: ./configure --prefix={{ ansible_env.HOME }}/.local
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}"
+
+- name: "ncurses: make"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}"
+
+# 2020-02-06: (lb): To run tests, you can do so at this point.
+# - Note that you may/may not need to specify TERMINFO, e.g.,:
+#
+#   TERMINFO=/lib/terminfo/ /home/landonb/.downloads/ncurses-6.1/test/ncurses
+
+- name: "ncurses: make install"
+  make:
+    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}"
+    target: install
+
