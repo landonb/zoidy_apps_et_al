@@ -33,12 +33,18 @@
       # 2018-03-26: glances (`top`/`htop` alternative).
       - glances
 
+      # 2020-02-14: Oh, derp, why not, I should probably add my other projects here, as well...
+      - human-friendly_pedantic-timedelta
+
       # 2017-04-19: sha512_crypt wrapper [mkpasshash.py]
       - passlib
 
       # 2020-02-04: "Pexpect is a pure Python module for spawning child applications;
       # controlling them; and responding to expected patterns in their output."
       - pexpect
+
+      # 2020-02-14: Another packaging-related library.
+      - pipgrip
 
       # reStructured Text file2html server.
       - restview
