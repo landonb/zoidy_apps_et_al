@@ -24,20 +24,20 @@
 
 # ***
 
-- name: Clone repo (tmux)
+- name: tmux: git clone
   git:
     repo: "git@github.com:tmux/tmux.git"
     dest: "{{ TMUX_DIR }}"
     version: "{{ TMUX_BRANCH }}"
   register: gitclone
 
-- name: sh autogen.sh (tmux)
+- name: tmux: sh autogen.sh
   shell: sh autogen.sh
   args:
     chdir: "{{ TMUX_DIR }}"
 #  when: gitclone.changed or not kcov_symlink.stat.exists
 
-- name: sh autogen.sh (tmux)
+- name: tmux: configure
   shell: >
     CPPFLAGS="-I{{ ansible_env.HOME }}/.local/include" \
       LDFLAGS="-L{{ ansible_env.HOME }}/.local/lib" \
@@ -45,23 +45,23 @@
   args:
     chdir: "{{ TMUX_DIR }}"
 
-- name: make (ncurses)
+- name: tmux: make
   make:
     chdir: "{{ TMUX_DIR }}"
 
-- name: make install (ncurses)
+- name: tmux: make install
   make:
     chdir: "{{ TMUX_DIR }}"
     target: install
 
 # ***
 
-- name: Symlink man (tmux)
+- name: tmux: symlink man
   file:
     src: "{{ TMUX_DIR }}/tmux.1"
     dest: "{{ ansible_env.HOME }}/.local/man/man1/tmux.1"
     state: link
 
-- name: Regenerate local man (tmux)
+- name: tmux: rebuild man
   shell: mandb
 
