@@ -23,7 +23,7 @@
 #
 # Make sure you build command-t with the system Ruby:
 #
-#   cd ~/.vim/bundle/command-t/ruby/command-t/ext/command-t
+#   cd ~/.vim/pack/wincent/start/command-t/ruby/command-t/ext/command-t
 #   chruby system
 #   ruby extconf.rb
 #   make
