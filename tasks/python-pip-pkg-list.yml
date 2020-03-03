@@ -26,6 +26,12 @@
       #   https://argcomplete.readthedocs.io/en/latest/#activating-global-completion%20argcomplete
       - argcomplete
 
+      # Terminal session recorder
+      # https://github.com/asciinema/asciinema
+      - asciinema
+
+      - awscli
+
       # [lb]: 2019-01-03: I don't really use cookiecutter, but it's
       # nice to have available on the rare occasion it comes up.
       - cookiecutter
@@ -96,6 +102,4 @@
       #    13456 1546567704.85820: Loading ShellModule 'sh' from lib/ansible/plugins/shell/sh.py
       #
       # in _wait_on_pending_results(), because self._pending_results > 0 indefinitely.
-
-      - awscli
 
