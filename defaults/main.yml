@@ -34,6 +34,11 @@ zoidy_homefries_email_forward: ""
 zoidy_homefries_openvpn_user: ""
 zoidy_homefries_openvpn_pass: ""
 
-# YOU: Set the path to your BFG fork, if you have one.
+# YOU: Set the paths to projects already checked out; if empty, clones to ~/.downloads.
 zoidy_homefries_bfg_repo_path: ""
+zoidy_homefries_kcov_repo_path: ""
+zoidy_homefries_kdocker_repo_path: ""
+zoidy_homefries_meld_repo_path: ""
+zoidy_homefries_tmux_repo_path: ""
+zoidy_homefries_vim_repo_path: ""
 
