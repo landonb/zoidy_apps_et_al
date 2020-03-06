@@ -4,16 +4,37 @@
 # Command-T (activiated bu <Ctrl-D>), which requires Vim be built with
 # Ruby, and that the version of Ruby match that of the OS. Or so I'm led
 # to believe.
+# - 2020-03-06: Now's it nice just to have latest Vim, and to use custom icons!
 
-- name: Clone Vim repo
+# ***
+
+- set_fact:
+    VIM_BRANCH: "master"
+
+# ***
+
+- set_fact:
+    VIM_DIR: "{{ zoidy_homefries_vim_repo_path }}"
+
+- set_fact:
+    VIM_DIR: "{{ zoidy_homefries_downloads_dir }}/vim"
+  when: VIM_DIR == ""
+
+- name: Vim: git clone
   git:
     repo: "git@github.com:vim/vim.git"
-    dest: "{{ zoidy_homefries_downloads_dir }}/vim"
+    dest: "{{ VIM_DIR }}"
+    version: "{{ VIM_BRANCH }}"
+  # LATER/2020-03-06: Use gitclone and check ~/.local/bin/vim symlink
+  #                   to decide whether to (re)build.
+  # register: gitclone
+
+# ***
 
 # E.g., `make clean`
 - name: Clean Vim build
   make:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    chdir: "{{ VIM_DIR }}"
     target: clean
 
 # 2017-11-03: If commant-t does not work, Ctrl-D shows error, e.g.,:
@@ -56,19 +77,19 @@
       --enable-rubyinterp=yes \
       --prefix={{ ansible_env.HOME }}/.local
   args:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    chdir: "{{ VIM_DIR }}"
 
 # PROFILING: 2019-03-19: Task took: 24.74s (currently slowest task in ZP-HF).
 - name: Build Vim
   # -j 3 to use 3 CPU cores to build.
   shell: make -j 3
   args:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    chdir: "{{ VIM_DIR }}"
 
 # E.g., `make install`
 - name: Install Vim
   make:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/vim"
+    chdir: "{{ VIM_DIR }}"
     target: install
 
 # Verify that the correct Ruby was enabled by comparing:
