@@ -70,6 +70,15 @@
         - app-google-earth
   tags: app-google-earth
 
+- name: Load role to Install Kdocker
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-kdocker
+    apply:
+      tags:
+        - app-kdocker
+  tags: app-kdocker
+
 - name: Load role to Install meld
   include_role:
     name: zoidy_home-fries
