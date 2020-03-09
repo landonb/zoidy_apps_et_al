@@ -17,16 +17,19 @@
     KDOCKER_DIR: "{{ zoidy_homefries_downloads_dir }}/KDocker"
   when: KDOCKER_DIR == ""
 
-- name: KDocker: git clone
+- debug: msg="KDOCKER_DIR={{ KDOCKER_DIR }}"
+
+- name: KDocker » git clone
   git:
     repo: "git@github.com:user-none/KDocker.git"
     dest: "{{ KDOCKER_DIR }}"
     version: "{{ KDOCKER_BRANCH }}"
   register: gitclone
+  when: False
 
 # ***
 
-- name: KDocker: Ensure dev libs available
+- name: KDocker » Ensure dev libs available
   apt: name="{{ item }}" state="present"
   loop:
     - qt5-qmake
@@ -40,20 +43,21 @@
 
 # SKIP: Per INSTALL: No need to edit ``kdocker.pro``.
 
-- name: KDocker: qmake
-  shell: QT_SELECT=5 qmake
-  args: chdir="{{ KDOCKER_DIR }}"
+# Not sure why, but `args: chdir="{{ KDOCKER_DIR }}"` not
+# working, need to run `cd` in the shell command, instead.
 
-- name: KDocker: make
-  shell: QT_SELECT=5 make
-  args: chdir="{{ KDOCKER_DIR }}"
+- name: KDocker » qmake
+  shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 qmake
+
+- name: KDocker » make
+  shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 make
 
 # Rather than `sudo make install`, just symlink it,
 # because (so far) only wired to the Spotify app,
 # via zoidy_panelsweet/templates/launchers/spotify.desktop.j2;
 # i.e., I don't ever call KDocker myself from the command line.
 
-- name: KDocker: symlink
+- name: KDocker » symlink
   file:
     src: "{{ KDOCKER_DIR }}/kdocker"
     dest: "{{ ansible_env.HOME }}/.local/bin/kdocker"
