@@ -134,8 +134,8 @@
 
 - name: Kick the SSH agent
   shell: >
-    source "{{ ansible_env.HOME }}/.homefries/lib/ssh_util.sh"
-    SSH_SECRETS="{{ zoidy_homefries_ssh_root_dir }}/.cheat" ssh_agent_kick
+    SSH_SECRETS="{{ zoidy_homefries_ssh_root_dir }}/.cheat" \
+      "{{ ansible_env.HOME }}/.homefries/bin/ssh-agent-kick"
   when: ssh_add_l.rc == 0
 
 # Verify by connecting to a server, e.g., try connecting to GitHub:
