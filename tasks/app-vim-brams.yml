@@ -9,7 +9,8 @@
 # ***
 
 - set_fact:
-    VIM_BRANCH: "master"
+    # VIM_BRANCH: "master"
+    VIM_BRANCH: "tip/2020-03-10-1671f448"
 
 # ***
 
@@ -20,9 +21,12 @@
     VIM_DIR: "{{ zoidy_homefries_downloads_dir }}/vim"
   when: VIM_DIR == ""
 
-- name: Vim: git clone
+- name: Vim ∷ git clone
   git:
-    repo: "git@github.com:vim/vim.git"
+    # repo: "git@github.com:vim/vim.git"
+    # remote: upstream
+    repo: "git@github.com:landonb/vim.git"
+    remote: myfork
     dest: "{{ VIM_DIR }}"
     version: "{{ VIM_BRANCH }}"
   # LATER/2020-03-06: Use gitclone and check ~/.local/bin/vim symlink
