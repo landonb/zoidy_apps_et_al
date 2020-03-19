@@ -13,6 +13,74 @@
 
 # ***
 
+# Full Emoji Modifier Sequences
+
+# Ref:
+#
+#   # Emoji Versions, v13.0
+#   # - Showing year each emoji was first defined.
+#   https://unicode.org/emoji/charts/emoji-versions.html
+#
+# NOTE: As of 2020-03-19: My favorite font, Hack, or at least however
+# I've got things setup, in any case, neither my terminal nor editor
+# show 2019 or later emoji, so stick with Emoji v11 until, uh, whenever.
+
+# Ref:
+#
+#   # Full Emoji List, v13.0 (or latest)
+#   https://unicode.org/emoji/charts/full-emoji-list.html
+#   # Without all device variants:
+#   https://www.unicode.org/emoji/charts-13.0/emoji-list.html
+#   # Or non-changing link:
+#   https://www.unicode.org/emoji/charts-13.0/full-emoji-list.html
+#
+#   https://home.unicode.org/emoji/
+#
+#   https://www.unicode.org/versions/enumeratedversions.html
+#
+#   https://www.unicode.org/emoji/charts-11.0/
+#
+#   # What's nice about the 1-character (no devices) variant
+#   # is that there's an Other Keywords column!
+#   https://www.unicode.org/emoji/charts-11.0/emoji-list.html
+#   https://www.unicode.org/emoji/charts-11.0/full-emoji-list.html
+
+# 2020-03-19: Note: Used to save these to ~/.downloads/unicode_inc
+#                   feels just as at home at "~/.downloads/dicts-en, why not.
+
+- name: ref-dict ∷ Unicode ∷ set file path
+  set_fact:
+    # zoidy_hf_ref_unicode_latest: "{{ zoidy_homefries_dls_dicts_dir }}/full-emoji-list.html"
+    zoidy_hf_ref_unicode_v13: "{{ zoidy_homefries_dls_dicts_dir }}/emoji-list-full-v13.html"
+
+- name: ref-dict ∷ Unicode ∷ stat v13 full
+  stat: path="{{ zoidy_hf_ref_unicode_v13 }}"
+  register: ref_unicode_v13_f
+
+- name: ref-dict ∷ Unicode ∷ fetch v13 full
+  get_url:
+    url: "https://www.unicode.org/emoji/charts-13.0/full-emoji-list.html"
+    dest: "{{ zoidy_hf_ref_unicode_v13 }}"
+  when: not ref_unicode_v13_f.stat.exists
+
+# ---
+
+- name: ref-dict ∷ Unicode ∷ set file path
+  set_fact:
+    zoidy_hf_ref_unicode_v11: "{{ zoidy_homefries_dls_dicts_dir }}/emoji-list-keyd-v11.html"
+
+- name: ref-dict ∷ Unicode ∷ stat v11 full
+  stat: path="{{ zoidy_hf_ref_unicode_v11 }}"
+  register: ref_unicode_v11_f
+
+- name: ref-dict ∷ Unicode ∷ fetch v11 full
+  get_url:
+    url: "https://www.unicode.org/emoji/charts-11.0/emoji-list.html"
+    dest: "{{ zoidy_hf_ref_unicode_v11 }}"
+  when: not ref_unicode_v11_f.stat.exists
+
+# ***
+
 # Gutenberg Project
 #   Webster's Unabridged English Dictionary (2009 copyright, but 1913 edition)
 #     http://www.gutenberg.org/ebooks/29765
@@ -90,7 +158,7 @@
 #   https://github.com/ansible/community/wiki/Module:-unarchive
 #   - Whoa. Intense discussion. Module maintainer quit over it:
 #   https://github.com/ansible/ansible-modules-core/issues/3241
-# So this won't work: 
+# So this won't work:
 #   - unarchive:
 #       src: "{{ zoidy_hf_ref_wikitionary_local }}"
 #       dest: "{{ zoidy_homefries_dls_dicts_dir }}/"
