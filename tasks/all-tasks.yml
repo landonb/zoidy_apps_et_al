@@ -221,6 +221,15 @@
         - font-hack
   tags: font-hack, dubs-vim
 
+- name: Load role to Install Font “Hack Nerd Font”
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: font-hack-nerd-font
+    apply:
+      tags:
+        - font-hack-nerd-font
+  tags: font-hack-nerd-font
+
 - name: Load role to Install Fonts
   include_role:
     name: zoidy_home-fries

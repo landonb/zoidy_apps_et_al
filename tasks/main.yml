@@ -62,6 +62,7 @@
     - dmn-dropbox
     - email-gmail-postfix
     - font-hack, dubs-vim
+    - font-hack-nerd-font
     - font-mania
     - golang-go-get-packages
     - hardware-android-studio
