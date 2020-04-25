@@ -126,6 +126,15 @@
   # 2019-03-05 13:32: Disabled. Snap installation works great.
   when: False
 
+- name: "Load role to Install VirtualBox"
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-virtualbox
+    apply:
+      tags:
+        - app-virtualbox
+  tags: app-virtualbox
+
 # ************************************************************************
 # *** Clis. ***
 

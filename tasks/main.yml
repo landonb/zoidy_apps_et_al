@@ -53,6 +53,7 @@
     - app-pencil-project-evolus
     - app-scala-sbt
     - app-spotify
+    - app-virtualbox
     - cli-exiftool
     - cli-exiv2
     - cli-kcov
