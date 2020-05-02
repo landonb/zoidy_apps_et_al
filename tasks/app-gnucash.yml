@@ -1,0 +1,103 @@
+---
+
+# - Ref:
+#
+#     https://wiki.gnucash.org/wiki/Building_On_Linux
+
+# ***
+
+- set_fact:
+    # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
+    GNUCASH_BRANCH: "3.10"
+
+# ***
+
+- set_fact:
+    GNUCASH_DIR: "{{ zoidy_homefries_gnucash_repo_path }}"
+
+- set_fact:
+    GNUCASH_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash"
+  when: GNUCASH_DIR == ""
+
+- name: gnucash ∷ git clone
+  git:
+    repo: "git@github.com:Gnucash/gnucash.git"
+    remote: upstream
+    dest: "{{ GNUCASH_DIR }}"
+    version: "{{ GNUCASH_BRANCH }}"
+  # LATER/2020-05-02: Somehow periodically check for new version? Or just do manually?
+  # - You could store clone result to local variable, like you do elsewhere:
+  #     register: gitclone
+  #   but really you'd want to run your `git bump s` tool to compare the latest version
+  #   tag against GNUCASH_BRANCH.
+
+# ***
+
+- name: Run command "apt-get update" (app-gnucash)
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: gnucash » ensure dependencies present(ly installed)
+  apt: name="{{ item }}" state="present"
+  become: true
+  # 2020-05-02: (lb): I assembled this list via repeated `cmake` dependency error
+  # resolution, until there were no more. Also, it was done on a system with all
+  # other Zoidy Pooh Ansible tasks applied -- as such, this list might be incomplete
+  # on a fresh distro. Eh.
+  loop:
+    - qt5-qmake
+    - libqt5x11extras5-dev
+    - libxmu-dev
+    - libwebkit2gtk-4.0-dev
+    - swig
+    - guile-2.2-dev
+    - libgwenhywfar-core-dev
+    - libaqbanking-dev
+    - libofx-dev
+    - libgwengui-gtk3-dev
+    #
+    - libdbi-dev
+    - libdbd-freetds
+    - libdbd-mysql
+    - libdbd-pgsql
+    - libdbd-sqlite3
+    #
+    - libboost-dev
+    - libboost-date-time-dev
+    - libboost-regex-dev
+    - libboost-locale-dev
+    - libboost-filesystem-dev
+    - libboost-system-dev
+    #
+    - libsecret-1-dev
+    - libgtest-dev
+    - google-mock
+
+# ***
+
+- set_fact:
+    GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../gnucash-build"
+
+- name: gnucash » ensure build directory exists
+  file: path={{ GNUCASH_BUILD_DIR }} state=directory
+
+- name: Build gnucash application
+  shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" ../gnucash
+  args:
+    chdir: "{{ GNUCASH_BUILD_DIR }}"
+  # FIXME/2020-05-02: Make this task reentrant, something like:
+  #  when: gitclone.changed or not user_local_bin_gnucash.stat.exists
+
+# ***
+
+- name: "gnucash make"
+  make:
+    chdir: "{{ GNUCASH_BUILD_DIR }}"
+
+- name: "gnucash make install"
+  make:
+    chdir: "{{ GNUCASH_BUILD_DIR }}"
+    target: install
+

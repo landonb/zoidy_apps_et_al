@@ -78,6 +78,43 @@
   tags: app-vim-brams
 
 # ************************************************************************
+# *** Gnucash. ***
+
+- name: Load role to Install gettext
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: lib-gettext
+    apply:
+      tags:
+        - lib-gettext
+  tags: lib-gettext
+
+- name: Load role to Install gnucash
+  include_role:
+    name: zoidy_home-fries
+    # FIXME/2020-05-02: Test this: Does running app-gnucash task also run lib-gettext?
+    tasks_from:
+      - lib-gettext
+      - app-gnucash
+      - app-gnucash-docs
+    apply:
+      tags:
+        - lib-gettext
+        - app-gnucash
+        - app-gnucash-docs
+  tags:
+    - app-gnucash
+
+- name: Load role to Install gnucash docs
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: app-gnucash-docs
+    apply:
+      tags:
+        - app-gnucash-docs
+  tags: app-gnucash-docs
+
+# ************************************************************************
 # *** Tmux. ***
 
 - name: Load role to install libevent

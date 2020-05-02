@@ -73,6 +73,10 @@
     - lib-libevent
     - lib-ncurses
     - app-tmux
+    # gnucash
+    - lib-gettext
+    - app-gnucash
+    - app-gnucash-docs
 
 - name: Run all the tasks to do all the things
   include_role:

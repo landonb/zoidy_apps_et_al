@@ -1,0 +1,70 @@
+---
+
+# After installing gnucash-docs, you can access the docs through gnucash, or you
+# can open them directly, e.g., use yelp to open the *Tutorial and Concepts Guide*:
+#   /usr/bin/yelp ghelp:gnucash-guide
+
+# ***
+
+- set_fact:
+    # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
+    GNUCASH_DOCS_BRANCH: "3.10"
+
+# ***
+
+- set_fact:
+    GNUCASH_DOCS_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}"
+
+- set_fact:
+    GNUCASH_DOCS_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash-docs"
+  when: GNUCASH_DOCS_DIR == ""
+
+- name: gnucash docs ∷ git clone
+  git:
+    repo: "git@github.com:Gnucash/gnucash-docs.git"
+    remote: upstream
+    dest: "{{ GNUCASH_DOCS_DIR }}"
+    version: "{{ GNUCASH_DOCS_BRANCH }}"
+  # LATER/2020-05-02: Somehow periodically check for new versions...
+
+# ***
+
+- name: Run command "apt-get update" (app-gnucash-docs)
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: gnucash-docs » ensure dependencies present(ly installed)
+  apt: name="{{ item }}" state="present"
+  become: true
+  loop:
+    - fop
+
+# ***
+
+- name: gnucash-docs autogen.sh
+  # 2020-05-02: Do I need to specify the shell command?
+  #  shell: sh autogen.sh
+  shell: ./autogen.sh
+  args:
+    chdir: "{{ GNUCASH_DOCS_DIR }}"
+
+# ***
+
+- set_fact:
+    GNUCASH_DOCS_BUILD_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}/build"
+
+- name: gnucash-docs » ensure build directory exists
+  file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
+
+- name: "gnucash-docs ../configure ..."
+  shell: ../configure --prefix="{{ ansible_env.HOME }}/.local"
+  args:
+    chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
+
+- name: "gnucash-docs make"
+  make:
+    chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
+    target: install
+

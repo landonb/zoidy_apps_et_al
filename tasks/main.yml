@@ -37,6 +37,10 @@
     - lib-libevent
     - lib-ncurses
     - app-tmux
+    # gnucash
+    - lib-gettext
+    - app-gnucash
+    - app-gnucash-docs
     # *** From all-tasks.yml:
     - app-chrome
     - app-cinelerra-gg
