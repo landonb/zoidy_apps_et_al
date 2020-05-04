@@ -41,6 +41,7 @@
     - lib-gettext
     - app-gnucash
     - app-gnucash-docs
+    - perl-finance-quote
     # *** From all-tasks.yml:
     - app-chrome
     - app-cinelerra-gg

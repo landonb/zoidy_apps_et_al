@@ -1,0 +1,47 @@
+---
+
+# Optional GnuCash extension (also runs on its own).
+
+# http://finance-quote.sourceforge.net/
+
+- name: “Installing Finance::Quote” (gnucash)
+  # - I tried without sudo, e.g.,
+  #     shell: echo "y" | gnc-fq-update
+  #     args:
+  #       chdir: "{{ ansible_env.HOME }}/.local/bin"
+  #   Which answers Yes to:
+  #     You probably need to be root before running gnc-fq-update.
+  #     Are you sure, you want to update parts of your Perl library? (y/n)
+  #   Seems to install okay (and installs to ~/.cpan/build/),
+  #   but the subsequent test fails:
+  #     $ gnc-fq-dump
+  #     /home/landonb/.local/bin/gnc-fq-dump cannot find all the Perl modules needed to run.
+  #     You need to install the following Perl modules:
+  #       Finance::Quote
+  #     Use your system's package manager to install them,
+  #     or run 'gnc-fq-update' as root.
+  # - Be prepared to wait, there's a lot that gets installed...
+  #   though not sure it's all for gnucash! So many dependencies.
+  # - Not sure chdir is necessary, as ~/.local/bin is on PATH.
+  # - FIXME/2020-05-03: Test: there's a long, rant-warning about
+  #   incompatibility with the latest Perl versions. But the rant
+  #   is from 2015. Not sure if it's still an issue.
+  #     *** canary::stability compatibility and support check
+  #     *** =================================================
+  #     ...
+  #     *** standard perl versions 5.022 and up are not supported by json::xs.
+  #     ...
+  #   See:
+  #     http://blog.schmorp.de/2015-06-06-a-stable-perl.html
+  shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
+  become: true
+
+- name: Test Finance::Quote Perl module (gnucash)
+  shell: gnc-fq-dump nasdaq amzn
+  args:
+    chdir: {{ ansible_env.HOME }}/.local/bin
+  # (lb): This needs an API key, best stored in pass...
+  when: False
+  environment:
+    ALPHAVANTAGE_API_KEY: "{{ ALPHAVANTAGE_API_KEY }}"
+

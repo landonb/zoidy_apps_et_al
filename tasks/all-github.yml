@@ -97,11 +97,13 @@
       - lib-gettext
       - app-gnucash
       - app-gnucash-docs
+      - perl-finance-quote
     apply:
       tags:
         - lib-gettext
         - app-gnucash
         - app-gnucash-docs
+        - perl-finance-quote
   tags:
     - app-gnucash
 
@@ -113,6 +115,15 @@
       tags:
         - app-gnucash-docs
   tags: app-gnucash-docs
+
+- name: Load role to Install Perl Finance::Quote
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: perl-finance-quote
+    apply:
+      tags:
+        - perl-finance-quote
+  tags: perl-finance-quote
 
 # ************************************************************************
 # *** Tmux. ***
