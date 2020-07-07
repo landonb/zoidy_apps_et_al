@@ -295,7 +295,25 @@
 # ************************************************************************
 # *** Npms. ***
 
-- name: Node.js npm Package Installer
+- name: Node.js node Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: node-npmjs-install
+    apply:
+      tags:
+        - node-npmjs-install
+  tags: node-npmjs-install
+
+- name: Node.js npm Installer
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: node-node-install
+    apply:
+      tags:
+        - node-node-install
+  tags: node-node-install
+
+- name: Node.js npm Packages Installer
   include_role:
     name: zoidy_home-fries
     tasks_from: node-npm-packages

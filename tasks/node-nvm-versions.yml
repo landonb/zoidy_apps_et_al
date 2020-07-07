@@ -5,6 +5,7 @@
   loop:
     - 6.9.4
     - 8.9.1
+    - 12.18.2
   args:
     # Run Bash so `source` works.
     executable: /bin/bash
@@ -14,6 +15,12 @@
 # For some reason, NVM default to v6.9.4.
 #   $ cat ~/.nvm/alias/default
 #   v6.9.4
+# 2020-07-07: On my laptop, default is 'system':
+#     $ cat ~/.nvm/alias/default
+#     system
+#   and I added node-npm-packages.yml which installs latest, 12.18.2,
+#   but requires that PATH reflect that... so not exactly system node,
+#   more like my user's node.
 - name: "Set Default Node.js"
   shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm alias default system
   args:

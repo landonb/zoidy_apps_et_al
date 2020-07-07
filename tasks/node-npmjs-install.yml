@@ -1,0 +1,45 @@
+---
+
+# Ref:
+#   https://github.com/npm/cli
+
+# 2020-07-07:
+#   $ node --version
+#   v12.18.2
+#   $ npm --version
+#   6.14.5
+
+# See also:
+#   nvm
+#   node-nvm-versions-mgr.yml
+#   node-nvm-versions.yml
+
+# *** Local variables (Facts).
+
+# Why does this bother me so much? Because it's insecure!
+# Like I'm just suppose to trust your install script?
+# You don't even provide a checksum, npm!
+# So we'll download the script manually, inspect it, store it,
+# but not automatically download it, like this:
+- name: 'DO YOU TRUST THIS? Download npm install.sh'
+  get_url:
+    url: "https://www.npmjs.org/install.sh"
+    dest: "{{ zoidy_homefries_downloads_dir }}/npmjs.org-install.sh"
+  when: False
+
+# The install script downloads another script:
+#   https://registry.npmjs.org/npm/latest
+# Ug... I'm gonna have to just trust it, aren't I?
+# - That file is parsed for a tar URL, which is then fetched,
+#   unpacked, ./configure'd, and make'd.
+
+- name: Run npm installer
+  # (lb): I'll admit this is half-baked, because I just copied an installer
+  # to vet it, but I didn't vet the archive that the script that this installer
+  # downloads downloads.
+  shell: "{{ role_path }}/files/npmjs.org-install.sh"
+  args:
+    executable: /bin/sh
+  # Hrmm. Installs to /usr/lib/node_modules...
+  become: yes
+

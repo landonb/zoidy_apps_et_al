@@ -1,0 +1,81 @@
+---
+
+# FIXME/2020-07-07: See also:
+#   node-nvm-versions.yml
+# I'm not sure if this task really necessary,
+# or if I should just be using `nvm`.
+# - But this task at least works,
+#   and installs the latest node version
+#   (or whatever's indicated by the next fact variable).
+
+- set_fact:
+    # See:
+    #   https://nodejs.org/en/download/
+    # 2020-07-07:
+    NODEJS_VER: '12.18.2'
+    # See:
+    #   https://nodejs.org/dist/v12.18.2/SHASUMS256.txt.asc
+    NODEJS_XSUM: "b8dc634798ee783482c2ae1755bd7dff09d83fa7bb037cdc370b601d0a5e5cbb"
+
+- set_fact:
+    NODEJS_DIR: "node-v{{ NODEJS_VER }}-linux-x64"
+
+- set_fact:
+    NODEJS_TAR: "{{ NODEJS_DIR }}.tar.xz"
+
+- set_fact:
+    # E.g.,
+    #   https://nodejs.org/dist/v12.18.2/node-v12.18.2-linux-x64.tar.xz
+    NODEJS_URI: "https://nodejs.org/dist/v12.18.2/{{ NODEJS_TAR }}"
+
+- set_fact:
+    NODEJS_LIB: "{{ ansible_env.HOME }}/.local/lib/nodejs"
+
+# ***
+
+# Skip if already downloaded.
+- name: Stat nodejs release archive
+  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ NODEJS_URI }}"
+  register: nodejs_tar_f
+
+# FIXME/2020-07-07: Run this and other curl's, or check GitHubs, for latest versions (of things).
+
+- name: Fetch latest nodejs release
+  get_url:
+    url: "{{ NODEJS_URI }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    checksum: "sha256:{{ NODEJS_XSUM }}"
+  when: not nodejs_tar_f.stat.exists
+
+# *** Local install... not recommended, eh.
+
+- name: Ensure ~/.local/lib/nodejs directory exists
+  file: path="{{ NODEJS_LIB }}" state=directory
+  tags: always
+  when: False
+
+- name: Unarchive the nodejs release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ NODEJS_TAR }}"
+    dest: "{{ NODEJS_LIB }}/"
+    remote_src: yes
+  when: False
+
+# *** System install.
+
+- name: Ensure /usr/local/lib/nodejs directory exists
+  file: path="/usr/local/lib/nodejs" state=directory
+  tags: always
+  become: yes
+
+- name: Unarchive the nodejs release archive
+  unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ NODEJS_TAR }}"
+    dest: "/usr/local/lib/nodejs/"
+    remote_src: yes
+  become: yes
+
+# YOU: See github.com/landonb/home-fries for PATH setup, e.g.,
+#   #PATH+=~/.local/lib/nodejs/node-v12.18.2-linux-x64/bin
+#   PATH+=/usr/local/lib/nodejs/node-v12.18.2-linux-x64/bin
+

@@ -10,14 +10,18 @@
   become: true
   apt: name={{ item }}
   loop:
-    - nodejs
+    # 2020-07-07: `node` installed from latest. See:
+    #   node-npmjs-install.yml
+    #  - nodejs
     # 2019-12-30: libssl1.0-dev dep. for nodejs-dev.
     - libssl1.0-dev
     # 2019-12-30: nodejs-dev dep. for node-gyp.
     - nodejs-dev
     # 2019-12-30: node-gyp dep. for parcel-bundler.
     - node-gyp
-    - npm
+    # 2020-07-07: `npm` installed from latest. See:
+    #   node-npmjs-install.yml
+    #  - npm
 
 - name: Install Node NPM projects
   npm:
