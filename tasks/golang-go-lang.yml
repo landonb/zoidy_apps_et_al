@@ -10,7 +10,12 @@
 
 - set_fact:
     # FIXME/2019-10-17: Query the latest Go version and use that.
-    GOLANG_VER: '1.13.3'
+    # 2019-10-17:
+    #  GOLANG_VER: '1.13.3'
+    #  GOLANG_XSUM: "0804bf02020dceaa8a7d7275ee79f7a142f1996bfd0c39216ccb405f93f994c0"
+    # 2020-07-07:
+    GOLANG_VER: '1.14.4'
+    GOLANG_XSUM: "aed845e4185a0b2a3c3d5e1d0a35491702c55889192bb9c30e67a3de6849c067"
 
 - set_fact:
     GOLANG_DIR: "go{{ GOLANG_VER }}.linux-amd64"
@@ -22,7 +27,6 @@
     # E.g.,
     #   https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
     GOLANG_URI: "https://dl.google.com/go/{{ GOLANG_TAR }}"
-    GOLANG_XSUM: "0804bf02020dceaa8a7d7275ee79f7a142f1996bfd0c39216ccb405f93f994c0"
 
 # *** Alert user if newer version.
 
@@ -43,7 +47,7 @@
 
 # The archive is contained within a directory not named with the version,
 # i.e., simply 'go', so use the full archive name.
-- name: Ensure user ~/.local/bin directory exists
+- name: Ensure ~/.download/go<version>.linux-amd64 directory exists
   file: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}" state=directory
   tags: always
 
