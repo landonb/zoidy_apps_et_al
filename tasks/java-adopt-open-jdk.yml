@@ -49,6 +49,7 @@
     paths: "{{ zoidy_homefries_downloads_dir }}/{{ ADOPTOPENJDK_DIR }}/jdk-11.0.5+10/bin"
   register: java_bin_find
 
+# FIXME/2020-07-14 12:58: Replace with Zulu JDK, because thinkorswim...
 - name: Symlink AdoptOpenJDK binaries from user local bin/
   file:
     src: "{{ item.path }}"
