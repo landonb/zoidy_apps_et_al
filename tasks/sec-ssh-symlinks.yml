@@ -73,7 +73,7 @@
 # But we can work around with a prior lookup.
 
 - name: Find all SSH files on remote host
-  shell: /bin/ls {{ ansible_env.HOME }}/.ssh/*
+  shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*
   register: ssh_files
 
 - name: Ensure proper permissions for SSH on .ssh files
@@ -83,7 +83,7 @@
   with_items: "{{ ssh_files.stdout_lines }}"
 
 - name: Find all SSH public keys on remote host
-  shell: /bin/ls {{ ansible_env.HOME }}/.ssh/*.pub
+  shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*.pub
   ignore_errors: yes
   register: pub_files
 
