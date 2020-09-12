@@ -101,3 +101,14 @@
     chdir: "{{ GNUCASH_BUILD_DIR }}"
     target: install
 
+# ***
+
+- name: Setup Preferred GnuCash Preferences
+  dconf:
+    key: "/org/gnucash/general/register/{{ item.key }}"
+    value: "{{ item.val }}"
+    state: present
+
+    - key: "default-style-autoledger"
+      val: "true"
+
