@@ -11,11 +11,11 @@
 - set_fact:
     # See:
     #   https://nodejs.org/en/download/
-    # 2020-07-07:
-    NODEJS_VER: '12.18.2'
+    # 2020-09-24:
+    NODEJS_VER: '12.18.4'
     # See:
-    #   https://nodejs.org/dist/v12.18.2/SHASUMS256.txt.asc
-    NODEJS_XSUM: "b8dc634798ee783482c2ae1755bd7dff09d83fa7bb037cdc370b601d0a5e5cbb"
+    #   curl https://nodejs.org/dist/v12.18.4/SHASUMS256.txt.asc | grep node-v12.18.4-linux-x64.tar.xz
+    NODEJS_XSUM: "b6434590cf7013c8592f895595d71a169f57e59bbb7db639c62779950e12e20c"
 
 - set_fact:
     NODEJS_DIR: "node-v{{ NODEJS_VER }}-linux-x64"
@@ -26,7 +26,7 @@
 - set_fact:
     # E.g.,
     #   https://nodejs.org/dist/v12.18.2/node-v12.18.2-linux-x64.tar.xz
-    NODEJS_URI: "https://nodejs.org/dist/v12.18.2/{{ NODEJS_TAR }}"
+    NODEJS_URI: "https://nodejs.org/dist/v{{ NODEJS_VER }}/{{ NODEJS_TAR }}"
 
 - set_fact:
     NODEJS_LIB: "{{ ansible_env.HOME }}/.local/lib/nodejs"
