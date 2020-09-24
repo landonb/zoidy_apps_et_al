@@ -49,6 +49,8 @@
 
 # *** Local install... not recommended, eh.
 
+# WAIT/WHAT/2020-09-24 12:34: "not recommended"? Says who??
+
 - name: Ensure ~/.local/lib/nodejs directory exists
   file: path="{{ NODEJS_LIB }}" state=directory
   tags: always
