@@ -81,3 +81,16 @@
 #   #PATH+=~/.local/lib/nodejs/node-v12.18.2-linux-x64/bin
 #   PATH+=/usr/local/lib/nodejs/node-v12.18.2-linux-x64/bin
 
+# *** Add to PATH (assuming /usr/local/bin on PATH).
+
+- name: Symlink node
+  file:
+    src: "/usr/local/lib/nodejs/{{ NODEJS_DIR }}/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: link
+  loop:
+    - node
+    - npm
+    - npx
+  become: yes
+
