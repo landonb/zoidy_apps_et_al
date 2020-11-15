@@ -89,7 +89,14 @@
     apply:
       tags:
         - lib-gettext
-  tags: lib-gettext
+        # If you want `ansible-playbook ... --tags app-gnucash`
+        # to also run this task, include the other tag twice,
+        # once here...:
+        #  - app-gnucash
+  tags:
+    - lib-gettext
+    # ... and then include the other tag again here:
+    #  - app-gnucash
 
 - name: Load role to Install libboost
   include_role:
