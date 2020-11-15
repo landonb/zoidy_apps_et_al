@@ -1,8 +1,10 @@
 ---
 
-# *** Local variables (Facts).
-
 # https://www.boost.org/users/download/
+
+# https://www.boost.org/doc/libs/1_72_0/more/getting_started/unix-variants.html
+
+# *** Local variables (Facts).
 
 - set_fact:
     # https://www.boost.org/users/history/version_1_74_0.html
@@ -11,7 +13,6 @@
 
 - set_fact:
     LIBBOOST_XSMBZ2: '83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1'
-    #LIBBOOST_XSMGZ: 'afff36d392885120bcac079148c177d1f6f7730ec3d47233aa51b0afa4db94a5'
 
 - set_fact:
     LIBBOOST_VERDIR: "boost_{{ LIBBOOST_ULNVER }}"
@@ -32,24 +33,16 @@
     url: "{{ LIBBOOST_REMOTE }}"
     dest: "{{ LIBBOOST_PATHBZ }}"
     checksum: "sha256:{{ LIBBOOST_XSMBZ2 }}"
-  # MAYBE/2020-11-15: Skip if already downloaded.
+  # MAYBE/2020-11-15: Skip if already downloaded (it's 100 MB).
   #  when: False
-  # MAYBE/2020-11-15 00:23: Remove download after unpacking, clear
-  #                         100 MB off your precious 1 TB mobile drive.
 
 # ***
 
-# - set_fact:
-#     LIBBOOST_INCDIR: "{{ ansible_env.HOME }}/.local/include/{{ LIBBOOST_VERDIR }}"
-
-# - name: libboost » Mkdir
-#   file: path="{{ LIBBOOST_INCDIR }}" state=directory
-
 - name: libboost » Unpack
-  # Unpacks to ~/.downloads/boost_1_74_0.tar:
-  #   command: "bzip2 -dk {{ LIBBOOST_PATHBZ }}"
   command: "tar --bzip2 -xf {{ LIBBOOST_PATHBZ }}"
   args:
-    # chdir: "{{ LIBBOOST_INCDIR }}"
+    # NOTE: Unpacks to directory of same name, so can unpack to top-level include.
     chdir: "{{ ansible_env.HOME }}/.local/include"
+
+# MAYBE/2020-11-15: Add step to remove download (it's 100 MB).
 
