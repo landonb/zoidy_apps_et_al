@@ -1,3 +1,5 @@
+---
+
 # FUG
 - name: SSH directory symlink populator
   include_role:
