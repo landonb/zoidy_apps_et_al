@@ -39,6 +39,7 @@
     - app-tmux
     # gnucash
     - lib-gettext
+    - lib-libboost
     - app-gnucash
     - app-gnucash-docs
     - perl-finance-quote

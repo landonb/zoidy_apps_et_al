@@ -1,0 +1,55 @@
+---
+
+# *** Local variables (Facts).
+
+# https://www.boost.org/users/download/
+
+- set_fact:
+    # https://www.boost.org/users/history/version_1_74_0.html
+    LIBBOOST_DOTVER: '1.74.0'
+    LIBBOOST_ULNVER: '1_74_0'
+
+- set_fact:
+    LIBBOOST_XSMBZ2: '83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1'
+    #LIBBOOST_XSMGZ: 'afff36d392885120bcac079148c177d1f6f7730ec3d47233aa51b0afa4db94a5'
+
+- set_fact:
+    LIBBOOST_VERDIR: "boost_{{ LIBBOOST_ULNVER }}"
+
+- set_fact:
+    LIBBOOST_TARBZ2: "{{ LIBBOOST_VERDIR }}.tar.bz2"
+
+- set_fact:
+    LIBBOOST_REMOTE: "https://dl.bintray.com/boostorg/release/{{ LIBBOOST_DOTVER }}/source/{{ LIBBOOST_TARBZ2 }}"
+
+- set_fact:
+    LIBBOOST_PATHBZ: "{{ zoidy_homefries_downloads_dir }}/{{ LIBBOOST_TARBZ2 }}"
+
+# ***
+
+- name: libboost » Fetch
+  get_url:
+    url: "{{ LIBBOOST_REMOTE }}"
+    dest: "{{ LIBBOOST_PATHBZ }}"
+    checksum: "sha256:{{ LIBBOOST_XSMBZ2 }}"
+  # MAYBE/2020-11-15: Skip if already downloaded.
+  #  when: False
+  # MAYBE/2020-11-15 00:23: Remove download after unpacking, clear
+  #                         100 MB off your precious 1 TB mobile drive.
+
+# ***
+
+# - set_fact:
+#     LIBBOOST_INCDIR: "{{ ansible_env.HOME }}/.local/include/{{ LIBBOOST_VERDIR }}"
+
+# - name: libboost » Mkdir
+#   file: path="{{ LIBBOOST_INCDIR }}" state=directory
+
+- name: libboost » Unpack
+  # Unpacks to ~/.downloads/boost_1_74_0.tar:
+  #   command: "bzip2 -dk {{ LIBBOOST_PATHBZ }}"
+  command: "tar --bzip2 -xf {{ LIBBOOST_PATHBZ }}"
+  args:
+    # chdir: "{{ LIBBOOST_INCDIR }}"
+    chdir: "{{ ansible_env.HOME }}/.local/include"
+

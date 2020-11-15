@@ -89,6 +89,16 @@
         - lib-gettext
   tags: lib-gettext
 
+- name: Load role to Install libboost
+  include_role:
+    name: zoidy_home-fries
+    tasks_from: lib-libboost
+    apply:
+      tags:
+        - lib-libboost
+  tags:
+    - lib-libboost
+
 - name: Load role to Install gnucash
   include_role:
     name: zoidy_home-fries
