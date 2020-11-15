@@ -111,20 +111,18 @@
 - name: Load role to Install gnucash
   include_role:
     name: zoidy_home-fries
-    # FIXME/2020-05-02: Test this: Does running app-gnucash task also run lib-gettext?
-    tasks_from:
-      - lib-gettext
-      - app-gnucash
-      - app-gnucash-docs
-      - perl-finance-quote
+    # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash
+    # (add app-gnucash to each of their apply-tags and tags):
+    #    - lib-gettext
+    #    - lib-libboost
+    #    - app-gnucash
+    #    - app-gnucash-docs
+    #    - perl-finance-quote
+    tasks_from: app-gnucash
     apply:
       tags:
-        - lib-gettext
         - app-gnucash
-        - app-gnucash-docs
-        - perl-finance-quote
-  tags:
-    - app-gnucash
+  tags: app-gnucash
 
 - name: Load role to Install gnucash docs
   include_role:
