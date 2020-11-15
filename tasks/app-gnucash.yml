@@ -7,8 +7,20 @@
 # ***
 
 - set_fact:
-    # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
-    GNUCASH_BRANCH: "3.10"
+    # 2020-05-02: How have I not been using GnuCash for the past 2 decades??
+    # This app rocks.
+    # GNUCASH_BRANCH: "3.10"
+    #
+    # 2020-11-14: I was looking for a way to run reports from the CLI
+    # (e.g., so I can dump portfolio data to CSV, import to a spreadsheet,
+    # and do my own analysis), and -- lo! -- the awesome GnuCash devs added
+    # a GNC CLI in 4.0, how sweet!
+    GNUCASH_BRANCH: "4.2"
+
+- set_fact:
+    GNUCASH_FORCE: False
+    # DEV: Set this True if you want to build even if build directory exists.
+    #  GNUCASH_FORCE: True
 
 # ***
 
@@ -16,20 +28,68 @@
     GNUCASH_DIR: "{{ zoidy_homefries_gnucash_repo_path }}"
 
 - set_fact:
+    # Default checkout path if not specially specified.
     GNUCASH_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash"
   when: GNUCASH_DIR == ""
+
+# ***
+
+- name: gnucash » Check active version
+  shell: >
+    ./gnucash --version | head -1 \
+    | grep '^GnuCash {{ GNUCASH_BRANCH }}\b' \
+    || true
+  args:
+    chdir: "{{ ansible_env.HOME }}/.local/bin"
+  register: gncvers_output
+  ignore_errors: yes
+
+- name: gnucash » Announce version results
+  debug:
+    msg: >
+          Your GnuCash is already up to date!
+
+            {{ gncvers_output.stdout_lines }}
+  when: gncvers_output.rc == 0
+
+- meta: end_play
+  when: gncvers_output.rc == 0 and not GNUCASH_FORCE
+
+# ***
 
 - name: gnucash ∷ git clone
   git:
     repo: "git@github.com:Gnucash/gnucash.git"
-    remote: upstream
+    remote: starter
     dest: "{{ GNUCASH_DIR }}"
-    version: "{{ GNUCASH_BRANCH }}"
-  # LATER/2020-05-02: Somehow periodically check for new version? Or just do manually?
-  # - You could store clone result to local variable, like you do elsewhere:
-  #     register: gitclone
-  #   but really you'd want to run your `git bump s` tool to compare the latest version
-  #   tag against GNUCASH_BRANCH.
+    # Releases are tagged, which we have to deal with in post.
+    version: "maint"
+  # LATER/2020-05-02: Check for newer version.
+  # - See git-bump-version-tag for help reading latest version tag.
+  # MEH/2020-11-15: On second thought, don't really care.
+  # - Probably most useful if you made a new playbook whose tasks
+  #   only checked for most recent versions of tools...
+  #   but also seems tedious and not worth the effort
+  #   (i.e., you'll update an app when you find out a
+  #   newer version has a feature you want, and you won't
+  #   update for the sake of updating).
+  # - You could also make the `cmake` command below reentrant,
+  #   so that calling this task repeatedly doesn't waste time
+  #   re-downloading and re-building the same GnuCash as what's
+  #   installed... but, again, seems like a tedious proposition.
+
+- name: gnucash » checkout version branch
+  shell: git checkout rel/{{ GNUCASH_BRANCH }}
+  args:
+    chdir: "{{ GNUCASH_DIR }}"
+  register: gitco_output
+  ignore_errors: yes
+
+- name: gnucash » create version branch
+  shell: git checkout tags/{{ GNUCASH_BRANCH }} -b rel/{{ GNUCASH_BRANCH }}
+  args:
+    chdir: "{{ GNUCASH_DIR }}"
+  when: gitco_output.rc != 0
 
 # ***
 
@@ -38,47 +98,146 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
+  when: False
 
 - name: gnucash » ensure dependencies present(ly installed)
   apt: name="{{ item }}" state="present"
   become: true
-  # 2020-05-02: (lb): I assembled this list via repeated `cmake` dependency error
-  # resolution, until there were no more. Also, it was done on a system with all
-  # other Zoidy Pooh Ansible tasks applied -- as such, this list might be incomplete
-  # on a fresh distro. Eh.
   loop:
-    - qt5-qmake
+    # v4.2
+    # ----
+    # 2020-11-15: (lb): I assembled this list from the GnuCash Wiki.
+    #   https://wiki.gnucash.org/wiki/Installing_Dependencies
+    # And I've included a few libraries that I found (through make
+    # trial-and-error) that I needed to build v3.10 (because I'm on
+    # the same machine, and those same libraries are still installed,
+    # so I'm carrying them forward to this list because I'm not sure
+    # that they're not necessary).
+    #
+    # *** libtool
+    - libtool
+    - libltdl-dev
+    # *** icu
+    - icu-devtools
+    - libicu-dev
+    # *** "glib2 > v2.40.0"
+    - libglib2.0-0
+    - libglib2.0-dev
+    # *** "boost > 1.50.0 - requires locale and regex built with ICU support"
+    # (lb): See instead `lib-libboost` task (which installs latest libboost,
+    # because I built with Boost v1.65.1, and GnuCash 4.2 told me I needed
+    # Boost 1.67 or better -- meaning, "> 1.50.0" comment from wiki seems old).
+    #  - libboost-all-dev
+    # *** "guile >= 2.0.0"
+    - guile-2.0
+    - guile-2.0-dev
+    # (lb): For v3.10, I found I needed guile-2.2, so including this, too:
+    - guile-2.2-dev
+    # *** "swig > 2.0.10 - swig3.0 on some systems"
+    # (lb): Yup, it's not swig2.0 on Mint 19.3. It's `swig` or `swig3.0`.
+    #  - swig2.0
+    - swig3.0
+    # *** libxml*
+    - libxml2
+    # (lb): NOTE: apt-search requires quotes and escapes:
+    #               apt search 'libxml\+\+2.6-dev'
+    #             but not apt-install...
+    #               apt install libxml++2.6-dev
+    - libxml++2.6-dev
+    - libxml2-utils
+    # *** libxslt1
+    - libxslt1.1
+    - libxslt1-dev
+    # *** xsltproc
+    - xsltproc
+    # *** "texinfo required for makeinfo"
+    - texinfo
+    # *** libsecret-1
+    - libsecret-1-0
+    - libsecret-1-dev
+    #
+    # "Only use the next 2 lines if you have not installed [[Google_Test | Google Test]] already."
+    # ">= 1.7.0"
+    - libgtest-dev
+    # "1.8.0 installs googlemock in a subdirectory of gtest"
+    - google-mock
+    #
+    # "gtk+3.0 >= 3.22.30"
+    - libgtk-3-dev
+    - libgtk-3-bin
+    #
+    # "> webkit2gtk-3.0"
+    - libwebkit2gtk-4.0-37
+    - libwebkit2gtk-4.0-dev
+
+    # v4.2 Optional: Database Backend
+    # -------------------------------
+    # libdbi*: "# > v0.8.3"
+    - libdbi1
+    - libdbi-dev
+    # "and at least one of the following database backends:"
+    - libdbd-pgsql
+    - libdbd-mysql
+    - libdbd-sqlite3
+
+    # v4.2 Optional: OFX File importing
+    # ---------------------------------
+    # "This will automatically install the corresponding libofx<n> package as well."
+    - libofx-dev
+
+    # v4.2 Optional: AqBanking (Online Banking)
+    # -----------------------------------------
+    # *aqbanking*: "# > v4.0.0"
+    - aqbanking-tools
+    - libaqbanking-dev
+    # *gwenhywfar*
+    - gwenhywfar-tools
+    - libgwenhywfar60
+    - libgwenhywfar60-dev
+    # 2020-11-15: I found (make trial-and-error discovered) that I needed
+    # this library to build v3.10. Not sure about v4.2. (But for v3.10, I
+    # had not installed gwenhywfar-tools or libgwenhywfar60-dev.)
+    - libgwenhywfar-core-dev
+    # libgwengui*: "included in tarball prior to v3.905/V4 beta"
+    # 2020-11-15: Linux Mint 19.3 (Ubuntu 18.04) has *-0 variant of this lib:
+    #  - libgwengui-gtk3
+    - libgwengui-gtk3-0
+    - libgwengui-gtk3-dev
+
+    # v4.2 Optional: Python Support (Python Bindings)
+    # -----------------------------------------------
+    # NOTE: Not including. But if you do:
+    #   "use the appropriate cmake option switch during the build"
+    #  - python3-pytest
+
+    # v4.2 Distribution-Specific *Focal Fossa 20.04 LTS* Issue
+    # --------------------------------------------------------
+    # If you were to run `apt-get build-dep gnucash`, per
+    #   https://wiki.gnucash.org/wiki/Building_On_Linux
+    # then you need to manually install this library as well:
+    #  - libboost-program-options1.71-dev
+    # (lb): Except I don't (yet) have a 20.04 host, and (probably more
+    # importantly) I'm not calling build-dep (instead see list of deps
+    # above), oh and also see `lib-libboost` which installs this lib to:
+    #   ~/.local/include/boost_1_74_0/libs/program_options/
+
+    # v4.2 Unknown: Libraries I needed to build v3.10
+    # -----------------------------------------------
+    # 2020-11-15: In addition to some of the libraries above, I found
+    # (aka discovered through make after make after make trial-and-error)
+    # that I needed these libraries to build v3.10. Not sure about v4.2.
+    # But can't hurt to keep; while discarding might break the build (any
+    # I wouldn't find out until I ran this task on a new host, which could
+    # be a while).
+    - libdbd-freetds
     - libqt5x11extras5-dev
     - libxmu-dev
-    - libwebkit2gtk-4.0-dev
-    - swig
-    - guile-2.2-dev
-    - libgwenhywfar-core-dev
-    - libaqbanking-dev
-    - libofx-dev
-    - libgwengui-gtk3-dev
-    #
-    - libdbi-dev
-    - libdbd-freetds
-    - libdbd-mysql
-    - libdbd-pgsql
-    - libdbd-sqlite3
-    #
-    - libboost-dev
-    - libboost-date-time-dev
-    - libboost-regex-dev
-    - libboost-locale-dev
-    - libboost-filesystem-dev
-    - libboost-system-dev
-    #
-    - libsecret-1-dev
-    - libgtest-dev
-    - google-mock
+    - qt5-qmake
 
 # ***
 
 - set_fact:
-    GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../gnucash-build"
+    GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../build-gnucash-{{ GNUCASH_BRANCH }}"
 
 - name: gnucash » ensure build directory exists
   file: path={{ GNUCASH_BUILD_DIR }} state=directory
@@ -87,8 +246,6 @@
   shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
-  # FIXME/2020-05-02: Make this task reentrant, something like:
-  #  when: gitclone.changed or not user_local_bin_gnucash.stat.exists
 
 # ***
 
