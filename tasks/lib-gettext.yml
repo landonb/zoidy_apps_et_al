@@ -6,7 +6,8 @@
 # *** Local variables (Facts).
 
 - set_fact:
-    GETTEXT_VER: '0.20.2'
+    #GETTEXT_VER: '0.20.2'
+    GETTEXT_VER: '0.21'
 
 - set_fact:
     GETTEXT_DIR: "gettext-{{ GETTEXT_VER }}"
@@ -47,7 +48,13 @@
 #   gpg:                using RSA key F5BE8B267C6A406D
 #   gpg: Can't check signature: No public key
 - name: Import gettext signing key
-  command: "gpg --recv-key F5BE8B267C6A406D"
+  # This is failing:
+  #   command: "gpg --recv-key F5BE8B267C6A406D"
+  # Complains:
+  #   gpg: keyserver receive failed: General error
+  # Internet suggests expired SSH key (though I did not determine
+  # which keyserver is being used by default). So specify keyserver:
+  command: "gpg --keyserver keyserver.ubuntu.com --recv-key F5BE8B267C6A406D"
 
 - name: Verify gettext download
   # (lb): A plain `gpg XXX.sig`, sans --verify, is equivalent, but
