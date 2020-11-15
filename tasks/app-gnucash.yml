@@ -108,6 +108,7 @@
     key: "/org/gnucash/general/register/{{ item.key }}"
     value: "{{ item.val }}"
     state: present
+  loop:
 
     - key: "default-style-autoledger"
       val: "true"
