@@ -108,11 +108,18 @@
     # ----
     # 2020-11-15: (lb): I assembled this list from the GnuCash Wiki.
     #   https://wiki.gnucash.org/wiki/Installing_Dependencies
-    # And I've included a few libraries that I found (through make
-    # trial-and-error) that I needed to build v3.10 (because I'm on
-    # the same machine, and those same libraries are still installed,
-    # so I'm carrying them forward to this list because I'm not sure
-    # that they're not necessary).
+    # See also in source:
+    #   README.dependencies
+    # - Note that neither Wiki nor source document are necessarily up to date.
+    #   - E.g., I was able to build with versions indicated in the Wiki,
+    #     but then at runtime I found issues, such as:
+    #     - "boost > 1.50.0", but GnuCash complains unless 1.67 or better.
+    #     - "guile >= 2.0.0", but `gnucash-cli --report ...` prints ERRORs
+    #       when built and used with guile 2.0.
+    # - I've also included additional libraries that I found (through make
+    #   trial-and-error) that I needed to build v3.10 (and that I didn't
+    #   bother to determine if I still need to build v4.2; it's easier
+    #   just to keep them).
     #
     # *** libtool
     - libtool
@@ -124,18 +131,17 @@
     - libglib2.0-0
     - libglib2.0-dev
     # *** "boost > 1.50.0 - requires locale and regex built with ICU support"
-    # (lb): See instead `lib-libboost` task (which installs latest libboost,
-    # because I built with Boost v1.65.1, and GnuCash 4.2 told me I needed
-    # Boost 1.67 or better -- meaning, "> 1.50.0" comment from wiki seems old).
-    #  - libboost-all-dev
+    # - See the `lib-libboost` task.
+    # - Or, if the host's distro includes > 1.67, try:
+    #   - libboost-all-dev
     # *** "guile >= 2.0.0"
-    - guile-2.0
-    - guile-2.0-dev
-    # (lb): For v3.10, I found I needed guile-2.2, so including this, too:
+    # - I found that I need guile-2.2.
+    #   (I also tried (and failed) to use guile 3.0 (installed from source)
+    #   but that's a longer tale, and if guile 2.2 works, I'm happy.)
+    - guile-2.2
     - guile-2.2-dev
     # *** "swig > 2.0.10 - swig3.0 on some systems"
-    # (lb): Yup, it's not swig2.0 on Mint 19.3. It's `swig` or `swig3.0`.
-    #  - swig2.0
+    # (lb): Yup, there's no swig2.0 on Mint 19.3. It's `swig` or `swig3.0`.
     - swig3.0
     # *** libxml*
     - libxml2
