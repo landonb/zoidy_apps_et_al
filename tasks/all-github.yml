@@ -89,14 +89,10 @@
     apply:
       tags:
         - lib-gettext
-        # If you want `ansible-playbook ... --tags app-gnucash`
-        # to also run this task, include the other tag twice,
-        # once here...:
-        #  - app-gnucash
+        - all-gnucash
   tags:
     - lib-gettext
-    # ... and then include the other tag again here:
-    #  - app-gnucash
+    - all-gnucash
 
 - name: Load role to Install libboost
   include_role:
@@ -105,8 +101,10 @@
     apply:
       tags:
         - lib-libboost
+        - all-gnucash
   tags:
     - lib-libboost
+    - all-gnucash
 
 - name: Load role to Install gnucash
   include_role:
@@ -122,7 +120,10 @@
     apply:
       tags:
         - app-gnucash
-  tags: app-gnucash
+        - all-gnucash
+  tags:
+    - app-gnucash
+    - all-gnucash
 
 - name: Load role to Install gnucash docs
   include_role:
@@ -131,7 +132,10 @@
     apply:
       tags:
         - app-gnucash-docs
-  tags: app-gnucash-docs
+        - all-gnucash
+  tags:
+    - app-gnucash-docs
+    - all-gnucash
 
 - name: Load role to Install Perl Finance::Quote
   include_role:
@@ -140,7 +144,10 @@
     apply:
       tags:
         - perl-finance-quote
-  tags: perl-finance-quote
+        - all-gnucash
+  tags:
+    - perl-finance-quote
+    - all-gnucash
 
 # ************************************************************************
 # *** Tmux. ***
