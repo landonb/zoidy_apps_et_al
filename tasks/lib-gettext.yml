@@ -3,10 +3,14 @@
 # 2020-05-02 Gnucash 3.10 requires Gettext version 0.20 or better to generate potfiles.
 # - Linux Mint 19.3 (Ubuntu 18.04) `apt show` indicates 0.19.8.1-6ubuntu0.3.
 
+# To look for the latest version, visit:
+#
+#  https://ftp.gnu.org/pub/gnu/gettext/
+
 # *** Local variables (Facts).
 
 - set_fact:
-    #GETTEXT_VER: '0.20.2'
+    # GETTEXT_VER: '0.20.2'
     GETTEXT_VER: '0.21'
 
 - set_fact:
