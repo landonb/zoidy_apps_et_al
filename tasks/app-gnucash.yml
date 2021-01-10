@@ -268,11 +268,56 @@
 
 - name: Setup Preferred GnuCash Preferences
   dconf:
-    key: "/org/gnucash/general/register/{{ item.key }}"
+    key: "/org/gnucash/general/{{ item.key }}"
     value: "{{ item.val }}"
     state: present
   loop:
 
-    - key: "default-style-autoledger"
+    # So that you don't have to click the Split button all the time.
+    # - Useful if you normally click transactions to edit their splits.
+    - key: "register/default-style-autoledger"
       val: "true"
+
+    # Edit > Preferences > Register Defaults > ✓ Only display leaf account names
+    # - 2021-01-09 23:49: Trying this now. Not sure why I didn't do sooner,
+    #   my long account names makes 'em hard to read quickly.
+    - key: "register/show-leaf-account-names"
+      val: "true"
+    # - I first set
+    #     Edit > Preferences > Accounts > Separator Character > Character: »
+    #   which helped a little, and the short name works better, I think.
+    - key: "account-separator"
+      val: "»"
+
+    # Edit > Preferences > Register > ✓ Use GnuCash built-in color theme
+    # - 2021-01-09 23:48: I don't remember setting this, and I couldn't
+    #   see any different after deselecting the option; but it was one
+    #   of the 4 settings I see on dconf-dump so including here, if not
+    #   just for documentation... that I can't tell what it does.
+    - key: "register/use-gnucash-color-theme"
+      val: "true"
+    # Same with this, but I can't tell to which control this corresponds.
+    - key: "register/default-style-ledger"
+      val: "false"
+
+  # 2021-01-09: Other settings I see on dump.
+  #
+  #   [/]
+  #   show-account-color=true
+  #   date-completion-thisyear=false
+  #   migrate-prefs-done=true
+  #   show-account-color-tabs=true
+  #   reversed-accounts-none=false
+  #   autosave-interval-minutes=0.0
+  #   grid-lines-horizontal=false
+  #   use-accounting-labels=false
+  #   summarybar-position-top=false
+  #   autosave-show-explanation=false
+  #   prefs-version=402
+  #
+  #   [report]
+  #   currency-choice-other=false
+  #
+  #   [finance-quote]
+  #   alphavantage-api-key='...'
 
