@@ -5,6 +5,7 @@
     node_npm_list:
       - mocha
       - parcel-bundler
+      - tldr
 
 - name: Ensure nodejs & npm installed
   become: true
