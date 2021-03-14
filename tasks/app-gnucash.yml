@@ -34,10 +34,19 @@
 
 # ***
 
+# Specify the DISPLAY, otherwise fails, because Ansible runs over SSH, and:
+#
+#   $ ssh $(hostname)
+#   (ssh) $ gnucash --version
+#   Unable to init server: Could not connect: Connection refused
+#   Run 'g --help' to see a full list of available command line options.
+#   Error: could not initialize graphical user interface and option add-price-quotes was not set.
+#          Perhaps you need to set the $DISPLAY environment variable ?
 - name: gnucash » Check active version
   shell: >
-    ./gnucash --version | head -1 \
-    | grep '^GnuCash {{ GNUCASH_BRANCH }}\b' \
+    DISPLAY=:0 ./gnucash --version | head -1 \
+    | grep -q '^GnuCash {{ GNUCASH_BRANCH }}\b' \
+    && printf 'OK'
     || true
   args:
     chdir: "{{ ansible_env.HOME }}/.local/bin"
@@ -48,12 +57,10 @@
   debug:
     msg: >
           Your GnuCash is already up to date!
-
-            {{ gncvers_output.stdout_lines }}
-  when: gncvers_output.rc == 0
+  when: gncvers_output.stdout == 'OK'
 
 - meta: end_play
-  when: gncvers_output.rc == 0 and not GNUCASH_FORCE
+  when: gncvers_output.stdout == 'OK' and not GNUCASH_FORCE
 
 # ***
 
