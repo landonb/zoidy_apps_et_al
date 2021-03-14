@@ -294,8 +294,10 @@
     # - I first set
     #     Edit > Preferences > Accounts > Separator Character > Character: »
     #   which helped a little, and the short name works better, I think.
-    - key: "account-separator"
-      val: "»"
+    # 2021-03-13: The sep. on my machine is back to ':', did I do that?
+    #             - Probably for Birds Eye.
+    #  - key: "account-separator"
+    #    val: "»"
 
     # Edit > Preferences > Register > ✓ Use GnuCash built-in color theme
     # - 2021-01-09 23:48: I don't remember setting this, and I couldn't
