@@ -9,13 +9,15 @@
 - set_fact:
     # 2020-05-02: How have I not been using GnuCash for the past 2 decades??
     # This app rocks.
-    # GNUCASH_BRANCH: "3.10"
+    #  GNUCASH_BRANCH: "3.10"
     #
     # 2020-11-14: I was looking for a way to run reports from the CLI
     # (e.g., so I can dump portfolio data to CSV, import to a spreadsheet,
     # and do my own analysis), and -- lo! -- the awesome GnuCash devs added
     # a GNC CLI in 4.0, how sweet!
-    GNUCASH_BRANCH: "4.2"
+    #  GNUCASH_BRANCH: "4.2"
+    # 2021-03-13:
+    GNUCASH_BRANCH: "4.4"
 
 - set_fact:
     GNUCASH_FORCE: False
