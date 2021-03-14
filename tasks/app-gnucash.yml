@@ -255,8 +255,9 @@
 - name: gnucash » ensure build directory exists
   file: path={{ GNUCASH_BUILD_DIR }} state=directory
 
+# Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: Build gnucash application
-  shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" ../gnucash
+  shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
