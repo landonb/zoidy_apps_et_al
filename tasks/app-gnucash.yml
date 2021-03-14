@@ -310,24 +310,58 @@
     - key: "register/default-style-ledger"
       val: "false"
 
-  # 2021-01-09: Other settings I see on dump.
+    # Edit > Preferences > Numbers, Date, Time > Date Format: *ISO    2013-07-31*
+    # 2021-03-13: How'd I miss this setting until now.
+    - key: "date-format"
+      val: "3"
+
+    # Edit > Preferences > General > Retain log/backup files > ✓ Never
+    # 2021-03-13: I mostly import data, and don't make a lot of edits or
+    # new transactions in the application. So I'm diligent about saving
+    # (and committing to a repo) so I don't feel the need for this file
+    # noise (I've never needed/used a GNC log file).
+    - key: "retain-type-never"
+      val: "true"
+
+    # Edit > Preferences > Import > QIF Import > ✗ Show documentation
+    # 2021-03-13: Will this cut down on Wizard screens?
+    - key: "dialogs/import/qif/show-doc"
+      val: "false"
+
+    # MANUAL/2021-03-13 20:12: See also: View: ✗ Summary Bar
+    # to hide the Summary bar (though I don't see a dconf setting for it).
+    # - At least for my business books the Summary bar has useless or
+    #   incorrect data in it... but that's probably because I've got my
+    #   accounts set up unconventionally (because I'm not an accountant!).
+
+  # 2021-03-13: All settings I see on dump.
   #
   #   [/]
+  #   summarybar-position-top=false
+  #   retain-type-never=true
   #   show-account-color=true
   #   date-completion-thisyear=false
   #   migrate-prefs-done=true
   #   show-account-color-tabs=true
+  #   account-separator=':'
   #   reversed-accounts-none=false
   #   autosave-interval-minutes=0.0
   #   grid-lines-horizontal=false
+  #   date-format=3
+  #   retain-type-days=false
   #   use-accounting-labels=false
-  #   summarybar-position-top=false
   #   autosave-show-explanation=false
   #   prefs-version=402
   #
-  #   [report]
-  #   currency-choice-other=false
-  #
   #   [finance-quote]
   #   alphavantage-api-key='...'
+  #
+  #   [register]
+  #   use-gnucash-color-theme=true
+  #   show-leaf-account-names=true
+  #   default-style-autoledger=true
+  #   default-style-ledger=false
+  #
+  #   [report]
+  #   currency-choice-other=false
 
