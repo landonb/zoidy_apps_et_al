@@ -336,6 +336,19 @@
     - key: "dialogs/import/qif/show-doc"
       val: "false"
 
+    # Edit > Preferences > Business > Invoices > Notify when due > Days in advance
+    # 2021-03-22: Defaults to 7, lowest is 1.
+    # - (lb): I set this to 1. I don't quite get why GNC uses a week. Like,
+    #   if the client still has a week to pay, what's the purpose of the
+    #   alert? So I can prod the client to pay? But why would I want to do
+    #   that, if they still have another week to pay? / In my case, all my
+    #   clients pay like clockwork, about 1 week before the technical due
+    #   date. So the GnuCash alert -- to me -- only serves to remind me to
+    #   update my books (import recent bank transactions into GnuCash, and
+    #   assign payments to invoices).
+    - key: "dialogs/business/invoice/days-in-advance"
+      val: "1.0"
+
     # MANUAL/2021-03-13 20:12: See also: View: ✗ Summary Bar
     # to hide the Summary bar (though I don't see a dconf setting for it).
     # - At least for my business books the Summary bar has useless or
