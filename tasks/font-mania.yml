@@ -63,6 +63,12 @@
     zip_file_regex: >-
       ^.zip$
 
+- set_fact:
+    FONT_URL_TTFS:
+      # FIXME/2022-01-24 04:41: This will place duplicate of wingdings-2.zip, but curious
+      # that it'll run (never tested) and what'll happen (with the duplicate file).
+      - url_base: "https://www.fontsupply.com/fonts"
+        ttf_base: "WINGDNG2.TTF"
 
 # ***
 
@@ -92,4 +98,12 @@
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
   loop: "{{ FONT_URL_ZIPS }}"
   notify: Build font information cache files
+
+# ***
+
+- name: Fetch font files
+  get_url:
+    url: "{{ item.url_base }}/{{ item.ttf_base }}"
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.ttf_base }}"
+  loop: "{{ FONT_URL_TTFS }}"
 
