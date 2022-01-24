@@ -9,28 +9,33 @@
       #   - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
       #     zip_base: "Noto-hinted"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoSans-hinted"
+        zip_base: "NotoSans-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoSerif-hinted"
+        zip_base: "NotoSerif-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoSansDisplay-hinted"
+        zip_base: "NotoSansDisplay-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoSerifDisplay-hinted"
+        zip_base: "NotoSerifDisplay-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoMono-hinted"
+        zip_base: "NotoMono-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoSansMono-hinted"
+        zip_base: "NotoSansMono-hinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoColorEmoji-unhinted"
+        zip_base: "NotoColorEmoji-unhinted.zip"
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
-        zip_base: "NotoEmoji-unhinted"
+        zip_base: "NotoEmoji-unhinted.zip"
 
       - url_base: http://dl.1001fonts.com
-        zip_base: santos-dumont
+        zip_base: santos-dumont.zip
       - url_base: http://dl.1001fonts.com
-        zip_base: pinewood
+        zip_base: pinewood.zip
       - url_base: http://dl.1001fonts.com
-        zip_base: open-sans
+        zip_base: open-sans.zip
+
+- set_fact:
+    zip_file_regex: >-
+      ^.zip$
+
 
 # ***
 
@@ -38,7 +43,9 @@
   file: path="{{ zoidy_homefries_dls_fonts_dir }}/" state=directory
 
 - name: Ensure destination font directories exist
-  file: path="{{ ansible_env.HOME }}/.fonts/{{ item.zip_base }}/" state=directory
+  file:
+    path="{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
+    state=directory
   loop: "{{ FONT_URL_ZIPS }}"
 
 # ***
@@ -46,14 +53,15 @@
 # PROFILING: 2019-03-19: Task took: 22.51s (currently penutimate slowest task).
 - name: Fetch font archives
   get_url:
-    url: "{{ item.url_base }}/{{ item.zip_base }}.zip"
+    url: "{{ item.url_base }}/{{ item.zip_base }}"
     dest: "{{ zoidy_homefries_dls_fonts_dir }}/"
   loop: "{{ FONT_URL_ZIPS }}"
 
+# Copy the archive contents to the ~/.fonts directory, named without the .zip extension.
 - name: Unarchive the font archives
   unarchive:
-    src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}.zip"
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base }}/"
+    src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
     remote_src: yes
   loop: "{{ FONT_URL_ZIPS }}"
   notify: Build font information cache files
