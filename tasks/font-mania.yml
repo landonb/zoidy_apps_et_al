@@ -32,6 +32,29 @@
       - url_base: http://dl.1001fonts.com
         zip_base: open-sans.zip
 
+      # Arial MT.
+      - url_base: https://www.cufonfonts.com/download/font
+        zip_base: arial-mt
+        # MEH: Add option to name ~/.fonts destination.
+        # - If you visit https://www.cufonfonts.com/font/arial-mt and click
+        #   *Download*, it opens file download dialog and suggests the name,
+        #   `arial-mt-cufonfonts.zip` (though with the direct link, the file
+        #   is simply named `arial-mt`). Either way, to match other directories
+        #   in ~/.fonts, we could specify the destination name, e.g.,
+        #  dst_base: ArialMT
+
+      # Frutiger LT Std.
+      # https://font.gooova.com/fonts/13221/frutiger-lt-std-font.html#google_vignette
+      - url_base: https://font.gooova.com/d/13221
+        zip_base: frutiger-lt-std-font.zip
+        #  dst_base: FrutigerLTStd
+
+      # Wingus, Dingus, listen up.
+      # - Can also fetch direct (identical TTF): https://www.fontsupply.com/fonts/WINGDNG2.TTF
+      # - Also read Wingdings-2 in `sudo apt install gsfonts-x11` but didn't see it.
+      - url_base: https://www.wfonts.com/download/data/2016/03/29/wingdings-2/wingdings-2.zip
+        zip_base: wingdings-2.zip
+
 - set_fact:
     zip_file_regex: >-
       ^.zip$
