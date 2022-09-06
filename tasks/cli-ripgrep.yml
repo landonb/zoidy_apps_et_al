@@ -3,10 +3,15 @@
 # *** Local variables (Facts).
 
 - set_fact:
-    RIPGREP_VER: '0.10.0'
+    # 2022-09-06: Upgrading to 13.0.0, from 2021-06-12, from 0.10.0, 2018-09-07.
+    #  RIPGREP_VER: '0.10.0'
+    RIPGREP_VER: '13.0.0'
 
 - set_fact:
-    RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-i686-unknown-linux-musl"
+    # For '0.10.0':
+    #  RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-i686-unknown-linux-musl"
+    # For '13.0.0':
+    RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-x86_64-unknown-linux-musl"
 
 - set_fact:
     RIPGREP_TAR: "{{ RIPGREP_DIR }}.tar.gz"
