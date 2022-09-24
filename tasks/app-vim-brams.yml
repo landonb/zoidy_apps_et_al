@@ -1,16 +1,27 @@
 ---
 
 # [lb]: I originally built Vim from source starting 2017-02-27 to support
-# Command-T (activiated bu <Ctrl-D>), which requires Vim be built with
+# Command-T (activated by <Ctrl-D>), which requires that Vim be built with
 # Ruby, and that the version of Ruby match that of the OS. Or so I'm led
-# to believe.
-# - 2020-03-06: Now's it nice just to have latest Vim, and to use custom icons!
+# to believe. But that's why I needed to build Vim myself, because I was
+# also installing the latest (non-system) version of Ruby.
+#
+# But now I build Vim so I can change the Alt-tab icon that's used when
+# switching apps in my OSes (Mint MATE, and macOS).
+# - So I've TIPped the project (forked it, and added a commit)
+#   to replace the Vim icon with Burglar Bender.
+
+# This playbooks checkouts my branch before building it, effectively:
+#
+#   $ git clone https://github.com/landonb/vim.git && cd vim
+#   $ git checkout {{ VIM_BRANCH }}
 
 # ***
 
 - set_fact:
-    # VIM_BRANCH: "master"
-    VIM_BRANCH: "tip/2020-03-10-1671f448"
+    VIM_BRANCH: "tip/2022-09-23--35fdd9a--v9.0.0562"
+    # If you want to build upstream's main branch, change the branch:
+    #  VIM_BRANCH: "master"
 
 # ***
 
@@ -26,11 +37,12 @@
     # repo: "git@github.com:vim/vim.git"
     # remote: upstream
     repo: "git@github.com:landonb/vim.git"
-    remote: myfork
+    remote: origin
     dest: "{{ VIM_DIR }}"
     version: "{{ VIM_BRANCH }}"
   # LATER/2020-03-06: Use gitclone and check ~/.local/bin/vim symlink
   #                   to decide whether to (re)build.
+  #                   - For now, this playbook will always rebuild.
   # register: gitclone
 
 # ***
@@ -41,7 +53,7 @@
     chdir: "{{ VIM_DIR }}"
     target: clean
 
-# 2017-11-03: If commant-t does not work, Ctrl-D shows error, e.g.,:
+# 2017-11-03: If command-t does not work, Ctrl-D shows error, e.g.,:
 #
 #   Vim Ruby version: 2.3.1-p112
 #   Expected version: 2.3.3-p222
@@ -55,17 +67,19 @@
 
 # 2017-11-03: I am not sure these environs do anything,
 #   since the build just uses the system ruby...
-#export RUBY_VER=23
-#export RUBY_VER_LONG=2.3.3
+#
+#  export RUBY_VER=23
+#  export RUBY_VER_LONG=2.3.3
 
 # See `./configure --help`
 # - Add ruby for commandt
 # - Add python3 for ternjs
 # - Add python2 for vim-instanbul
-# 2 ways to install dependencies:
+#
+# Two ways to install dependencies:
 # - Blindly, via
 #     sudo apt-get build-dep vim
-# - Or with familiar knowledge of required pacakges, e.g.,
+# - Or with familiar knowledge of required packages, e.g.,
 #     sudo apt install libncurses5-dev libncursesw5-dev
 # - See zoidy_mintyfresh for package installation
 #   (so you don't have to run this task with -K/credentials):
