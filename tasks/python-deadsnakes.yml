@@ -1,19 +1,20 @@
 ---
 
+# FIXME/2022-10-01: This file is deprecated.
+# - I've replaced deadsnakes with `pyenv install`.
+
 # https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
 # https://github.com/deadsnakes/issues
 
 - name: List Python Versions to Install
   set_fact:
-    # FIXME/2019-02-16: (lb): Excluding 3.6 because default on bionic,
-    #   but how should this be handled more universally?
-    # 2019-03-14: Or should we just install it anyway?
+    # See list of supported Python versions:
+    #   https://devguide.python.org/versions/
     python_versions:
-      - 3.4
-      - 3.5
-      - 3.6
       - 3.7
       - 3.8
+      - 3.9
+      - 3.10
 
 - name: Add "deadsnakes" repo
   become: true
