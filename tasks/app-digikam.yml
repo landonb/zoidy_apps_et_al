@@ -1,27 +1,32 @@
 ---
 
-# - set_fact:
-#     zoidy_digikam_version: '5.9.0'
-#     # https://download.kde.org/stable/digikam/digikam-5.9.0-01-x86-64.appimage.sha256
-#     #   da14b81304ca19eb148882f2b3d5bed5146de845f87f1baa2338b26e770d9d76  digikam-5.9.0-01-x86-64.appimage
-#     zoidy_digikam_sha256: 'da14b81304ca19eb148882f2b3d5bed5146de845f87f1baa2338b26e770d9d76'
+# - 7.8.0:
+#   https://download.kde.org/stable/digikam/7.8.0/digiKam-7.8.0-x86-64.appimage.mirrorlist
+#     https://mirrors.mit.edu/kde/stable/digikam/7.8.0/digiKam-7.8.0-x86-64.appimage
+#   MD5:    44d8b13a7b39f6e625959ae5ba6b5de2  digiKam-7.8.0-x86-64.appimage
+#   SHA1:   4613c0dd7c2b297be89cffe1f4bcf81002eb079a  digiKam-7.8.0-x86-64.appimage
+#   SHA256: 90145e432ac3714f96076c7234c4e9d6b615d217a311ff717170f8c81dc74f76  digiKam-7.8.0-x86-64.appimage
+#
+# Version history I've used: 5.90, 6.4.0, 7.8.0
 
 - set_fact:
-    zoidy_digikam_version: '6.4.0'
+    zoidy_digikam_version: "7.8.0"
+    zoidy_digikam_sha256: "90145e432ac3714f96076c7234c4e9d6b615d217a311ff717170f8c81dc74f76"
 
 - set_fact:
-    zoidy_digikam_uri: "https://download.kde.org/stable/digikam/{{ zoidy_digikam_version }}"
-    zoidy_digikam_basename: "digikam-{{ zoidy_digikam_version }}-x86-64"
+    zoidy_digikam_uri: "https://mirrors.mit.edu/kde/stable/digikam/{{ zoidy_digikam_version }}"
+    zoidy_digikam_basename: "digiKam-{{ zoidy_digikam_version }}-x86-64"
 
 - set_fact:
     zoidy_digikam_appimage: "{{ zoidy_digikam_basename }}.appimage"
 
-- name: 'Download Digikam AppImage'
+- name: "Download digiKam AppImage"
   get_url:
     url: "{{ zoidy_digikam_uri }}/{{ zoidy_digikam_appimage }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
+    checksum: "sha256:{{ zoidy_digikam_sha256 }}"
   # YOU: Uncomment to re-test this task easily, once appimage downloaded.
-  when: False
+  #  when: False
 
 # ***
 
@@ -29,29 +34,32 @@
     zoidy_digikam_signature: "{{ zoidy_digikam_appimage }}.sig"
     # Get public key: gpg {{ zoidy_digikam_signature }}
 
-- name: 'Download Digikam Signature'
+- name: "Download digiKam Signature"
   get_url:
     url: "{{ zoidy_digikam_uri }}/{{ zoidy_digikam_signature }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_signature }}"
+  when: "{{ not zoidy_digikam_sha256 }}"
 
-- name: Import Digikam Signing Key
+- name: "Import digiKam Signing Key"
   command: "gpg --recv-key D1CF2444A7858C5F2FB095B74A77747BC2386E50"
+  when: "{{ not zoidy_digikam_sha256 }}"
 
-- name: Verify Digikam Download
+- name: "Verify digiKam Download"
   command: "gpg {{ zoidy_digikam_signature }}"
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}"
+  when: "{{ not zoidy_digikam_sha256 }}"
 
 # ***
 
-- name: Make the AppImage executable
+- name: "Make the AppImage executable"
   file:
     path: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
     mode: 0755
 
-- name: Symlink Digikam AppImage from user bin/
+- name: "Symlink digiKam AppImage from user bin/"
   file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
-    dest: "{{ ansible_env.HOME }}/.local/bin/digikam"
+    dest: "{{ ansible_env.HOME }}/.local/bin/digiKam"
     state: link
 
