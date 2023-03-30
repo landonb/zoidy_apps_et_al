@@ -1,5 +1,6 @@
 ---
 
+# https://www.google.com/chrome/thank-you.html?brand=QMKX&statcb=0&installdataindex=empty&defaultbrowser=0#
 - name: Fetch Chrome installer
   get_url:
     url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
