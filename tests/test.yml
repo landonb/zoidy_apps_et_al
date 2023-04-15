@@ -1,4 +1,5 @@
 ---
 - hosts: localhost
   roles:
-    - zoidy_home-fries
+    - zoidy_apps_et_al
+

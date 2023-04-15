@@ -4,7 +4,7 @@
 
 - name: Load role to Install Go Language
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: golang-go-lang
     apply:
       tags:

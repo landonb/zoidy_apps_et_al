@@ -37,7 +37,7 @@
 
 - name: Run tasks to ensure Go is good to go
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: init-go-lang
     apply:
       tags:
@@ -46,7 +46,7 @@
 
 - name: Run tasks related to GitHub SSH
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: all-github
   # We could simplify this and specify not all the tags, e.g.,
   #   tags: all-github, always
@@ -82,7 +82,7 @@
 
 - name: Run all the tasks to do all the things
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: all-tasks
     apply:
       tags:

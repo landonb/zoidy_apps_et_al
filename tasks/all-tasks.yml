@@ -5,7 +5,7 @@
 
 - name: Load role to Install Chrome browser
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-chrome
     apply:
       tags:
@@ -14,7 +14,7 @@
 
 - name: Load role to Install Cinelerra-GG
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-cinelerra-gg
     apply:
       tags:
@@ -23,7 +23,7 @@
 
 - name: Load role to Install Darktable
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-darktable
     apply:
       tags:
@@ -36,7 +36,7 @@
 
 - name: Load role to Install Digikam
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-digikam
     apply:
       tags:
@@ -45,7 +45,7 @@
 
 - name: Load role to Fix Firefox Click-Scrolling Behavior
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-firefox-fix_scroll
     apply:
       tags:
@@ -54,7 +54,7 @@
 
 - name: Load role to Install GIMP docs
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-gimp-docs
     apply:
       tags:
@@ -63,7 +63,7 @@
 
 - name: Load role to Install Google Earth
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-google-earth
     apply:
       tags:
@@ -72,7 +72,7 @@
 
 - name: Load role to Install Kdocker
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-kdocker
     apply:
       tags:
@@ -81,7 +81,7 @@
 
 - name: Load role to Install meld
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-meld
     apply:
       tags:
@@ -90,7 +90,7 @@
 
 - name: Load role to Install OpenJUMP
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-openjump
     apply:
       tags:
@@ -99,7 +99,7 @@
 
 - name: Load role to Install Opera
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-opera
     apply:
       tags:
@@ -108,7 +108,7 @@
 
 - name: "Load role to Install Pencil [Project]"
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-pencil-project-evolus
     apply:
       tags:
@@ -117,7 +117,7 @@
 
 - name: "Load role to Install Spotify"
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-spotify
     apply:
       tags:
@@ -128,7 +128,7 @@
 
 - name: "Load role to Install VirtualBox"
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-virtualbox
     apply:
       tags:
@@ -140,7 +140,7 @@
 
 - name: Install Latest exiftool application
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-exiftool
     apply:
       tags:
@@ -149,7 +149,7 @@
 
 - name: Install Latest exiv2 application
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-exiv2
     apply:
       tags:
@@ -158,7 +158,7 @@
 
 - name: Install Latest kcov application
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-kcov
     apply:
       tags:
@@ -167,7 +167,7 @@
 
 - name: OptiPNG Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-optipng
     apply:
       tags:
@@ -176,7 +176,7 @@
 
 - name: Load role to Install reptile keybindings
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-reptile-keybindings
     apply:
       tags:
@@ -186,7 +186,7 @@
 
 - name: Load role to Install ripgrep
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-ripgrep
     apply:
       tags:
@@ -198,7 +198,7 @@
 
 - name: Dropbox Daemon Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: dmn-dropbox
     apply:
       tags:
@@ -210,7 +210,7 @@
 
 - name: Gmail Email Postfix setup
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: email-gmail-postfix
     apply:
       tags:
@@ -223,7 +223,7 @@
 
 - name: Load role to Install Font “Hack”
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: font-hack
     apply:
       tags:
@@ -232,7 +232,7 @@
 
 - name: Load role to Install Font “Hack Nerd Font”
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: font-hack-nerd-font
     apply:
       tags:
@@ -241,7 +241,7 @@
 
 - name: Load role to Install Fonts
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: font-mania
     apply:
       tags:
@@ -253,7 +253,7 @@
 
 - name: Load role to Install Go Lang Projects
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: golang-go-get-packages
     apply:
       tags:
@@ -265,7 +265,7 @@
 
 - name: Android Studio Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: hardware-android-studio
     apply:
       tags:
@@ -274,7 +274,7 @@
 
 - name: Arduino Platform Developer Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: hardware-arduino
     apply:
       tags:
@@ -283,7 +283,7 @@
 
 - name: “Realtek 8812AU/8821AU USB WiFi driver for AC1200 (801.11ac) Wireless Dual-Band USB Adapter” Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: hardware-ac1200-usb-wifi
     apply:
       tags:
@@ -297,7 +297,7 @@
 
 - name: Node.js node Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: node-npmjs-install
     apply:
       tags:
@@ -306,7 +306,7 @@
 
 - name: Node.js npm Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: node-node-install
     apply:
       tags:
@@ -315,7 +315,7 @@
 
 - name: Node.js npm Packages Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: node-npm-packages
     apply:
       tags:
@@ -324,7 +324,7 @@
 
 - name: Node.js nvm Version Manager Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: node-nvm-version-mgr
     apply:
       tags:
@@ -333,7 +333,7 @@
 
 - name: Install various Node.js versions using nvm
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: node-nvm-versions
     apply:
       tags:
@@ -345,7 +345,7 @@
 
 - name: Python Vers Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-deadsnakes
     apply:
       tags:
@@ -359,7 +359,7 @@
 
 - name: Python PIPs Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-pip-packages
     apply:
       tags:
@@ -368,7 +368,7 @@
 
 - name: Python Sources Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-sources
     apply:
       tags:
@@ -380,7 +380,7 @@
 
 - name: Webster Dictionary Fetcher
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: ref-dictionary
     apply:
       tags:
@@ -392,7 +392,7 @@
 
 - name: OpenVPN and IVPN Installer and Configurer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: sec-net-ivpn
     apply:
       tags:
@@ -404,7 +404,7 @@
 
 - name: Pass Store Tomb Plugin Extenstion Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: sec-pass-plug-tomb
     apply:
       tags:
@@ -419,7 +419,7 @@
 
 - name: Vagrant Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: virt-vagrant
     apply:
       tags:
@@ -431,7 +431,7 @@
 
 - name: Load role to Install Java JDK
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: java-adopt-open-jdk
     apply:
       tags:
@@ -440,7 +440,7 @@
 
 - name: Load role to Install Scala sbt
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-scala-sbt
     apply:
       tags:
@@ -451,7 +451,7 @@
 
 - name: Load role to Install The BFG
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-git-the-bfg
     apply:
       tags:

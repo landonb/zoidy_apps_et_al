@@ -1,5 +1,5 @@
 ---
-# handlers file for zoidy_home-fries
+# handlers file for zoidy_apps_et_al
 
 - name: Build font information cache files
   become: yes

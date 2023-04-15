@@ -78,8 +78,8 @@
       #
       # you'll see the pip3 and pip2 installers run, and then the activate-argcomplete hangs at:
       #
-      #   TASK [zoidy_home-fries : Activate argcomplete bash tab completion] *******************
-      #   task path: zoidy_home-fries/tasks/python-pip-packages.yml:23
+      #   TASK [zoidy_apps_et_al : Activate argcomplete bash tab completion] *******************
+      #   task path: zoidy_apps_et_al/tasks/python-pip-packages.yml:23
       #   Thursday 03 January 2019  20:08:24 -0600 (0:00:03.704)       0:00:10.524 ******
       #    13227 1546567704.84533: sending task start callback
       #    13227 1546567704.84536: entering _queue_task() for lethe/command
@@ -89,7 +89,7 @@
       #    13227 1546567704.84678: done queuing things up, now waiting for results queue to drain
       #    13227 1546567704.84681: waiting for pending results...
       #    13456 1546567704.84888: running TaskExecutor() for lethe/TASK:
-      #       zoidy_home-fries : Activate argcomplete bash tab completion
+      #       zoidy_apps_et_al : Activate argcomplete bash tab completion
       #    13456 1546567704.84959: in run() - task 1c1bb5db-71df-2471-0528-00000000016b
       #    13456 1546567704.85001: calling self._execute()
       #    13456 1546567704.85161: Loading TestModule 'core' from lib/ansible/plugins/test/core.py

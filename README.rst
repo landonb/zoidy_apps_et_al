@@ -1,4 +1,4 @@
-zoidy_home-fries
+zoidy_apps_et_al
 ================
 
 An Ansible role to build and/or install various applications
@@ -16,7 +16,7 @@ It's simple to run the role from a playbook::
 
   - hosts: servers
     roles:
-       - role: zoidy_home-fries
+       - role: zoidy_apps_et_al
 
 License
 -------

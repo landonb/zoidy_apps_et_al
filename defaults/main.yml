@@ -1,5 +1,5 @@
 ---
-# defaults file for zoidy_home-fries
+# defaults file for zoidy_apps_et_al
 
 # YOU: Set zoidy_homefries_github_* in your playbook's group_vars/.
 zoidy_homefries_github_user: user

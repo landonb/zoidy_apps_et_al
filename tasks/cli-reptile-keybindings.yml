@@ -7,7 +7,7 @@
 
 - name: Load role to Configure Reputed Tiler keybindings
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-reptile-kbs
   when: mate_kb_wired.rc != 0
 

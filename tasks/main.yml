@@ -1,9 +1,9 @@
 ---
 # Main task: Load package installers, or not, based on tags.
 
-- name: Load tasks dispatcher for ‘zoidy_home-fries’
+- name: Load tasks dispatcher for ‘zoidy_apps_et_al’
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: all
   # (lb): Yes, this tags list could be removed, e.g.,
   #

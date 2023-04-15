@@ -2,7 +2,7 @@
 
 - name: Run pip3 installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-pip-pip3-user
     apply:
       tags:
@@ -11,7 +11,7 @@
 
 - name: Run pip2 installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-pip-pip2-user
     apply:
       tags:

@@ -3,7 +3,7 @@
 # FUG
 - name: SSH directory symlink populator
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: sec-ssh-symlinks
     apply:
       tags:
@@ -29,7 +29,7 @@
 
 - name: Run tasks to verify or configure GitHub SSH
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: init-github-ssh
     apply:
       tags:
@@ -54,7 +54,7 @@
 
 - name: Load role to Install GIMP Export Layers Plug-in
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-export-layers
     apply:
       tags:
@@ -63,7 +63,7 @@
 
 - name: Load role to Install GIMP Wavelet Decompose Plug-in
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-wavelet-decompose
     apply:
       tags:
@@ -72,7 +72,7 @@
 
 - name: Load role to Clone, Build, and Install Latest Vim
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-vim-brams
     apply:
       tags:
@@ -84,7 +84,7 @@
 
 - name: Load role to Install gettext
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: lib-gettext
     apply:
       tags:
@@ -96,7 +96,7 @@
 
 - name: Load role to Install libboost
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: lib-libboost
     apply:
       tags:
@@ -108,7 +108,7 @@
 
 - name: Load role to Install gnucash
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash
     # (add app-gnucash to each of their apply-tags and tags):
     #    - lib-gettext
@@ -127,7 +127,7 @@
 
 - name: Load role to Install gnucash docs
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-gnucash-docs
     apply:
       tags:
@@ -139,7 +139,7 @@
 
 - name: Load role to Install Perl Finance::Quote
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: perl-finance-quote
     apply:
       tags:
@@ -154,7 +154,7 @@
 
 - name: Load role to install libevent
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: lib-libevent
     apply:
       tags:
@@ -163,7 +163,7 @@
 
 - name: Load role to install ncurses
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: lib-ncurses
     apply:
       tags:
@@ -172,7 +172,7 @@
 
 - name: Load role to Clone, Build, and Install tmux
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: app-tmux
     apply:
       tags:
@@ -184,7 +184,7 @@
 
 - name: CLOC Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-cloc
     apply:
       tags:
@@ -193,7 +193,7 @@
 
 - name: Install Direnv Development Utility
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-direnv
     apply:
       tags:
@@ -202,7 +202,7 @@
 
 - name: parT Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-parT
     apply:
       tags:
@@ -211,7 +211,7 @@
 
 - name: Load role to Install reptile
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-reptile
     apply:
       tags:
@@ -220,7 +220,7 @@
 
 - name: Install Screen Color Inverter, i.e., Alert! Mechanism
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: cli-xrandr-invert-colors
     apply:
       tags:
@@ -232,7 +232,7 @@
 
 - name: Load role to Install Delve
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: golang-delve-debugger
     apply:
       tags:
@@ -244,7 +244,7 @@
 
 - name: Python Chjson Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-chjson
     apply:
       tags:
@@ -256,7 +256,7 @@
 
 - name: ttygif Installer
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: vid-ttygif
     apply:
       tags:

@@ -2,7 +2,7 @@
 
 - name: Load pip_list
   include_role:
-    name: zoidy_home-fries
+    name: zoidy_apps_et_al
     tasks_from: python-pip-pkg-list
     apply:
       tags:

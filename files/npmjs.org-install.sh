@@ -14,7 +14,7 @@
 
 if [ "x$0" = "xsh" ]; then
   # (lb): Don't download again; whole point of this running vetted script.
-  echo "zoidy_home-fries: Unexpected branch!"
+  echo "zoidy_apps_et_al: Unexpected branch!"
   exit 1
 
   # run as curl | sh
