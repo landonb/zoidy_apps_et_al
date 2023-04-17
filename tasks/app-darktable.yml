@@ -2,12 +2,14 @@
 
 # 2019-01-03: 18.04 includes 2.4.2. Latest Release PPA includes 2.6.0.
 
-- name: Add Darktable release repo
-  become: true
-  apt_repository:
-    # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
-    repo: ppa:pmjdebruijn/darktable-release
-    codename: "{{ zoidy_distrib_codename }}"
+# SAVVY/2023-04-11 14:42: Included in core packages in Linux Mint 21.
+#
+# - name: Add Darktable release repo
+#   become: true
+#   apt_repository:
+#     # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
+#     repo: ppa:pmjdebruijn/darktable-release
+#     codename: "{{ zoidy_distrib_codename }}"
 
 - name: Run command "apt-get update" (app-darktable)
   become: true
