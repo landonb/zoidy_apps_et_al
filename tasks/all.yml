@@ -2,6 +2,19 @@
 
 # *** Verify distro.
 
+# Linux Mint 21-21.1
+- set_fact:
+    zoidy_distrib_codename_: 'jammy'
+  when: ansible_lsb.codename in ['vanessa', 'vera',]
+  tags: always
+
+# Linux Mint 20-20.3
+- set_fact:
+    zoidy_distrib_codename_: 'focal'
+  when: ansible_lsb.codename in ['ulyana', 'ulyssa', 'uma', 'una',]
+  tags: always
+
+# Linux Mint 19-19.3
 - set_fact:
     zoidy_distrib_codename_: 'bionic'
   when: ansible_lsb.codename in ['tara', 'tessa', 'tricia',]
