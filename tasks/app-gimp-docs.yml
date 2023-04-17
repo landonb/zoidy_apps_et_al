@@ -2,23 +2,33 @@
 
 # https://docs.gimp.org/download.html
 
+- set_fact:
+    # LATST/2023-04-11: "2.10.34 User Manual Source (Release Date: 2023-03-05)"
+    zoidy_gimp_manual_version: "2.10.34"
+    zoidy_gimp_manual_sha256: "cae0adea6ffe47776f42dfc3a38f35d28e31893004e01812117af6f7fc897dc8"
+
+- set_fact:
+    # E.g., https://download.gimp.org/mirror/pub/gimp/help/gimp-help-2.10.34.tar.bz2
+    zoidy_gimp_manual_uri_base_dir: "https://download.gimp.org/mirror/pub/gimp/help"
+    zoidy_gimp_manual_archive_name: "gimp-help-{{ zoidy_gimp_manual_version }}.tar.bz2"
+
 # Bah, why no PDF of the help for 2.8?
 # http://docs.gimp.org/2.8/en/
-- name: Download GIMP 2.4 Manual (PDF)
+- name: Download GIMP {{ zoidy_gimp_manual_version }} Manual Archive (bz2)
   get_url:
-    url: "https://docs.gimp.org/2.4/pdf/en.pdf"
-    dest: "{{ zoidy_homefries_user_docs_dir }}/gimp-2.4-en.pdf"
+    url: "{{ zoidy_gimp_manual_uri_base_dir }}/{{ zoidy_gimp_manual_archive_name }}"
+    # E.g., ~/.local/docs
+    dest: "{{ zoidy_homefries_user_docs_dir }}/{{ zoidy_gimp_manual_archive_name }}"
+    checksum: "sha256:{{ zoidy_gimp_manual_sha256 }}"
 
-- name: Download GIMP Keys and Mouse Quickreference (PDF)
-  get_url:
-    url: "https://docs.gimp.org/2.8/quickreference/gimp-keys-en.pdf"
-    dest: "{{ zoidy_homefries_user_docs_dir }}/"
-  # FIXME/2019-01-04: URL currently returning 404.
-  when: False
+- name: Unpack GIMP {{ zoidy_gimp_manual_version }} Manual Document (pdf)
+  command: "tar --bzip2 -xf {{ zoidy_gimp_manual_archive_name }}"
+  args:
+    chdir: "{{ zoidy_homefries_user_docs_dir }}"
 
-# - 2019-01-04: Dead link. From 31 Aug 2014:
-#   wget -N http://gimp.linux.it/www/meta/gimp-en.pdf
-
-# - From 1999:
-#   wget -N ftp://ftp.ccsf.edu/pub/Util/gimp-User_Manual.pdf
+# 2023-04-11: The latest manual archive is 158 MB, so remove archive source.
+- name: Delete GIMP {{ zoidy_gimp_manual_version }} Manual Archive (bz2)
+  file:
+    path: "{{ zoidy_homefries_user_docs_dir }}/{{ zoidy_gimp_manual_archive_name }}"
+    state: absent
 
