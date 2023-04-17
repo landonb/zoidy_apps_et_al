@@ -67,7 +67,7 @@
   when: ncurses_makefile.stat.exists == True
 
 - name: "ncurses: ./configure ..."
-  shell: ./configure --prefix={{ ansible_env.HOME }}/.local
+  ansible.builtin.shell: ./configure --prefix={{ ansible_env.HOME }}/.local
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/{{ NCURSES_DIR }}"
 

@@ -37,7 +37,7 @@
   # (lb): I'll admit this is half-baked, because I just copied an installer
   # to vet it, but I didn't vet the archive that the script that this installer
   # downloads downloads.
-  shell: "{{ role_path }}/files/npmjs.org-install.sh"
+  ansible.builtin.shell: "{{ role_path }}/files/npmjs.org-install.sh"
   args:
     executable: /bin/sh
   # Hrmm. Installs to /usr/lib/node_modules...

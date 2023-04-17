@@ -17,7 +17,7 @@
 # MKLINKS: ~/.ssh/id_*
 
 - name: Replace with symlinks from private repo .ssh/
-  shell: >
+  ansible.builtin.shell: >
     find {{ zoidy_homefries_ssh_root_dir }}/.ssh/ -maxdepth 1 -type f \
       -iname "id_*" -exec /bin/ln -s {} \;
   ignore_errors: yes
@@ -73,7 +73,7 @@
 # But we can work around with a prior lookup.
 
 - name: Find all SSH files on remote host
-  shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*
+  ansible.builtin.shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*
   register: ssh_files
 
 - name: Ensure proper permissions for SSH on .ssh files
@@ -83,7 +83,7 @@
   with_items: "{{ ssh_files.stdout_lines }}"
 
 - name: Find all SSH public keys on remote host
-  shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*.pub
+  ansible.builtin.shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*.pub
   ignore_errors: yes
   register: pub_files
 
@@ -101,7 +101,7 @@
   #   file:
   #     path: "{{ item }}"
   #     mode: 0600
-  shell: '[[ -f "{{ item }}" ]] && chmod 600 "{{ item }}" || true'
+  ansible.builtin.shell: '[[ -f "{{ item }}" ]] && chmod 600 "{{ item }}" || true'
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh"
     executable: /bin/bash
@@ -124,7 +124,7 @@
 # ***
 
 - name: List identity fingerprints currently being managed
-  shell: ssh-add -l | grep "^The agent has no identities.$"
+  ansible.builtin.shell: ssh-add -l | grep "^The agent has no identities.$"
   register: ssh_add_l
   ignore_errors: yes
 
@@ -133,7 +133,7 @@
   when: ssh_add_l.rc == 0
 
 - name: Kick the SSH agent
-  shell: >
+  ansible.builtin.shell: >
     SSH_SECRETS="{{ zoidy_homefries_ssh_root_dir }}/.cheat" \
       "{{ ansible_env.HOME }}/.homefries/bin/ssh-agent-kick"
   when: ssh_add_l.rc == 0

@@ -47,10 +47,10 @@
 # working, need to run `cd` in the shell command, instead.
 
 - name: KDocker » qmake
-  shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 qmake
+  ansible.builtin.shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 qmake
 
 - name: KDocker » make
-  shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 make
+  ansible.builtin.shell: cd {{ KDOCKER_DIR }} && QT_SELECT=5 make
 
 # Rather than `sudo make install`, just symlink it,
 # because (so far) only wired to the Spotify app,

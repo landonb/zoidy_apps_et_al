@@ -86,7 +86,7 @@
 #     tags: install-develop-vim
 
 - name: Configure Vim build
-  shell: |
+  ansible.builtin.shell: |
     ./configure \
       --enable-luainterp=yes \
       --enable-perlinterp=yes \
@@ -100,7 +100,7 @@
 # PROFILING: 2019-03-19: Task took: 24.74s (currently slowest task in ZP-HF).
 - name: Build Vim
   # -j 3 to use 3 CPU cores to build.
-  shell: make -j 3
+  ansible.builtin.shell: make -j 3
   args:
     chdir: "{{ VIM_DIR }}"
 

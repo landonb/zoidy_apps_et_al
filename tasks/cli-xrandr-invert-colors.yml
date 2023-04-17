@@ -20,7 +20,7 @@
 
 # Restore changes! (See lineinfile's, below.)
 - name: Restore xrandr-invert-colors Makefile changes
-  shell: /usr/bin/git checkout -- Makefile
+  ansible.builtin.shell: /usr/bin/git checkout -- Makefile
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
   when: makefile_f.stat.exists
@@ -56,7 +56,7 @@
 
 # Install locally to user, bruh.
 - name: Fix xrandr-invert-colors Makefile, Part 1
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
     # Was:
     #   PREFIX=/usr/local
@@ -65,7 +65,7 @@
 
 # [lb]: This is ridonkulous. I should either just install as root, or fork the project.
 - name: Fix xrandr-invert-colors Makefile, Part 2
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors/Makefile"
     # Remove root:root assignment.
     #   -v/--verbose, -s/--strip symbol tables, -p/--preserve-timestamps, --mode
@@ -86,7 +86,7 @@
 
 # Restore changes!
 - name: Restore xrandr-invert-colors repo changes, so next clone/pull works
-  shell: /usr/bin/git checkout -- Makefile
+  ansible.builtin.shell: /usr/bin/git checkout -- Makefile
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/xrandr-invert-colors"
 

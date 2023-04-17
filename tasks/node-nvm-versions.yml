@@ -1,7 +1,7 @@
 ---
 
 - name: "Install Nodes"
-  shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install v{{ item }}
+  ansible.builtin.shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install v{{ item }}
   loop:
     - 6.9.4
     - 8.9.1
@@ -22,7 +22,7 @@
 #   but requires that PATH reflect that... so not exactly system node,
 #   more like my user's node.
 - name: "Set Default Node.js"
-  shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm alias default system
+  ansible.builtin.shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm alias default system
   args:
     # Run Bash so `source` works.
     executable: /bin/bash

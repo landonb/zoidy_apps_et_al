@@ -7,7 +7,7 @@
 #   | sudo tee -a /etc/apt/sources.list &> /dev/null
 - name: Add Spotify proprietary repository
   become: true
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb http://repository.spotify.com stable non-free
     state: present
     ## 2019-03-05: Disable Spotify-from-Deb!
@@ -37,13 +37,13 @@
 
 - name: Run command "apt-get update" (app-spotify)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
 
 - name: 'Install Spotify desktop client application'
   become: true
-  apt:
+  ansible.builtin.apt:
     name: spotify-client
     state: present
     ## 2019-03-05: Disable Spotify-from-Deb!

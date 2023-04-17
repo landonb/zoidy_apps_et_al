@@ -88,7 +88,7 @@
   when: gettext_makefile.stat.exists == True
 
 - name: "gettext: ./configure ..."
-  shell: >
+  ansible.builtin.shell: >
     ./configure \
       --prefix=/usr \
       --disable-static \

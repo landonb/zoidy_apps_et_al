@@ -126,7 +126,7 @@
 #     -DCMAKE_C_FLAGS:STRING="-O3 -march=i686" \
 
 - name: Build application (kcov) [shell module]
-  shell: >
+  ansible.builtin.shell: >
     cmake \
         -DCMAKE_C_FLAGS:STRING="-O3 -march=native" \
         -DCMAKE_BUILD_TYPE=Release \

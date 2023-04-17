@@ -6,7 +6,7 @@
 
 - name: “Installing Finance::Quote” (gnucash)
   # - I tried without sudo, e.g.,
-  #     shell: echo "y" | gnc-fq-update
+  #     ansible.builtin.shell: echo "y" | gnc-fq-update
   #     args:
   #       chdir: "{{ ansible_env.HOME }}/.local/bin"
   #   Which answers Yes to:
@@ -33,11 +33,11 @@
   #     ...
   #   See:
   #     http://blog.schmorp.de/2015-06-06-a-stable-perl.html
-  shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
+  ansible.builtin.shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
   become: true
 
 - name: Test Finance::Quote Perl module (gnucash)
-  shell: gnc-fq-dump nasdaq amzn
+  ansible.builtin.shell: gnc-fq-dump nasdaq amzn
   args:
     chdir: {{ ansible_env.HOME }}/.local/bin
   # (lb): This needs an API key, best stored in pass...

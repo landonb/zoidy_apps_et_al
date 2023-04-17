@@ -51,7 +51,7 @@
 
 - name: Edit OpenVPN config to use the password file
   become: yes
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/openvpn/{{ item }}"
     regexp: '^auth-user-pass'
     line: "auth-user-pass pass"
@@ -59,7 +59,7 @@
 
 - name: Edit OpenVPN config to use IVPN DNS servers (1 / 3)
   become: yes
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/openvpn/{{ item }}"
     regexp: '^script-security '
     line: "script-security 2"
@@ -67,7 +67,7 @@
 
 - name: Edit OpenVPN config to use IVPN DNS servers (2 / 3)
   become: yes
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/openvpn/{{ item }}"
     regexp: '^up '
     line: "up /etc/openvpn/update-resolv-conf"
@@ -75,7 +75,7 @@
 
 - name: Edit OpenVPN config to use IVPN DNS servers (3 / 3)
   become: yes
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/openvpn/{{ item }}"
     regexp: '^down '
     line: "down /etc/openvpn/update-resolv-conf"

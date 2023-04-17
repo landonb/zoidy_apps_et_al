@@ -21,7 +21,7 @@
 - name: Compute next available custom keybinding
   # [lb]: Not sure why, but pipe is considered illegal character
   #   if it starts a line. At the end of the line, fugetaboutit.
-  shell: >
+  ansible.builtin.shell: >
       echo $((
         $(dconf list /org/mate/desktop/keybindings/ |
           sed "s#custom\([0-9]\+\)/#\\1#" |
@@ -42,7 +42,7 @@
     index_var: index
 
 - name: reputed-tiler∷ Add MATE Key Bindings
-  shell: |
+  ansible.builtin.shell: |
     dconf write "/org/mate/desktop/keybindings/custom{{ index + (mate_kb_index | int) }}/name" "{{ item.name }}" ; \
     dconf write "/org/mate/desktop/keybindings/custom{{ index + (mate_kb_index | int) }}/binding" "{{ item.binding }}" ; \
     dconf write "/org/mate/desktop/keybindings/custom{{ index + (mate_kb_index | int) }}/action" "{{ item.action }}" ; \

@@ -3,7 +3,7 @@
 
 - name: Build font information cache files
   become: yes
-  shell: "fc-cache -fv"
+  ansible.builtin.shell: "fc-cache -fv"
 
 # E.g., `sudo systemctl restart postfix`.
 - name: Restart Postfix

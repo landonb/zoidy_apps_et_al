@@ -2,21 +2,21 @@
 
 # *** Local variables (Facts).
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2022-09-06: Upgrading to 13.0.0, from 2021-06-12, from 0.10.0, 2018-09-07.
     #  RIPGREP_VER: '0.10.0'
     RIPGREP_VER: '13.0.0'
 
-- set_fact:
+- ansible.builtin.set_fact:
     # For '0.10.0':
     #  RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-i686-unknown-linux-musl"
     # For '13.0.0':
     RIPGREP_DIR: "ripgrep-{{ RIPGREP_VER }}-x86_64-unknown-linux-musl"
 
-- set_fact:
+- ansible.builtin.set_fact:
     RIPGREP_TAR: "{{ RIPGREP_DIR }}.tar.gz"
 
-- set_fact:
+- ansible.builtin.set_fact:
     RIPGREP_URI: "https://github.com/BurntSushi/ripgrep/releases/download/{{ RIPGREP_VER }}/{{ RIPGREP_TAR }}"
 
 # *** Alert user if newer version.
@@ -29,7 +29,7 @@
 # So need to figure out Asset ID to query, or something.
 #
 #   - name: Check for new version of ripgrep.
-#     shell: "curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | jq -r '.tag_name'"
+#     ansible.builtin.shell: "curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | jq -r '.tag_name'"
 #     register: LATEST_VERSION
 #     args:
 #       # else, ansible bugs us to use get_url:
@@ -43,38 +43,38 @@
 # *** Do the work.
 
 - name: Fetch latest ripgrep release
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ RIPGREP_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
 # FIXME/2018-12-23: It'd be nice to have checksums on all get_url's.
 #    checksum:
 
 - name: Unarchive the ripgrep release archive
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ RIPGREP_TAR }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
     remote_src: yes
 
 - name: Symlink ripgrep binary from user bin/
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ RIPGREP_DIR }}/rg"
     dest: "{{ ansible_env.HOME }}/.local/bin/rg"
     state: link
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     go_install:
       - "github.com/aykamko/tag"
 
 - name: "Go-Lang | Run get commands"
-  shell: "{{ ansible_env.HOME }}/.local/bin/go get -u {{ item }}"
+  ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go get -u {{ item }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
   with_items: "{{ go_install }}"
 
 - name: "Go-Lang | Run install commands"
-  shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
+  ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
 #  loop:

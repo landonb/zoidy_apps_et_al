@@ -47,7 +47,7 @@
 #   Error: could not initialize graphical user interface and option add-price-quotes was not set.
 #          Perhaps you need to set the $DISPLAY environment variable ?
 - name: gnucash » Check active version
-  shell: >
+  ansible.builtin.shell: >
     DISPLAY=:0 ./gnucash --version | head -1 \
     | grep -q '^GnuCash {{ GNUCASH_BRANCH }}\b' \
     && printf 'OK'
@@ -90,14 +90,14 @@
   #   installed... but, again, seems like a tedious proposition.
 
 - name: gnucash » checkout version branch
-  shell: git checkout rel/{{ GNUCASH_BRANCH }}
+  ansible.builtin.shell: git checkout rel/{{ GNUCASH_BRANCH }}
   args:
     chdir: "{{ GNUCASH_DIR }}"
   register: gitco_output
   ignore_errors: yes
 
 - name: gnucash » create version branch
-  shell: git checkout tags/{{ GNUCASH_BRANCH }} -b rel/{{ GNUCASH_BRANCH }}
+  ansible.builtin.shell: git checkout tags/{{ GNUCASH_BRANCH }} -b rel/{{ GNUCASH_BRANCH }}
   args:
     chdir: "{{ GNUCASH_DIR }}"
   when: gitco_output.rc != 0
@@ -261,7 +261,7 @@
 
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: Build gnucash application
-  shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+  ansible.builtin.shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
@@ -279,7 +279,7 @@
 # ***
 
 - name: Setup Preferred GnuCash Preferences
-  dconf:
+  community.general.dconf:
     key: "/org/gnucash/{{ item.key }}"
     value: "{{ item.val }}"
     state: present

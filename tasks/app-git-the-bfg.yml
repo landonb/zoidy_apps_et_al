@@ -45,7 +45,7 @@
 # This takes a few seconds. You can watch with:
 #   tail -F /kit/working/scala/bfg-repo-cleaner/bfg/target/.assembly.OUT
 - name: Build The BFG
-  shell: sbt bfg/assembly > {{ BFG_TARGET_PATH }}/.assembly.OUT
+  ansible.builtin.shell: sbt bfg/assembly > {{ BFG_TARGET_PATH }}/.assembly.OUT
   args:
     chdir: "{{ BFG_PROJ_PATH }}"
 
@@ -87,7 +87,7 @@
     #
     #             but it's on stderr, so, shouldn't matter?
     #             - TESTME: Run this task and verify this comment.
-  shell: >
+  ansible.builtin.shell: >
     tail -3 .assembly.OUT |
     sed -E 's/\x1b\[[0-9;]*m//g' |
     grep ".jar" |

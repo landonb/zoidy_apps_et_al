@@ -45,8 +45,8 @@
 
 - name: gnucash-docs autogen.sh
   # 2020-05-02: Do I need to specify the shell command?
-  #  shell: sh autogen.sh
-  shell: ./autogen.sh
+  #  ansible.builtin.shell: sh autogen.sh
+  ansible.builtin.shell: ./autogen.sh
   args:
     chdir: "{{ GNUCASH_DOCS_DIR }}"
 
@@ -59,7 +59,7 @@
   file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
 
 - name: "gnucash-docs ../configure ..."
-  shell: ../configure --prefix="{{ ansible_env.HOME }}/.local"
+  ansible.builtin.shell: ../configure --prefix="{{ ansible_env.HOME }}/.local"
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 

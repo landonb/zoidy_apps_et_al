@@ -52,7 +52,7 @@
 #   deb [arch=amd64] http://dl.google.com/linux/earth/deb/ stable main
 - name: Fix Google Earch apt sources file archictecture issue
   become: yes
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/apt/sources.list.d/google-earth-pro.list"
     regexp: '^deb http://dl.google.com/linux/earth/deb/ (.*)'
     line: "deb [arch=amd64] http://dl.google.com/linux/earth/deb/ \\1"

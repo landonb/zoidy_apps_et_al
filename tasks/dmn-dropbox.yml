@@ -11,7 +11,7 @@
     DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
 
 - name: Check if Dropbox installed
-  shell: command -v dropbox >/dev/null 2>&1
+  ansible.builtin.shell: command -v dropbox >/dev/null 2>&1
   register: dropbox_exists
   ignore_errors: yes
 
@@ -64,7 +64,7 @@
 # If you wanted to select both "Don't show this again" and "OK", you could do, e.g.,
 #   ... && xdotool windowactivate --sync $(...) key alt+d key alt+o windowactivate ...
 - name: Create Dropbox script to manually finish installation
-  shell: >
+  ansible.builtin.shell: >
     echo '(sleep 0.25 && xdotool windowactivate --sync $(xdotool search --name "Dropbox Installation") key alt+o windowactivate $(xdotool getactivewindow) &) ; dropbox start -i' > {{ DROPBOX_MANUALLY }}
 
 - name: Make Manually Install Dropbox script executable

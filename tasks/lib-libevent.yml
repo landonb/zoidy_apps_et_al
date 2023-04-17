@@ -67,7 +67,7 @@
   when: libevent_makefile.stat.exists == True
 
 - name: "libevent: ./configure ..."
-  shell: ./configure --prefix={{ ansible_env.HOME }}/.local
+  ansible.builtin.shell: ./configure --prefix={{ ansible_env.HOME }}/.local
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/{{ LIBEVENT_DIR }}"
 
