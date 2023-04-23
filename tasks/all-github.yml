@@ -1,6 +1,5 @@
 ---
 
-# FUG
 - name: SSH directory symlink populator
   include_role:
     name: zoidy_apps_et_al

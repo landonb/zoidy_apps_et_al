@@ -1,11 +1,5 @@
 ---
 
-# https://github.com/AlDanial/cloc
-#
-# Alternative (old?) project page:
-#
-#   https://sourceforge.net/projects/cloc
-
 - name: Clone parT repo
   git:
     repo: "git@github.com:landonb/parT.git"

@@ -16,7 +16,7 @@
   get_url:
     url: "{{ OPTIPNG_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
-    #checksum: "sha256:{{ XXX? }}"
+    # checksum: "sha256:{{ <xsum> }}"
 
 - name: Unarchive OptiPNG archive
   unarchive:

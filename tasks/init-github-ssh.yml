@@ -78,13 +78,14 @@
 #   The authenticity of host 'github.com (192.30.253.113)' can't be established.
 #   RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
 #   Are you sure you want to continue connecting (yes/no)? ^C
-# MAYBE/2019-03-14: Should we actually check the fingerprint?
-#     See:
+#
+# - MAYBE/2019-03-14: Should we actually check the fingerprint?
+#   - CXREF:
 #       https://help.github.com/en/articles/githubs-ssh-key-fingerprints
 #     (lb): I bet `expect -re` could do it easily, just gotta figure out
 #     how to not just `send` on timeout (and not to timeout, but to reject
 #     non-match).
-# NOTE/2019-03-14: (lb): I tried using expect with ssh -T, but what a mess.
+# SAVVY/2019-03-14: (lb): I tried using expect with ssh -T, but what a mess.
 # It's easier to use the actual command built to produce known_hosts entries,
 # ssh-keyscan.
 - name: Add GitHub to known_hosts, perhaps
@@ -94,7 +95,7 @@
     # Specify creates, so task only runs if file not yet created.
     creates: "{{ ansible_env.HOME }}/.ssh/known_hosts"
   tags: always
-  # Same effect as checking creates...
+  # This 'when' is redundant because 'creates' check, but adds readability.
   when: not ssh_known_hosts_f.stat.exists
 
 - name: Ensure proper permissions on SSH known_host
