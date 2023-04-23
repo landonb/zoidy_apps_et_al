@@ -77,6 +77,7 @@
         - app-kdocker
   tags: app-kdocker
 
+# FIXME/2023-04-23: Retire this task.
 - name: Load role to Install meld
   include_role:
     name: zoidy_apps_et_al
@@ -85,6 +86,8 @@
       tags:
         - app-meld
   tags: app-meld
+  # Prefer Flatpak install.
+  when: False
 
 - name: Load role to Install OpenJUMP
   include_role:

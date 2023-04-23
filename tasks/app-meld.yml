@@ -1,5 +1,11 @@
 ---
 
+- fail:
+    # CXREF: https://github.com/landonb/zoidy_mintyfresh
+    msg: "FAILD: Use Flatpak install instead / CXREF: ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-flatpaks.yml"
+
+# ***
+
 # Run latest meld from source, because easy,
 # and because distro meld old and has issues.
 
