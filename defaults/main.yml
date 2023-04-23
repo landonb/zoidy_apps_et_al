@@ -36,11 +36,26 @@ zoidy_homefries_openvpn_pass: ""
 
 # YOU: Set the paths to projects already checked out; if empty, clones to ~/.downloads.
 zoidy_homefries_bfg_repo_path: ""
+zoidy_homefries_bfg_repo_remote: "origin"
+
 zoidy_homefries_gnucash_repo_path: ""
+zoidy_homefries_gnucash_repo_remote: "origin"
+
 zoidy_homefries_gnucash_docs_repo_path: ""
+zoidy_homefries_gnucash_docs_repo_remote: "origin"
+
 zoidy_homefries_kcov_repo_path: ""
+zoidy_homefries_kcov_repo_remote: "origin"
+
 zoidy_homefries_kdocker_repo_path: ""
+zoidy_homefries_kdocker_repo_remote: "origin"
+
 zoidy_homefries_meld_repo_path: ""
+zoidy_homefries_meld_repo_remote: "origin"
+
 zoidy_homefries_tmux_repo_path: ""
+zoidy_homefries_tmux_repo_remote: "origin"
+
 zoidy_homefries_vim_repo_path: ""
+zoidy_homefries_vim_repo_remote: "origin"
 

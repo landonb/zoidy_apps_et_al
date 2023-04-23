@@ -37,8 +37,8 @@
     # repo: "git@github.com:vim/vim.git"
     # remote: upstream
     repo: "git@github.com:landonb/vim.git"
-    remote: origin
     dest: "{{ VIM_DIR }}"
+    remote: "{{ zoidy_homefries_vim_repo_remote }}"
     version: "{{ VIM_BRANCH }}"
   # LATER/2020-03-06: Use gitclone and check ~/.local/bin/vim symlink
   #                   to decide whether to (re)build.

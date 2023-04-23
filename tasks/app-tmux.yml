@@ -28,6 +28,7 @@
   ansible.builtin.git:
     repo: "git@github.com:tmux/tmux.git"
     dest: "{{ TMUX_DIR }}"
+    remote: "{{ zoidy_homefries_tmux_repo_remote }}"
     version: "{{ TMUX_BRANCH }}"
   register: gitclone
 

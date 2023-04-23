@@ -71,8 +71,8 @@
 - name: gnucash ∷ git clone
   git:
     repo: "git@github.com:Gnucash/gnucash.git"
-    remote: starter
     dest: "{{ GNUCASH_DIR }}"
+    remote: "{{ zoidy_homefries_gnucash_repo_remote }}"
     # Releases are tagged, which we have to deal with in post.
     version: "maint"
   # LATER/2020-05-02: Check for newer version.

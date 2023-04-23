@@ -23,6 +23,7 @@
   git:
     repo: "git@github.com:user-none/KDocker.git"
     dest: "{{ KDOCKER_DIR }}"
+    remote: "{{ zoidy_homefries_kdocker_repo_remote }}"
     version: "{{ KDOCKER_BRANCH }}"
   register: gitclone
   when: False

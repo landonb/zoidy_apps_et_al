@@ -23,6 +23,7 @@
   git:
     repo: "{{ BFG_REPO_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/bfg-repo-cleaner"
+    remote: "{{ zoidy_homefries_bfg_repo_remote }}"
   when: zoidy_homefries_bfg_repo_path == ""
 
 # ***

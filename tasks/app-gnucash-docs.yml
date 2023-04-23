@@ -22,8 +22,8 @@
 - name: gnucash docs ∷ git clone
   git:
     repo: "git@github.com:Gnucash/gnucash-docs.git"
-    remote: upstream
     dest: "{{ GNUCASH_DOCS_DIR }}"
+    remote: "{{ zoidy_homefries_gnucash_docs_repo_remote }}"
     version: "{{ GNUCASH_DOCS_BRANCH }}"
   # LATER/2020-05-02: Somehow periodically check for new versions...
 

@@ -37,6 +37,7 @@
   git:
     repo: "{{ MELD_REPO_URI }}"
     dest: "{{ MELD_DIR }}"
+    remote: "{{ zoidy_homefries_meld_repo_remote }}"
     # See note above: Avoid 'master' branch and checkout version branch.
     version: "{{ MELD_VERS_BRANCH }}"
 

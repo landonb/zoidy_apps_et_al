@@ -107,6 +107,7 @@
   git:
     repo: "git@github.com:SimonKagstrom/kcov.git"
     dest: "{{ KCOV_DIR }}"
+    remote: "{{ zoidy_homefries_kcov_repo_remote }}"
     # version: master
   register: gitclone
 
