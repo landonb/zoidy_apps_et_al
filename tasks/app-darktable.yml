@@ -1,15 +1,32 @@
 ---
 
-# 2019-01-03: 18.04 includes 2.4.2. Latest Release PPA includes 2.6.0.
+# CXREF: https://www.darktable.org/
+#   https://github.com/darktable-org/darktable/releases
 
-# SAVVY/2023-04-11 14:42: Included in core packages in Linux Mint 21.
+# ***
+
+# 2023-04-23: Linux Mint 21.1 ships 3.8.1. Latest release is 4.2.1.
+# - INERT/2023-04-23: I don't use Darktable enough to care to find
+#   or build more recent version.
+
+# ***
+
+# SAVVY/2023-04-11: Included in core packages in Linux Mint 21.
 #
-# - name: Add Darktable release repo
-#   become: true
-#   apt_repository:
-#     # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
-#     repo: ppa:pmjdebruijn/darktable-release
-#     codename: "{{ zoidy_distrib_codename }}"
+# # CXREF/2023-04-23: http://ppa.launchpad.net/pmjdebruijn/darktable-release/ubuntu/dists/
+# # - The launchpad.net dists include up to 'bionic', 2019-05-06, but nothing after.
+#
+# # 2019-01-03: Ubuntu 18.04 (bionic beaver) ships 2.4.2. Latest PPA Release is 2.6.0.
+#
+#   - name: Add Darktable release repo
+#     become: true
+#     apt_repository:
+#       # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
+#       repo: ppa:pmjdebruijn/darktable-release
+#       # E.g., 'jammy'
+#       codename: "{{ zoidy_distrib_codename }}"
+
+# ***
 
 - name: Run command "apt-get update" (app-darktable)
   become: true
@@ -18,7 +35,7 @@
     # Skip the cache time so that the new repo gets picked up.
     #   cache_valid_time: 3600
 
-- name: Install latest stable Darktable
+- name: Install Darktable from distro package repo
   become: true
   apt: name=darktable
 
