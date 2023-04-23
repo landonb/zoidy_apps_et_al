@@ -1,25 +1,29 @@
 ---
 
-# - 7.8.0:
-#   https://download.kde.org/stable/digikam/7.8.0/digiKam-7.8.0-x86-64.appimage.mirrorlist
-#     https://mirrors.mit.edu/kde/stable/digikam/7.8.0/digiKam-7.8.0-x86-64.appimage
-#   MD5:    44d8b13a7b39f6e625959ae5ba6b5de2  digiKam-7.8.0-x86-64.appimage
-#   SHA1:   4613c0dd7c2b297be89cffe1f4bcf81002eb079a  digiKam-7.8.0-x86-64.appimage
-#   SHA256: 90145e432ac3714f96076c7234c4e9d6b615d217a311ff717170f8c81dc74f76  digiKam-7.8.0-x86-64.appimage
+# CXREF: https://www.digikam.org/download/
 #
-# Version history I've used: 5.90, 6.4.0, 7.8.0
+#   https://download.kde.org/stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage.mirrorlist
+#
+# - 8.0.0: Known hashes:
+#   - File:   /stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage
+#   - MD5     e62cf3f2bdc5ecb1f8a52f9cdaf6bc15
+#   - SHA1    b12742bad5ff934cdb17440e8621cd09249f9c73
+#   - SHA256  d73bc5dcc97d6f7e378b58af44387f213d556510ad496a80898fd69131b87eea
+#
+# Version history I've used: 5.90, 6.4.0, 7.8.0, 8.0.0
 
 - set_fact:
-    zoidy_digikam_version: "7.8.0"
-    zoidy_digikam_sha256: "90145e432ac3714f96076c7234c4e9d6b615d217a311ff717170f8c81dc74f76"
+    zoidy_digikam_version: "8.0.0"
+    zoidy_digikam_sha256: "d73bc5dcc97d6f7e378b58af44387f213d556510ad496a80898fd69131b87eea"
 
 - set_fact:
-    zoidy_digikam_uri: "https://mirrors.mit.edu/kde/stable/digikam/{{ zoidy_digikam_version }}"
+    zoidy_digikam_uri: "https://mnvoip.mm.fcix.net/kdeftp/stable/digikam/{{ zoidy_digikam_version }}"
     zoidy_digikam_basename: "digiKam-{{ zoidy_digikam_version }}-x86-64"
 
 - set_fact:
     zoidy_digikam_appimage: "{{ zoidy_digikam_basename }}.appimage"
 
+# E.g., https://mnvoip.mm.fcix.net/kdeftp/stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage
 - name: "Download digiKam AppImage"
   get_url:
     url: "{{ zoidy_digikam_uri }}/{{ zoidy_digikam_appimage }}"
