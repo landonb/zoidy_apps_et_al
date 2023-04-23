@@ -8,10 +8,12 @@
 #
 # Otherwise we'll fetch it for you.
 
-# FIXME/2020-02-06 19:57: Keep this updated! Rebuild tmux!!
+# YOUDO/2020-02-06: Keep this updated. 
+# - MAYBE/2023-04-22: Suss version automatically.
 
 - ansible.builtin.set_fact:
-    TMUX_BRANCH: "3.1-rc"
+    # CXREF: https://github.com/tmux/tmux/releases
+    TMUX_BRANCH: "3.3a"
 
 # ***
 
@@ -24,12 +26,16 @@
 
 # ***
 
-- name: tmux: git clone
+- name: "tmux: git clone"
   ansible.builtin.git:
     repo: "git@github.com:tmux/tmux.git"
     dest: "{{ TMUX_DIR }}"
     remote: "{{ zoidy_homefries_tmux_repo_remote }}"
     version: "{{ TMUX_BRANCH }}"
+    # BADEV/2023-04-22: Huh, repo maintainer tagged 3.1-rc as '3.1'
+    # and then replaced '3.0' and '3.1' tags on a commit after that.
+    # - Use --force to replace tags. Or anything else, don't care.
+    force: "true"
   register: gitclone
 
 - name: "tmux: sh autogen.sh"
@@ -46,23 +52,23 @@
   args:
     chdir: "{{ TMUX_DIR }}"
 
-- name: tmux: make
+- name: "tmux: make"
   ansible.builtin.make:
     chdir: "{{ TMUX_DIR }}"
 
-- name: tmux: make install
+- name: "tmux: make install"
   ansible.builtin.make:
     chdir: "{{ TMUX_DIR }}"
     target: install
 
 # ***
 
-- name: tmux: symlink man
+- name: "tmux: symlink man"
   ansible.builtin.file:
     src: "{{ TMUX_DIR }}/tmux.1"
     dest: "{{ ansible_env.HOME }}/.local/man/man1/tmux.1"
     state: link
 
-- name: tmux: rebuild man
+- name: "tmux: rebuild man"
   ansible.builtin.shell: mandb
 
