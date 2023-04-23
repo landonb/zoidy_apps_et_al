@@ -1,0 +1,79 @@
+---
+
+# *** Task Setup (Ensures-Dirs)
+
+- name: Ensure ~/.downloads directory exists
+  file: path={{ zoidy_homefries_downloads_dir }} state=directory
+  tags:
+    - app-cinelerra-gg
+    - app-digikam
+    - app-gimp-plugin-export-layers
+    - app-gimp-plugin-wavelet-decompose
+    - app-git-the-bfg
+    - app-gnucash-docs
+    - app-gnucash
+    - app-google-earth
+    - app-kdocker
+    - app-openjump
+    - app-opera
+    - app-pencil-project-evolus
+    - app-tmux
+    - cli-cloc
+    - cli-direnv
+    - cli-exiftool
+    - cli-exiv2
+    - cli-kcov
+    - cli-optipng
+    - cli-parT
+    - cli-ripgrep
+    - dmn-dropbox
+    - font-hack-nerd-font
+    - font-hack
+    - golang-go-lang
+    - hardware-ac1200-usb-wifi
+    - hardware-android-studio
+    - hardware-arduino
+    - java-adopt-open-jdk
+    - lib-gettext
+    - lib-libboost
+    - lib-libevent
+    - lib-ncurses
+    - node-node-install
+    - node-npmjs-install
+    - node-nvm-version-mgr
+    - python-chjson
+    - python-sources
+    - ref-dictionary
+    - sec-net-ivpn
+    - sec-pass-plug-tomb
+    - vid-ttygif
+    - virt-vagrant
+
+# ***
+
+- name: Ensure ~/.downloads/fonts directory exists
+  file: path={{ zoidy_homefries_dls_fonts_dir }} state=directory
+  tags:
+    - font-mania
+
+# ***
+
+- name: Ensure ~/.local directory exists
+  file: path="{{ zoidy_homefries_user_local_dir }}" state=directory
+  tags:
+    - all-init-ensure-dirs
+    - cli-direnv
+    - node-npm-packages
+    - python-pip-packages
+
+- name: Ensure ~/.local/bin directory exists
+  file: path="{{ zoidy_homefries_user_local_bin_dir }}" state=directory
+  tags:
+    - all-init-ensure-dirs
+
+- name: Ensure ~/.local/docs directory exists
+  file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
+  tags:
+    - all-init-ensure-dirs
+    - app-gimp-docs
+

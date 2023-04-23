@@ -2,48 +2,23 @@
 
 # *** Verify distro.
 
-# Linux Mint 21-21.1
-- set_fact:
-    zoidy_distrib_codename_: 'jammy'
-  when: ansible_lsb.codename in ['vanessa', 'vera',]
-  tags: always
-
-# Linux Mint 20-20.3
-- set_fact:
-    zoidy_distrib_codename_: 'focal'
-  when: ansible_lsb.codename in ['ulyana', 'ulyssa', 'uma', 'una',]
-  tags: always
-
-# Linux Mint 19-19.3
-- set_fact:
-    zoidy_distrib_codename_: 'bionic'
-  when: ansible_lsb.codename in ['tara', 'tessa', 'tricia',]
-  tags: always
-
-- fail: msg="Unexpected distro∷ “{{ ansible_facts.lsb.codename }}”"
-  when: zoidy_distrib_codename_ is not defined
-  tags: always
+# Sets fact: zoidy_distrib_codename_
+- name: Verify known Linux distro
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: all-init-suss-distro
+    apply: { tags: "always" }
+  tags:
+    - app-scala-sbt
+    - python-deadsnakes
 
 # *** Task Setup (Ensures-Dirs)
 
-- name: Ensure ~/.downloads directory exists
-  file: path={{ zoidy_homefries_downloads_dir }} state=directory
-  tags: always
-
-- name: Ensure ~/.downloads/fonts directory exists
-  file: path={{ zoidy_homefries_dls_fonts_dir }} state=directory
-  tags: always
-
-- name: Ensure ~/.local directory exists
-  file: path="{{ zoidy_homefries_user_local_dir }}" state=directory
-  tags: always
-
-- name: Ensure ~/.local/bin directory exists
-  file: path="{{ zoidy_homefries_user_local_bin_dir }}" state=directory
-  tags: always
-
-- name: Ensure ~/.local/docs directory exists
-  file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
+# Ensures dirs: ~/.downloads, ~/.local/, etc.
+- name: Ensure target directories exist
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: all-init-ensure-dirs
   tags: always
 
 # ***
