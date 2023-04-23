@@ -25,7 +25,6 @@
     repo: deb https://dl.bintray.com/sbt/debian /
     codename: "{{ zoidy_distrib_codename }}"
 
-
 - name: Run command "apt-get update" (app-scala-sbt)
   become: true
   apt:
