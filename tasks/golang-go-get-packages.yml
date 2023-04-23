@@ -3,22 +3,31 @@
     go_get_list:
       # These projects install to, e.g.,
       #   ~/.gopath/src/{{ item }}
+      
+      # 2023-04-22: 8 years stale.
+      # - CXREF: https://github.com/jmoiron/jsonq
+      #   "simple json field access for golang"
+      #
+      #  - github.com/jmoiron/jsonq
 
-      - github.com/jmoiron/jsonq
-
-      # 2017-01-05
-      - github.com/landonb/gocovmerge
+      # 2023-04-22: I haven't used this is a while.
+      # - Added 2017-01-05.
+      #
+      #  - github.com/landonb/gocovmerge
 
       # This is somewhat cute. Not sure how useful.
-      # FIXME/2018-02-09 18:37: Add to Travel migrate, not once-setup!
-      - github.com/jingweno/ccat
+      #
+      #  - github.com/jingweno/ccat
 
       # 2020-01-02: tmux git status line
-      - github.com/arl/gitmux
+      # - CXREF: https://github.com/arl/gitmux
+      - github.com/arl/gitmux@latest
 
 - name: Install Go Lang projects
-  # Specify "-u"/update to always update projects previously got.
-  command: "go get -u {{ item }}"
+  # 2023-04-22: `go get` no longer works. Use go-install.
+  #   # Specify "-u"/update to always update projects previously got.
+  #   command: "go get -u {{ item }}"
+  command: "go install {{ item }}"
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
