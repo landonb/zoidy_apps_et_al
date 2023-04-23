@@ -121,8 +121,6 @@
       tags:
         - app-spotify
   tags: app-spotify
-  # 2019-03-05 13:32: Disabled. Snap installation works great.
-  when: False
 
 - name: "Load role to Install VirtualBox"
   include_role:
