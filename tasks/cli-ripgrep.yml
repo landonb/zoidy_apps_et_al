@@ -2,6 +2,15 @@
 
 # *** Local variables (Facts).
 
+# CXREF:
+#
+#   # See latest version:
+#   curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases | jq '.[0] | .tag_name'
+#   curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | jq -r '.tag_name'
+#
+#   # See version list:
+#   curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases | jq '.[] | .tag_name'
+
 - ansible.builtin.set_fact:
     # 2022-09-06: Upgrading to 13.0.0, from 2021-06-12, from 0.10.0, 2018-09-07.
     #  RIPGREP_VER: '0.10.0'
@@ -21,10 +30,9 @@
 
 # *** Alert user if newer version.
 
-# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
-# curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases | jq '.[] | .tag_name'
+# MAYBE/2018-12-23: Check GitHub for latest release.
 
-# This is wrong: There's an `ignore` pacakge that is latest.
+# This is wrong: There's an `ignore` package that is latest.
 # Also, there are multiple releases, for different platforms.
 # So need to figure out Asset ID to query, or something.
 #
@@ -46,8 +54,8 @@
   ansible.builtin.get_url:
     url: "{{ RIPGREP_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
-# FIXME/2018-12-23: It'd be nice to have checksums on all get_url's.
-#    checksum:
+    # OWELL/2018-12-23: It'd be nice if all publishers checksummed their dls.
+    #  checksum:
 
 - name: Unarchive the ripgrep release archive
   ansible.builtin.unarchive:
@@ -77,10 +85,5 @@
   ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
   environment:
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
-#  loop:
-#    - url: "github.com/aykamko/tag"
   with_items: "{{ go_install }}"
-# When a shell/command or other module runs it will typically report “changed” status based on whether it thinks it affected machine state.
-# Sometimes you will know, based on the return code or output that it did not make any changes, and wish to override the “changed” result such that it does not appear in report output or does not cause handlers to fire:
-#  changed_when: false
 
