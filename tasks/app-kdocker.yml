@@ -36,8 +36,12 @@
     - qt5-qmake
     - libqt5x11extras5-dev
     - libxmu-dev
+    # For /usr/include/X11/Xlib-xcb.h
+    - libx11-xcb-dev
     # The INSTALL mentions two other libs (well, their CentOS 7 equivalents):
     #  - libxcb1-dev  # INSTALL's CentOS 7 equiv.: libxcb-devel
+    #    - 2023-04-23: Added 'libx11-xcb-dev' for fresh Linux Mint 21.1 setup,
+    #      and musing the 'libxcb1-dev' that INSTALL refs might be equivalent.
     #  - libxpm-dev   # INSTALL's CentOS 7 equiv.: libXpm-devel
     # but I got by without.
   become: yes
