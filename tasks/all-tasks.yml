@@ -41,15 +41,6 @@
         - app-digikam
   tags: app-digikam
 
-- name: Load role to Fix Firefox Click-Scrolling Behavior
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-firefox-fix_scroll
-    apply:
-      tags:
-        - app-firefox-fix_scroll
-  tags: app-firefox-fix_scroll
-
 - name: Load role to Install GIMP docs
   include_role:
     name: zoidy_apps_et_al
