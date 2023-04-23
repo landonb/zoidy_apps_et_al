@@ -73,13 +73,8 @@
 
 - ansible.builtin.set_fact:
     go_install:
-      - "github.com/aykamko/tag"
-
-- name: "Go-Lang | Run get commands"
-  ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go get -u {{ item }}"
-  environment:
-    GOPATH: "{{ ansible_env.HOME }}/.gopath"
-  with_items: "{{ go_install }}"
+      # CXREF: https://github.com/aykamko/tag
+      - "github.com/aykamko/tag@latest"
 
 - name: "Go-Lang | Run install commands"
   ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
