@@ -100,6 +100,7 @@
     #    - lib-gettext
     #    - lib-libboost
     #    - app-gnucash-build
+    #    - app-gnucash-conf
     #    - app-gnucash-docs
     #    - perl-finance-quote
     tasks_from: app-gnucash-build
@@ -109,6 +110,18 @@
         - all-gnucash
   tags:
     - app-gnucash-build
+    - all-gnucash
+
+- name: Load role to Configure GnuCash
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-gnucash-conf
+    apply:
+      tags:
+        - app-gnucash-conf
+        - all-gnucash
+  tags:
+    - app-gnucash-conf
     - all-gnucash
 
 - name: Load role to Install gnucash docs

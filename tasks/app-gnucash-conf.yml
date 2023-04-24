@@ -1,0 +1,112 @@
+---
+
+- name: Setup Preferred GnuCash Preferences
+  community.general.dconf:
+    key: "/org/gnucash/{{ item.key }}"
+    value: "{{ item.val }}"
+    state: present
+  loop:
+
+    # Edit > Preferences > Register Defaults > Default Style
+    # - One of: Basic ledger / Auto-split ledger / Transaction Journal
+    # - Set one of these 'true' and the other two 'false'.
+    # Same with this, but I can't tell to which control this corresponds.
+    - key: "general/register/default-style-ledger"
+      val: "false"
+    # So that you don't have to click the Split button all the time.
+    # - Useful if you normally click transactions to edit their splits.
+    - key: "general/register/default-style-autoledger"
+      val: "true"
+    # Sometimes I like it when all splits are expanded (Transaction Journal
+    # style), 2021-03-14 19:25: but currently I think I still like auto-split
+    # behavior for most accounts.
+    - key: "general/register/default-style-journal"
+      val: "false"
+
+    # Edit > Preferences > Register Defaults > ✓ Only display leaf account names
+    # - 2021-01-09 23:49: Trying this now. Not sure why I didn't do sooner,
+    #   my long account names makes 'em hard to read quickly.
+    - key: "general/register/show-leaf-account-names"
+      val: "true"
+    # - I first set
+    #     Edit > Preferences > Accounts > Separator Character > Character: »
+    #   which helped a little, and the short name works better, I think.
+    # 2021-03-13: The sep. on my machine is back to ':', did I do that?
+    #             - Probably for Birds Eye.
+    #  - key: "general/account-separator"
+    #    val: "»"
+
+    # Edit > Preferences > Register > ✓ Use GnuCash built-in color theme
+    # - Enable this option to use a light green background on transaction
+    #   rows, and beige on split backgrounds. When off, they're all white.
+    - key: "general/register/use-gnucash-color-theme"
+      val: "true"
+
+    # Edit > Preferences > Numbers, Date, Time > Date Format: *ISO    2013-07-31*
+    # 2021-03-13: How'd I miss this setting until now.
+    - key: "general/date-format"
+      val: "3"
+
+    # Edit > Preferences > General > Retain log/backup files > ✓ Never
+    # 2021-03-13: I mostly import data, and don't make a lot of edits or
+    # new transactions in the application. So I'm diligent about saving
+    # (and committing to a repo) so I don't feel the need for this file
+    # noise (I've never needed/used a GNC log file).
+    - key: "general/retain-type-never"
+      val: "true"
+
+    # Edit > Preferences > Import > QIF Import > ✗ Show documentation
+    # SPIKE/2021-03-13: Will this cut down on Wizard screens?
+    - key: "dialogs/import/qif/show-doc"
+      val: "false"
+
+    # Edit > Preferences > Business > Invoices > Notify when due > Days in advance
+    # 2021-03-22: Defaults to 7, lowest is 1.
+    # - (lb): I set this to 1. I don't quite get why GNC uses a week. Like,
+    #   if the client still has a week to pay, what's the purpose of the
+    #   alert? So I can prod the client to pay? But why would I want to do
+    #   that, if they still have another week to pay? / In my case, all my
+    #   clients pay like clockwork, about 1 week before the technical due
+    #   date. So the GnuCash alert -- to me -- only serves to remind me to
+    #   update my books (import recent bank transactions into GnuCash, and
+    #   assign payments to invoices).
+    - key: "dialogs/business/invoice/days-in-advance"
+      val: "1.0"
+
+    # MANUAL/2021-03-13 20:12: See also: View: ✗ Summary Bar
+    # to hide the Summary bar (though I don't see a dconf setting for it).
+    # - At least for my business books the Summary bar has useless or
+    #   incorrect data in it... but that's probably because I've got my
+    #   accounts set up unconventionally (because I'm not an accountant!).
+
+  # 2021-03-13: All settings I see on dump.
+  #
+  #   [/]
+  #   summarybar-position-top=false
+  #   retain-type-never=true
+  #   show-account-color=true
+  #   date-completion-thisyear=false
+  #   migrate-prefs-done=true
+  #   show-account-color-tabs=true
+  #   account-separator=':'
+  #   reversed-accounts-none=false
+  #   autosave-interval-minutes=0.0
+  #   grid-lines-horizontal=false
+  #   date-format=3
+  #   retain-type-days=false
+  #   use-accounting-labels=false
+  #   autosave-show-explanation=false
+  #   prefs-version=402
+  #
+  #   [finance-quote]
+  #   alphavantage-api-key='...'
+  #
+  #   [register]
+  #   use-gnucash-color-theme=true
+  #   show-leaf-account-names=true
+  #   default-style-autoledger=true
+  #   default-style-ledger=false
+  #
+  #   [report]
+  #   currency-choice-other=false
+
