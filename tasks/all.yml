@@ -54,8 +54,48 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-tasks
-    apply:
-      tags:
-        - all-tasks
-  tags: all-tasks, always
+  tags:
+    # Tasks in the all-tasks file use their own tag matches, so we could
+    # use always here:
+    #  - always
+    # but using a list lets us check our maths: The following tag list
+    # should be exclusive of the all-github tags list.
+    #
+    # Note that using --tags all-tasks won't actually run any task, but
+    # we specify it here because convention.
+    - all-tasks
+    #
+    - app-chrome
+    - app-cinelerra-gg
+    - app-darktable
+    - app-digikam
+    - app-google-earth
+    - app-kdocker
+    - app-openjump
+    - app-opera
+    - app-pencil-project-evolus
+    - app-spotify
+    - app-virtualbox
+    - cli-exiftool
+    - cli-exiv2
+    - cli-kcov
+    - cli-optipng
+    - cli-ripgrep
+    - dmn-dropbox
+    - email-gmail-postfix
+    - font-hack, dubs-vim
+    - font-hack-nerd-font
+    - font-mania
+    - golang-go-install-packages
+    - hardware-android-studio
+    - hardware-arduino
+    - hardware-ac1200-usb-wifi
+    - node-npmjs-install
+    - node-node-install
+    - node-npm-packages
+    - node-nvm-version-mgr
+    - node-nvm-versions
+    - python-sources
+    - ref-dictionary
+    - virt-vagrant
 
