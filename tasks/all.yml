@@ -71,7 +71,7 @@
     - app-gnucash-docs
     - perl-finance-quote
 
-- name: Run all the tasks to do all the things
+- name: Load all-tasks dispatcher
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-tasks
