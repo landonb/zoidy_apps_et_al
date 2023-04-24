@@ -335,18 +335,6 @@
 # ************************************************************************
 # *** Secs. ***
 
-- name: OpenVPN and IVPN Installer and Configurer
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: sec-net-ivpn
-    apply:
-      tags:
-        - sec-net-ivpn
-  tags:
-    - sec-net-ivpn
-    # Opt-in task.
-    - never
-
 - name: Pass Store Tomb Plugin Extenstion Installer
   include_role:
     name: zoidy_apps_et_al
