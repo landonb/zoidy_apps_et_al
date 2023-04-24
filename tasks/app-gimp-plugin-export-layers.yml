@@ -1,5 +1,44 @@
 ---
 
+# SAVVY/2023-04-23: If you installed GIMP from aptitude (or at least this is
+# how apt's GIMP 2.8 worked), the plugins dir is, e.g., ~/.gimp-2.8/plug-ins.
+#
+#   - set_fact:
+#       zoidy_gimp_minor_version: "2.10"
+#
+#   - set_fact:
+#       zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.gimp-{{ zoidy_gimp_minor_version }}/plug-ins"
+#
+# But Flatpak GIMP (which we now expect) installs elsewhere.
+#
+# - SAVVY: Determine the plug-ins directory:
+#
+#     GIMP > Edit > Preferences > Folders > Plug-ins
+#
+#   - E.g., ~/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins
+#
+# - SAVVY: Determine where gimptool-2.0 installs:
+#
+#     $ gimptool-2.0 --install-bin -n
+#     cp '-n' '/home/user/.config/GIMP/2.10/plug-ins/-n/'
+#
+# - SAVVY: There's also a directory under the Flatpak installation
+#   directory, but didn't work when I tested:
+#
+#     ~/.local/share/flatpak/app/org.gimp.GIMP/current/active/files/lib/gimp/2.0/plug-ins
+#
+# The ~/.var and ~/.config paths both work. We'll use ~/.config because
+# that's what gimptool-2.0 uses.
+
+- set_fact:
+    # E.g., ~/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins
+    #  zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins"
+    # E.g., ~/.config/GIMP/2.10/plug-ins
+    zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.config/GIMP/2.10/plug-ins"
+
+# ***
+
+# CXREF: https://github.com/khalim19/gimp-plugin-export-layers
 - name: Clone gimp-plugin-export-layers repo
   git:
     repo: "git@github.com:khalim19/gimp-plugin-export-layers.git"
@@ -23,13 +62,14 @@
 #   not worry if anything is lurking in the single-file encoded archive (not
 #   that I audited the raw project code, but whatever, feelings are feelings).
 
+# The ~/.var/app/org.gimp.GIMP/ directory not created until first run.
 - name: Ensure the GIMP & Its Plug-Ins Directories exist
-  file: path="{{ ansible_env.HOME }}/.gimp-2.8/plug-ins" state=directory
+  file: path="{{ zoidy_gimp_plug_ins_dir }}" state=directory
 
-- name: Synchronize Home Directories and Files
+- name: Synchronize GIMP export_layers plug-in directory
   synchronize:
     src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers/"
-    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/export_layers/"
+    dest: "{{ zoidy_gimp_plug_ins_dir }}/export_layers/"
     delete: yes
   # Copy from remote to remote.
   delegate_to: "{{ inventory_hostname }}"
@@ -37,7 +77,7 @@
 - name: Copy export_layers.py to GIMP plug-ins
   copy:
     src: "{{ zoidy_homefries_downloads_dir }}/gimp-plugin-export-layers/export_layers.py"
-    dest: "{{ ansible_env.HOME }}/.gimp-2.8/plug-ins/"
+    dest: "{{ zoidy_gimp_plug_ins_dir }}/"
     remote_src: yes
     # Even if source file is executable, copied file defaults to 0664.
     mode: 0775
