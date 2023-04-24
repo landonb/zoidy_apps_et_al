@@ -208,10 +208,6 @@
     - libicu-dev
     #
     # *** boost 1.67.0
-    #    # *** "boost > 1.50.0 - requires locale and regex built with ICU support"
-    #    # - See the `lib-libboost` task.
-    #    # - Or, if the host's distro includes > 1.67, try:
-    #    #   - libboost-all-dev
     - libboost-all-dev
     - libboost1.74-dev
     #

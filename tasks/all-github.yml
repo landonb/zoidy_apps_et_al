@@ -68,37 +68,11 @@
 # ************************************************************************
 # *** Gnucash. ***
 
-- name: Load role to Install gettext
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: lib-gettext
-    apply:
-      tags:
-        - lib-gettext
-        - all-gnucash
-  tags:
-    - lib-gettext
-    - all-gnucash
-
-- name: Load role to Install libboost
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: lib-libboost
-    apply:
-      tags:
-        - lib-libboost
-        - all-gnucash
-  tags:
-    - lib-libboost
-    - all-gnucash
-
 - name: Load role to Install gnucash
   include_role:
     name: zoidy_apps_et_al
     # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash-build
     # (add app-gnucash-build to each of their apply-tags and tags):
-    #    - lib-gettext
-    #    - lib-libboost
     #    - app-gnucash-build
     #    - app-gnucash-conf
     #    - app-gnucash-docs

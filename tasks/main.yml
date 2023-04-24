@@ -35,8 +35,6 @@
     - lib-ncurses
     - app-tmux
     # gnucash
-    - lib-gettext
-    - lib-libboost
     - app-gnucash-build
     - app-gnucash-conf
     - app-gnucash-docs
