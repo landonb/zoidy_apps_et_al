@@ -1,29 +1,34 @@
 ---
 
-# - Ref:
+# CXREF:
 #
-#     https://wiki.gnucash.org/wiki/Building_On_Linux
+#   https://wiki.gnucash.org/wiki/Building_On_Linux
 
 # ***
 
+# CXREF: https://github.com/Gnucash/gnucash
+#
+#   https://github.com/Gnucash/gnucash/releases
+
 - set_fact:
+    # 2023-04-23:
+    GNUCASH_BRANCH: "5.0"
+    # 2021-09-10: The "Edit..." button for Invoice Group does not work...:
+    #  GNUCASH_BRANCH: "4.6"
+    # 2021-03-13:
+    #  GNUCASH_BRANCH: "4.4"
+    # 2020-11-14: I was looking for a way to run reports from the CLI
+    # (e.g., so I can dump portfolio data to CSV, import to a spreadsheet,
+    # and do my own analysis), and — lo! — the awesome GnuCash devs added
+    # a GNC CLI in 4.0, how sweet!
+    #  GNUCASH_BRANCH: "4.2"
     # 2020-05-02: How have I not been using GnuCash for the past 2 decades??
     # This app rocks.
     #  GNUCASH_BRANCH: "3.10"
-    #
-    # 2020-11-14: I was looking for a way to run reports from the CLI
-    # (e.g., so I can dump portfolio data to CSV, import to a spreadsheet,
-    # and do my own analysis), and -- lo! -- the awesome GnuCash devs added
-    # a GNC CLI in 4.0, how sweet!
-    #  GNUCASH_BRANCH: "4.2"
-    # 2021-03-13:
-    #  GNUCASH_BRANCH: "4.4"
-    # 2021-09-10: The "Edit..." button for Invoice Group does not work...:
-    GNUCASH_BRANCH: "4.6"
 
 - set_fact:
     GNUCASH_FORCE: False
-    # DEV: Set this True if you want to build even if build directory exists.
+    # DEV: Set this True if you want to build even if gnucash at current version.
     #  GNUCASH_FORCE: True
 
 # ***
@@ -38,7 +43,7 @@
 
 # ***
 
-# Specify the DISPLAY, otherwise fails, because Ansible runs over SSH, and:
+# Specify the DISPLAY because Ansible runs over SSH, and fails otherwise:
 #
 #   $ ssh $(hostname)
 #   (ssh) $ gnucash --version
@@ -46,6 +51,7 @@
 #   Run 'g --help' to see a full list of available command line options.
 #   Error: could not initialize graphical user interface and option add-price-quotes was not set.
 #          Perhaps you need to set the $DISPLAY environment variable ?
+#
 - name: gnucash » Check active version
   ansible.builtin.shell: >
     DISPLAY=:0 ./gnucash --version | head -1 \
@@ -73,9 +79,15 @@
     repo: "git@github.com:Gnucash/gnucash.git"
     dest: "{{ GNUCASH_DIR }}"
     remote: "{{ zoidy_homefries_gnucash_repo_remote }}"
-    # Releases are tagged, which we have to deal with in post.
-    version: "maint"
-  # LATER/2020-05-02: Check for newer version.
+    # Releases are tagged, which we'll deal with in later task.
+    # - If we specify tag here, it checks out detached HEAD;
+    #   so specify branch instead. (Doesn't really matter which
+    #   branch since we'll create a new branch from the tag.)
+    # - GnuCash v4.6:
+    #     version: "maint"
+    # - GnuCash v5.0:
+    version: "stable"
+  # LATER/2020-05-02: Automate version check (or subscribe email alerts?).
   # - See git-bump-version-tag for help reading latest version tag.
   # MEH/2020-11-15: On second thought, don't really care.
   # - Probably most useful if you made a new playbook whose tasks
@@ -88,6 +100,12 @@
   #   so that calling this task repeatedly doesn't waste time
   #   re-downloading and re-building the same GnuCash as what's
   #   installed... but, again, seems like a tedious proposition.
+  # - NOMEH/2023-04-24: On third thought, see if you can receive alerts.
+  #   - I waited until new machine to update Ansible app tasks, and to
+  #     move from Linux Mint 19.3 → 21.1, and it's a lot of work.
+  #     - If I kept on top of both OS and app versions, I could tackle
+  #       them periodically at shorter intervals, to avoid building up
+  #       a huge backlog of tech debt.
 
 - name: gnucash » checkout version branch
   ansible.builtin.shell: git checkout rel/{{ GNUCASH_BRANCH }}
@@ -104,57 +122,69 @@
 
 # ***
 
-- name: Run command "apt-get update" (app-gnucash)
+- name: Run command "apt-get update" (app-gnucash-build)
   become: true
   apt:
     update_cache: yes
     cache_valid_time: 3600
-  when: False
 
-- name: gnucash » ensure dependencies present(ly installed)
+# GnuCash docs suggest easy-install deps, but doesn't indicate URI.
+# - apt responds: "You must put some 'deb-src' URIs in your sources.list"
+#
+#  - name: gnucash » install build dependencies (easy)
+#    become: true
+#    ansible.builtin.shell: apt-get build-dep gnucash
+#
+# INERT/2023-04-24: I went to the trouble of populating (overpopulating,
+# actually; I'm sure the next list installs more than it needs, because
+# I didn't want to trial-and-error figure out where I can trim the fat)
+# the list of dependencies (next), so don't need to make build-dep work.
+
+# SAVVY/2023-04-24: I've been maintaining a deps list since GnuCash v3.
+# - CXREF:
+#     https://github.com/Gnucash/gnucash/blob/stable/README.dependencies
+# - BLOAT: This list is overly inclusive.
+#   - E.g., I include both binary and "*-dev" packages, because I'm not
+#     sure what GnuCash needs (probably headers, so dev packages, but
+#     the build doc doesn't specify, and I haven't investigated further).
+
+- name: gnucash » install build dependencies (individually)
   apt: name="{{ item }}" state="present"
   become: true
   loop:
-    # v4.2
-    # ----
-    # 2020-11-15: (lb): I assembled this list from the GnuCash Wiki.
-    #   https://wiki.gnucash.org/wiki/Installing_Dependencies
-    # See also in source:
-    #   README.dependencies
-    # - Note that neither Wiki nor source document are necessarily up to date.
-    #   - E.g., I was able to build with versions indicated in the Wiki,
-    #     but then at runtime I found issues, such as:
-    #     - "boost > 1.50.0", but GnuCash complains unless 1.67 or better.
-    #     - "guile >= 2.0.0", but `gnucash-cli --report ...` prints ERRORs
-    #       when built and used with guile 2.0.
-    # - I've also included additional libraries that I found (through make
-    #   trial-and-error) that I needed to build v3.10 (and that I didn't
-    #   bother to determine if I still need to build v4.2; it's easier
-    #   just to keep them).
+    # v5.0 Required Dependencies
+    # --------------------------
     #
-    # *** libtool
-    - libtool
-    - libltdl-dev
-    # *** icu
-    - icu-devtools
-    - libicu-dev
-    # *** "glib2 > v2.40.0"
+    # *** gcc 8.0 or clang 6.0 (C++17 C/C++ compiler)
+    # - Mint 21.1: gcc 11.3.0
+    - gcc
+    #
+    # *** cmake 3.10
+    # - Mint 21.1: cmake 3.22.1
+    - cmake
+    #
+    # *** glib2 2.56.1
+    # - Mint 21.1: 2.72.4-0ubuntu1
     - libglib2.0-0
     - libglib2.0-dev
-    # *** "boost > 1.50.0 - requires locale and regex built with ICU support"
-    # - See the `lib-libboost` task.
-    # - Or, if the host's distro includes > 1.67, try:
-    #   - libboost-all-dev
-    # *** "guile >= 2.0.0"
-    # - I found that I need guile-2.2.
-    #   (I also tried (and failed) to use guile 3.0 (installed from source)
-    #   but that's a longer tale, and if guile 2.2 works, I'm happy.)
-    - guile-2.2
-    - guile-2.2-dev
-    # *** "swig > 2.0.10 - swig3.0 on some systems"
-    # (lb): Yup, there's no swig2.0 on Mint 19.3. It's `swig` or `swig3.0`.
-    - swig3.0
-    # *** libxml*
+    #
+    # *** gtk+3 3.22.30
+    # - Mint 21.1: 3.24.33-1ubuntu2
+    - libgtk-3-dev
+    - libgtk-3-bin
+    #
+    # *** guile 3.0, 2.2 or 2.0.9 - must include regex support
+    # - Circa 2020-11-15 v4.2:
+    #   *** "guile >= 2.0.0"
+    #   - I found that I need guile-2.2.
+    #     (I also tried (and failed) to use guile 3.0 (installed from source)
+    #     but that's a longer tale, and if guile 2.2 works, I'm happy.)
+    #- guile-2.2
+    #- guile-2.2-dev
+    - guile-3.0
+    - guile-3.0-dev
+    #
+    # *** libxml2 2.9.4
     - libxml2
     # (lb): NOTE: apt-search requires quotes and escapes:
     #               apt search 'libxml\+\+2.6-dev'
@@ -162,68 +192,143 @@
     #               apt install libxml++2.6-dev
     - libxml++2.6-dev
     - libxml2-utils
-    # *** libxslt1
+    #
+    # *** gettext 0.20 - Required to build gnucash.pot
+    # DUNNO/2023-04-23: Not sure which package(s)...
+    - gettext
+    - libgettextpo-dev
+    #
+    # *** libxslt, including xsltproc
     - libxslt1.1
     - libxslt1-dev
-    # *** xsltproc
     - xsltproc
-    # *** "texinfo required for makeinfo"
-    - texinfo
-    # *** libsecret-1
+    #
+    # *** ICU (International Components for Unicode)
+    - icu-devtools
+    - libicu-dev
+    #
+    # *** boost 1.67.0
+    #    # *** "boost > 1.50.0 - requires locale and regex built with ICU support"
+    #    # - See the `lib-libboost` task.
+    #    # - Or, if the host's distro includes > 1.67, try:
+    #    #   - libboost-all-dev
+    - libboost-all-dev
+    - libboost1.74-dev
+    #
+    # *** swig 3.0.12 (Makes Guile and Python Bindings)
+    - swig3.0
+    # - swig4.0
+    #
+    # *** webkit 2.14.1 
+    - libwebkit2gtk-4.0-37
+    - libwebkit2gtk-4.0-dev
+    # 2023-04-23: What about 4.1?:
+    - libwebkit2gtk-4.1-0
+    - libwebkit2gtk-4.1-dev
+    #
+    # *** googletest 1.8.0 (Some call it gtest, and split out googlemock or gmock)
+    - libgtest-dev
+    - google-mock
+    # 2023-04-23: v4.2 only used libgtest-dev and google-mock, but I see 3 more
+    # packages I've added, just in case...
+    - googletest
+    - googletest-tools
+    - libgmock-dev
+    #
+    # *** libdbi 0.8.3 (SQL backend)
+    - libdbi1
+    - libdbi-dev
+    # **** Requires at least one of libdbd-sqlite3, libdbd-mysql, or libdbd-pgsql
+    - libdbd-mysql
+    - libdbd-pgsql
+    - libdbd-sqlite3
+    #
+    # *** zlib
+    - zlib1g
+    - zlib1g-dev
+    #
+    # v5.0 Optional Dependencies
+    # --------------------------
+    #
+    # *** aqbanking 6.4.0 (online banking and SWIFT)
+    - aqbanking-tools
+    - libaqbanking-dev
+    #
+    # *** gwenhywfar 5.8.0 (file imports)
+    - gwenhywfar-tools
+    - libgwenhywfar79
+    - libgwenhywfar-core-dev
+    # 2023-04-23: Don't see corresponding -dev pkg like previously:
+    #  - libgwenhywfar60-dev
+    # # 2020-11-15: I found (make trial-and-error discovered) that I needed
+    # # this library to build v3.10. Not sure about v4.2. (But for v3.10, I
+    # # had not installed gwenhywfar-tools or libgwenhywfar60-dev.)
+    # - libgwenhywfar-core-dev
+    # 2023-04-24: GnuCash docs don't specify explicitly, but cmake dies
+    #             "No package 'gwengui-gtk3' found" without this.
+    # - libgwengui-gtk3-79
+    - libgwengui-gtk3-dev
+    #
+    # *** python 3.6.0 (python bindings; headers required, not just binaries)
+    # 2023-04-24: Appears to work with system 3.10. cmake reports:
+    #   -- Found PythonInterp: /home/puck/.pyenv/shims/python3 (found suitable version "3.10.6", minimum required is "3") 
+    #   -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.6", minimum required is "3") 
+    #
+    # *** libofx 0.9.12 (OFX/QFX import)
+    - libofx-dev
+    #
+    # *** libsecret 0.18
     - libsecret-1-0
     - libsecret-1-dev
     #
-    # "Only use the next 2 lines if you have not installed [[Google_Test | Google Test]] already."
-    # ">= 1.7.0"
-    - libgtest-dev
-    # "1.8.0 installs googlemock in a subdirectory of gtest"
-    - google-mock
+    # *** makeinfo (Not needed, builds mostly obsolete design documentation
+    #               superceded for the most part in Doxygen docs)
+    # 2023-04-23: texinfo installs /usr/bin/makeinfo
+    - texinfo
     #
-    # "gtk+3.0 >= 3.22.30"
-    - libgtk-3-dev
-    - libgtk-3-bin
+    # *** doxygen (for building Doxygen API documentation)
+
+    # v5.0 Runtime Required Dependencies
+    # ----------------------------------
     #
-    # "> webkit2gtk-3.0"
-    - libwebkit2gtk-4.0-37
-    - libwebkit2gtk-4.0-dev
+    # *** dconf
+    - dconf-cli
+    #
+    #
+    # v5.0 Runtime Suggested Dependencies
+    # -----------------------------------
+    #
+    # *** isocodes (translation of currency names)
+    - libisocodes1
+    - libisocodes-dev
 
-    # v4.2 Optional: Database Backend
-    # -------------------------------
-    # libdbi*: "# > v0.8.3"
-    - libdbi1
-    - libdbi-dev
-    # "and at least one of the following database backends:"
-    - libdbd-pgsql
-    - libdbd-mysql
-    - libdbd-sqlite3
-
-    # v4.2 Optional: OFX File importing
-    # ---------------------------------
-    # "This will automatically install the corresponding libofx<n> package as well."
-    - libofx-dev
-
-    # v4.2 Optional: AqBanking (Online Banking)
-    # -----------------------------------------
-    # *aqbanking*: "# > v4.0.0"
-    - aqbanking-tools
-    - libaqbanking-dev
-    # *gwenhywfar*
-    - gwenhywfar-tools
-    - libgwenhywfar60
-    - libgwenhywfar60-dev
-    # 2020-11-15: I found (make trial-and-error discovered) that I needed
-    # this library to build v3.10. Not sure about v4.2. (But for v3.10, I
-    # had not installed gwenhywfar-tools or libgwenhywfar60-dev.)
-    - libgwenhywfar-core-dev
-    # libgwengui*: "included in tarball prior to v3.905/V4 beta"
-    # 2020-11-15: Linux Mint 19.3 (Ubuntu 18.04) has *-0 variant of this lib:
-    #  - libgwengui-gtk3
-    - libgwengui-gtk3-0
-    - libgwengui-gtk3-dev
+    # 2023-04-23: For posterity, here are the v4.2 build notes; and the one
+    # lib (libtool) that's no longer required by the latest version (v5.0).
+    #
+    # # v4.2
+    # # ----
+    # # 2020-11-15: (lb): I assembled this list from the GnuCash Wiki.
+    # #   https://wiki.gnucash.org/wiki/Installing_Dependencies
+    # # See also in source:
+    # #   README.dependencies
+    # # - Note that neither Wiki nor source document are necessarily up to date.
+    # #   - E.g., I was able to build with versions indicated in the Wiki,
+    # #     but then at runtime I found issues, such as:
+    # #     - "boost > 1.50.0", but GnuCash complains unless 1.67 or better.
+    # #     - "guile >= 2.0.0", but `gnucash-cli --report ...` prints ERRORs
+    # #       when built and used with guile 2.0.
+    # # - I've also included additional libraries that I found (through make
+    # #   trial-and-error) that I needed to build v3.10 (and that I didn't
+    # #   bother to determine if I still need to build v4.2; it's easier
+    # #   just to keep them).
+    #
+    # # *** libtool
+    # - libtool
+    # - libltdl-dev
 
     # v4.2 Optional: Python Support (Python Bindings)
     # -----------------------------------------------
-    # NOTE: Not including. But if you do:
+    # NOTED: Not including. But if you do:
     #   "use the appropriate cmake option switch during the build"
     #  - python3-pytest
 
@@ -246,10 +351,44 @@
     # But can't hurt to keep; while discarding might break the build (any
     # I wouldn't find out until I ran this task on a new host, which could
     # be a while).
-    - libdbd-freetds
-    - libqt5x11extras5-dev
-    - libxmu-dev
-    - qt5-qmake
+    #
+    # - libdbd-freetds
+    # - libqt5x11extras5-dev
+    # - libxmu-dev
+    # - qt5-qmake
+
+# ***
+
+# Uninstall assets.
+#
+# - The GnuCash build doc recommends removing installed assets before
+#   installing a fresh build, e.g.,
+#
+#     make uninstall
+#     # OR:
+#     ninja uninstall
+#
+#   - But let's be selective, so we don't clobber some user files.
+
+- name: Clean build » Remove GnuCash executable
+  file: state=absent path="{{ ansible_env.HOME }}/.local/bin/gnucash"
+
+# - name: Clean build » Remove GnuCash configuration information
+#   file: state=absent path="{{ ansible_env.HOME }}/.local/etc/gnucash/"
+
+- name: Clean build » Remove GnuCash libraries (lib/gnucash/*.so)
+  file: state=absent path="{{ ansible_env.HOME }}/.local/lib/gnucash/"
+
+- name: Clean build » Remove GnuCash libraries (lib/libgnc-*.so)
+  file: state=absent path="{{ item }}"
+  with_fileglob: "{{ ansible_env.HOME }}/.local/lib/libgnc-*.so"
+
+# This includes my reports: ~/.local/share/gnucash/saved-reports-2.8
+# - Though I wonder if v4.2 files will conflict with v5.0...
+#   - FIXME/2023-04-24 00:22: Probably better to copy/import reports into v5.0.
+#
+#  - name: Clean build » Remove GnuCash help files
+#    file: state="absent" path="{{ ansible_env.HOME }}/.local/share/gnucash/"
 
 # ***
 
@@ -259,22 +398,45 @@
 - name: gnucash » ensure build directory exists
   file: path={{ GNUCASH_BUILD_DIR }} state=directory
 
+# ***
+
+# **** BUILD OPT 1: Build w/ `make`
+#
+# ISOFF/2023-04-24: For v5.0, switched from classic 'make' to 'ninja' build,
+#                   which is nice and fairly quick.
+
+# # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
+# - name: Prepare GnuCash build (using make)
+#   ansible.builtin.shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+#   args:
+#     chdir: "{{ GNUCASH_BUILD_DIR }}"
+#
+# - name: "gnucash make"
+#   make:
+#     chdir: "{{ GNUCASH_BUILD_DIR }}"
+#
+# - name: "gnucash make install"
+#   make:
+#     chdir: "{{ GNUCASH_BUILD_DIR }}"
+#     target: install
+
+# **** BUILD OPT 2: Build w/ `ninja`
+
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
-- name: Build gnucash application
-  ansible.builtin.shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+- name: Prepare GnuCash build (using ninja)
+  ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
-# ***
-
-- name: "gnucash make"
-  make:
+- name: "gnucash ninja: build gnucash and libs"
+  ansible.builtin.shell: ninja
+  args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
-- name: "gnucash make install"
-  make:
+- name: "gnucash ninja install: install gnucash"
+  ansible.builtin.shell: ninja install
+  args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
-    target: install
 
 # ***
 
