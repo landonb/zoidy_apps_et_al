@@ -13,7 +13,7 @@
     - sec-ssh-symlinks
     #
     # Ensures GitHub SSH is setup, so 'repo' module clone works.
-    - init-github-ssh
+    - all-init-github-ssh
     # Let's you skip this task via `--skip-tags skip-github-ssh`.
     - skip-github-ssh
     #
@@ -32,13 +32,13 @@
 - name: Run tasks to verify or configure GitHub SSH
   include_role:
     name: zoidy_apps_et_al
-    tasks_from: init-github-ssh
+    tasks_from: all-init-github-ssh
     apply: { tags: "always" }
   tags:
     # Ensure GitHub SSH setup before running any super-task with a 'repo'
     # subtask that clones a GitHub repo (so clone uses user's GH key and
     # you can use git@github.com:user/repo URI).
-    - init-github-ssh
+    - all-init-github-ssh
     # A GH SSH prep skip tag, e.g.,
     #   `ansible-playbook ... --tag cli-parT --skip-tags skip-github-ssh`
     - skip-github-ssh

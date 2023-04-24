@@ -11,6 +11,7 @@
   tags:
     - all-github
     - all-init-ensure-dirs
+    - all-init-github-ssh
     - all-init-go-lang
     - all-tasks
     - all
@@ -50,7 +51,6 @@
     - hardware-ac1200-usb-wifi
     - hardware-android-studio
     - hardware-arduino
-    - init-github-ssh
     - node-node-install
     - node-npm-packages
     - node-npmjs-install
@@ -72,6 +72,7 @@
       tags:
         - all-github
         - all-init-ensure-dirs
+        - all-init-github-ssh
         - all-init-go-lang
         - all-tasks
         - all
@@ -111,7 +112,6 @@
         - hardware-ac1200-usb-wifi
         - hardware-android-studio
         - hardware-arduino
-        - init-github-ssh
         - node-node-install
         - node-npm-packages
         - node-npmjs-install

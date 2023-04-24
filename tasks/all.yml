@@ -26,7 +26,7 @@
     # If ensuring SSH ready.
     - sec-ssh-symlinks
     # If ensuring GH SSH present.
-    - init-github-ssh
+    - all-init-github-ssh
     #
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
