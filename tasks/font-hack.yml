@@ -45,7 +45,6 @@
 
 - name: Ensure ~/.downloads directory exists
   file: path={{ zoidy_homefries_downloads_dir }} state=directory
-  tags: always
 
 - name: Fetch the Hack font release, if not previously downloaded
   get_url:

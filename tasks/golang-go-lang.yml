@@ -59,7 +59,6 @@
 # i.e., simply 'go', so use the full archive name.
 - name: Ensure ~/.download/go<version>.linux-amd64 directory exists
   file: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}" state=directory
-  tags: always
 
 - name: Unarchive the golang release archive
   unarchive:
@@ -73,7 +72,6 @@
 - name: Check obsolete godoc symlink (replaced by `go doc`)
   stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
   register: local_bin_godoc
-  tags: always
 
 - name: Remove obsolete godoc symlink (replaced by `go doc`)
   file:

@@ -40,9 +40,6 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-github
-  # We could simplify this and specify not all the tags, e.g.,
-  #   tags: all-github, always
-  # but then the task name will always appear in any play.
   tags:
     - all-github
     # If ensuring SSH ready.
