@@ -15,6 +15,7 @@
         - cli-ripgrep
         - golang-delve-debugger
         - golang-go-install-packages
+        - golang-go-lang
   tags:
     - all-init-go-lang
     #
@@ -23,4 +24,5 @@
     - cli-ripgrep
     - golang-delve-debugger
     - golang-go-install-packages
+    - golang-go-lang
 
