@@ -1,18 +1,25 @@
 ---
 
+# ************************************************************************
+# *** Prep tasks. ***
+
 - name: SSH directory symlink populator
   include_role:
     name: zoidy_apps_et_al
     tasks_from: sec-ssh-symlinks
     apply: { tags: "always" }
   tags:
+    # Ensures ~/.ssh setup before configuring GitHub SSH.
     - sec-ssh-symlinks
-    # Also ensure SSH setup if ensuring GH SSH setup.
+    #
+    # Ensures GitHub SSH is setup, so 'repo' module clone works.
     - init-github-ssh
     # Let's you skip this task via `--skip-tags skip-github-ssh`.
     - skip-github-ssh
-    # Also ensure SSH if ensuring GH if running any task
-    # with a repo: module that clones using user's GH key.
+    #
+    # Each of the following install tasks clone a GitHub repo using SSH.
+    # - USYNC: GH_SSH_TASKS
+    #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
     - cli-cloc
@@ -29,10 +36,17 @@
     tasks_from: init-github-ssh
     apply: { tags: "always" }
   tags:
+    # Ensure GitHub SSH setup before running any super-task with a 'repo'
+    # subtask that clones a GitHub repo (so clone uses user's GH key and
+    # you can use git@github.com:user/repo URI).
     - init-github-ssh
-    # Let's you skip this task via `--skip-tags skip-github-ssh`.
+    # A GH SSH prep skip tag, e.g.,
+    #   `ansible-playbook ... --tag cli-parT --skip-tags skip-github-ssh`
     - skip-github-ssh
-    # If running any task expecting GH key.
+    #
+    # Each of the following install tasks clone a GitHub repo using SSH.
+    # - USYNC: GH_SSH_TASKS
+    #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
     - cli-cloc

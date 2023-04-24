@@ -47,7 +47,8 @@
     # If ensuring GH SSH present.
     - init-github-ssh
     #
-    # If running any task expecting GH key.
+    # Each of the following install tasks clone a GitHub repo using SSH.
+    # - USYNC: GH_SSH_TASKS
     #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
