@@ -4,7 +4,7 @@
 # - I.e., don't load anything if user specified a tag defined by
 #   another, unrelated role.
 
-- name: Load tasks dispatcher for ‘zoidy_apps_et_al’
+- name: Load zoidy_apps_et_al tasks dispatcher for tags
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all
@@ -63,4 +63,67 @@
     - sec-ssh-symlinks
     - vid-ttygif
     - virt-vagrant
+
+- name: Load zoidy_apps_et_al tasks dispatcher for role tag
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: all
+    apply:
+      tags:
+        - all-github
+        - all-init-ensure-dirs
+        - all-init-go-lang
+        - all-tasks
+        - all
+        - app-chrome
+        - app-cinelerra-gg
+        - app-darktable
+        - app-digikam
+        - app-gimp-plugin-export-layers
+        - app-gimp-plugin-wavelet-decompose
+        - app-gnucash-build
+        - app-gnucash-conf
+        - app-gnucash-docs
+        - app-google-earth
+        - app-kdocker
+        - app-openjump
+        - app-opera
+        - app-pencil-project-evolus
+        - app-spotify
+        - app-tmux
+        - app-virtualbox
+        - cli-cloc
+        - cli-direnv
+        - cli-exiftool
+        - cli-exiv2
+        - cli-kcov
+        - cli-optipng
+        - cli-parT
+        - cli-ripgrep
+        - dmn-dropbox
+        - email-gmail-postfix
+        - font-hack-nerd-font
+        - font-hack
+        - font-mania
+        - golang-delve-debugger
+        - golang-go-install-packages
+        - golang-go-lang
+        - hardware-ac1200-usb-wifi
+        - hardware-android-studio
+        - hardware-arduino
+        - init-github-ssh
+        - node-node-install
+        - node-npm-packages
+        - node-npmjs-install
+        - node-nvm-version-mgr
+        - node-nvm-versions
+        - perl-finance-quote
+        - python-sources
+        - ref-dictionary
+        # NEVER: sec-pass-plug-tomb
+        - sec-ssh-symlinks
+        - vid-ttygif
+        - virt-vagrant
+  tags:
+    - zoidy_apps_et_al
 
