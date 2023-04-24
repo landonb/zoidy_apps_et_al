@@ -116,15 +116,6 @@
         - cli-exiftool
   tags: cli-exiftool
 
-- name: Install Latest exiv2 application
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-exiv2
-    apply:
-      tags:
-        - cli-exiv2
-  tags: cli-exiv2
-
 - name: Install Latest kcov application
   include_role:
     name: zoidy_apps_et_al

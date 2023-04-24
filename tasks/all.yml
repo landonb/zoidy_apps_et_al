@@ -75,7 +75,6 @@
     - app-spotify
     - app-virtualbox
     - cli-exiftool
-    - cli-exiv2
     - cli-kcov
     - cli-optipng
     - cli-ripgrep

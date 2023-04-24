@@ -34,7 +34,6 @@
     - app-tmux
     - app-virtualbox
     - cli-exiftool
-    - cli-exiv2
     - cli-kcov
     - cli-optipng
     - cli-parT
@@ -91,7 +90,6 @@
         - app-tmux
         - app-virtualbox
         - cli-exiftool
-        - cli-exiv2
         - cli-kcov
         - cli-optipng
         - cli-parT
