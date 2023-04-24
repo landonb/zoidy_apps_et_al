@@ -1,6 +1,6 @@
 - name: List of Go Lang projects to install
   set_fact:
-    go_get_list:
+    go_install_list:
       # These projects install to, e.g.,
       #   ~/.gopath/src/{{ item }}
       
@@ -31,5 +31,5 @@
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
-  loop: "{{ go_get_list }}"
+  loop: "{{ go_install_list }}"
 
