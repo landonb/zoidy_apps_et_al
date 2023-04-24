@@ -6,11 +6,11 @@
 - name: SSH directory symlink populator
   include_role:
     name: zoidy_apps_et_al
-    tasks_from: sec-ssh-symlinks
+    tasks_from: all-init-ssh-links
     apply: { tags: "always" }
   tags:
     # Ensures ~/.ssh setup before configuring GitHub SSH.
-    - sec-ssh-symlinks
+    - all-init-ssh-links
     #
     # Ensures GitHub SSH is setup, so 'repo' module clone works.
     - all-init-github-ssh

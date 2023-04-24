@@ -24,7 +24,7 @@
   tags:
     - all-github
     # If ensuring SSH ready.
-    - sec-ssh-symlinks
+    - all-init-ssh-links
     # If ensuring GH SSH present.
     - all-init-github-ssh
     #
