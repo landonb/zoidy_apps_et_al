@@ -71,9 +71,3 @@
   tags:
     - all-init-ensure-dirs
 
-- name: Ensure ~/.local/docs directory exists
-  file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
-  tags:
-    - all-init-ensure-dirs
-    - app-gimp-docs
-

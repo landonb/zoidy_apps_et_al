@@ -41,15 +41,6 @@
         - app-digikam
   tags: app-digikam
 
-- name: Load role to Install GIMP docs
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-gimp-docs
-    apply:
-      tags:
-        - app-gimp-docs
-  tags: app-gimp-docs
-
 - name: Load role to Install Google Earth
   include_role:
     name: zoidy_apps_et_al
