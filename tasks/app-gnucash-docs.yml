@@ -6,9 +6,16 @@
 
 # ***
 
+# CXREF: https://github.com/Gnucash/gnucash-docs
+#
+#   https://github.com/Gnucash/gnucash-docs/tags
+
+# LATER/2020-05-02: Somehow periodically check for new versions...
 - set_fact:
     # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
-    GNUCASH_DOCS_BRANCH: "3.10"
+    # 2023-04-23: Versions: 3.11 is last 3.x; then 4.0 → 4.14; now 5.0 [2023-03-25].
+    #   GNUCASH_DOCS_BRANCH: "3.10"
+    GNUCASH_DOCS_BRANCH: "5.0"
 
 # ***
 
@@ -19,15 +26,48 @@
     GNUCASH_DOCS_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash-docs"
   when: GNUCASH_DOCS_DIR == ""
 
+# CXREF: https://github.com/Gnucash/gnucash-docs
 - name: gnucash docs ∷ git clone
   git:
     repo: "git@github.com:Gnucash/gnucash-docs.git"
     dest: "{{ GNUCASH_DOCS_DIR }}"
     remote: "{{ zoidy_homefries_gnucash_docs_repo_remote }}"
-    version: "{{ GNUCASH_DOCS_BRANCH }}"
-  # LATER/2020-05-02: Somehow periodically check for new versions...
+    version: "stable"
+
+- name: gnucash-docs » checkout version branch
+  ansible.builtin.shell: git checkout rel/{{ GNUCASH_DOCS_BRANCH }}
+  args:
+    chdir: "{{ GNUCASH_DOCS_DIR }}"
+  register: gitco_output
+  ignore_errors: yes
+
+- name: gnucash-docs » create version branch
+  ansible.builtin.shell: git checkout tags/{{ GNUCASH_DOCS_BRANCH }} -b rel/{{ GNUCASH_DOCS_BRANCH }}
+  args:
+    chdir: "{{ GNUCASH_DOCS_DIR }}"
+  when: gitco_output.rc != 0
 
 # ***
+
+# https://github.com/Gnucash/gnucash-docs
+#
+#   Requirements
+#   ############
+#   * cmake with
+#   ** ninja or
+#   ** make
+#
+#   * libxml2
+#   * libxslt [Debian packed the required xsltproc in a separate package,
+#              which depends on libxslt]
+#   * docbook-xsl
+#   * docbook-dtds
+#   * yelp (for viewing)
+#
+#   ...
+#
+#   Additonal Requirements for Generating PDF:
+#   * Apache fop >= 0.95
 
 - name: Run command "apt-get update" (app-gnucash-docs)
   become: true
@@ -35,20 +75,36 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: gnucash-docs » ensure dependencies present(ly installed)
+# INERT/2023-04-24: build-dep could work, if only I knew the URI.
+#
+#  - name: gnucash » install build dependencies (easy)
+#    become: true
+#    ansible.builtin.shell: apt-get build-dep gnucash-docs
+
+- name: gnucash » install build dependencies (individually)
   apt: name="{{ item }}" state="present"
   become: true
   loop:
+    - cmake
+    - ninja-build
+    - make
+    - libxml2
+    - libxml2-dev
+    - libxslt-dev
+    - docbook-xsl
+    - docbook-dsssl
     - fop
+    - yelp
+    - libyelp-dev
 
 # ***
 
-- name: gnucash-docs autogen.sh
-  # 2020-05-02: Do I need to specify the shell command?
-  #  ansible.builtin.shell: sh autogen.sh
-  ansible.builtin.shell: ./autogen.sh
-  args:
-    chdir: "{{ GNUCASH_DOCS_DIR }}"
+# Circa gnucash-docs v3.10:
+#
+#  - name: gnucash-docs autogen.sh
+#    ansible.builtin.shell: ./autogen.sh
+#    args:
+#      chdir: "{{ GNUCASH_DOCS_DIR }}"
 
 # ***
 
@@ -58,13 +114,31 @@
 - name: gnucash-docs » ensure build directory exists
   file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
 
-- name: "gnucash-docs ../configure ..."
-  ansible.builtin.shell: ../configure --prefix="{{ ansible_env.HOME }}/.local"
+# **** BUILD OPT 1: Build w/ `make`
+#
+# ISOFF/2023-04-24: For v5.0, switched from classic 'make' to 'ninja' build,
+#                   which is nice and fairly quick.
+
+# - name: "gnucash-docs make"
+#   make:
+#     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
+#     target: install
+
+# **** BUILD OPT 2: Build w/ `ninja`
+
+# Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
+- name: Prepare gnucash-docs build (using ninja)
+  ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 
-- name: "gnucash-docs make"
-  make:
+- name: "gnucash ninja: build gnucash-docs"
+  ansible.builtin.shell: ninja
+  args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
-    target: install
+
+- name: "gnucash ninja install: install gnucash-docs"
+  ansible.builtin.shell: ninja install
+  args:
+    chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 
