@@ -32,7 +32,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     - cli-cloc
-    - cli-direnv
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif

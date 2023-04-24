@@ -11,7 +11,6 @@
         - all-init-go-lang
         #
         # Tasks that rely on Go being available.
-        - cli-direnv
         - cli-ripgrep
         - golang-delve-debugger
         - golang-go-install-packages
@@ -20,7 +19,6 @@
     - all-init-go-lang
     #
     # Tasks that rely on Go being available.
-    - cli-direnv
     - cli-ripgrep
     - golang-delve-debugger
     - golang-go-install-packages

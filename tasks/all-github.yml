@@ -23,7 +23,6 @@
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
     - cli-cloc
-    - cli-direnv
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -49,7 +48,6 @@
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
     - cli-cloc
-    - cli-direnv
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -145,15 +143,6 @@
       tags:
         - cli-cloc
   tags: cli-cloc
-
-- name: Install Direnv Development Utility
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-direnv
-    apply:
-      tags:
-        - cli-direnv
-  tags: cli-direnv
 
 - name: parT Installer
   include_role:

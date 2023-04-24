@@ -20,7 +20,6 @@
     - app-pencil-project-evolus
     - app-tmux
     - cli-cloc
-    - cli-direnv
     - cli-exiftool
     - cli-exiv2
     - cli-kcov
@@ -57,7 +56,6 @@
   tags:
     - all-init-ensure-dirs
     #
-    - cli-direnv
     - node-npm-packages
 
 - name: Ensure ~/.local/bin directory exists
