@@ -48,7 +48,7 @@
     - font-mania
     - golang-delve-debugger
     - golang-go-install-packages
-    - golang-go-lang
+    - golang-install-go-lang
     - hardware-ac1200-usb-wifi
     - hardware-android-studio
     - hardware-arduino
@@ -108,7 +108,7 @@
         - font-mania
         - golang-delve-debugger
         - golang-go-install-packages
-        - golang-go-lang
+        - golang-install-go-lang
         - hardware-ac1200-usb-wifi
         - hardware-android-studio
         - hardware-arduino
