@@ -63,7 +63,7 @@
     - font-hack, dubs-vim
     - font-hack-nerd-font
     - font-mania
-    - golang-go-get-packages
+    - golang-go-install-packages
     - golang-go-lang
     - hardware-android-studio
     - hardware-arduino

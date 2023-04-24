@@ -213,11 +213,11 @@
 - name: Load role to Install Go Lang Projects
   include_role:
     name: zoidy_apps_et_al
-    tasks_from: golang-go-get-packages
+    tasks_from: golang-go-install-packages
     apply:
       tags:
-        - golang-go-get-packages
-  tags: golang-go-get-packages
+        - golang-go-install-packages
+  tags: golang-go-install-packages
 
 # ************************************************************************
 # *** Pltfs. ***
