@@ -60,7 +60,6 @@
     - perl-finance-quote
     - python-sources
     - ref-dictionary
-    # NEVER: sec-pass-plug-tomb
     - vid-ttygif
     - virt-vagrant
 
@@ -121,7 +120,6 @@
         - perl-finance-quote
         - python-sources
         - ref-dictionary
-        # NEVER: sec-pass-plug-tomb
         - vid-ttygif
         - virt-vagrant
   tags:
