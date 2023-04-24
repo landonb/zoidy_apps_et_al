@@ -43,7 +43,6 @@
     - cli-direnv
     - cli-parT
     - golang-delve-debugger
-    - python-chjson
     - vid-ttygif
     #
     # *** GIMP

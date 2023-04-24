@@ -26,7 +26,6 @@
     - cli-direnv
     - cli-parT
     - golang-delve-debugger
-    - python-chjson
     - vid-ttygif
   when: zoidy_homefries_ssh_root_dir != ''
 
@@ -53,7 +52,6 @@
     - cli-direnv
     - cli-parT
     - golang-delve-debugger
-    - python-chjson
     - vid-ttygif
 
 # ************************************************************************
@@ -177,18 +175,6 @@
       tags:
         - golang-delve-debugger
   tags: golang-delve-debugger
-
-# ************************************************************************
-# *** Pycs. ***
-
-- name: Python Chjson Installer
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: python-chjson
-    apply:
-      tags:
-        - python-chjson
-  tags: python-chjson
 
 # ************************************************************************
 # *** Tmux. ***
