@@ -75,6 +75,16 @@
       key: "retain-type-never"
       val: "true"
 
+# FIXME/2023-04-24: Revisit this after setting up new OS and opening
+# GnuCash on your actual books.
+#
+# - I don't see these:
+#     org.gnucash.dialogs.import.qif
+#     org.gnucash.dialogs.business.invoice
+
+- debug: msg="FIXME — Audit GnuCash settings"
+  loop:
+
     # 2023-04-24: "Show doc"s defaults off in GUI, and no gsettings key.
     # - FIXME: The GUI setting does not stick... and I don't see any
     #   settings changes. I also didn't load a book, just opened the
