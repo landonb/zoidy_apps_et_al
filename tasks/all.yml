@@ -9,7 +9,6 @@
     tasks_from: all-init-suss-distro
     apply: { tags: "always" }
   tags:
-    - app-scala-sbt
     - python-deadsnakes
 
 # *** Task Setup (Ensures-Dirs)
