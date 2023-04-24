@@ -49,7 +49,6 @@
     - golang-delve-debugger
     - golang-go-install-packages
     - golang-install-go-lang
-    - hardware-ac1200-usb-wifi
     - hardware-android-studio
     - hardware-arduino
     - node-node-install
@@ -109,7 +108,6 @@
         - golang-delve-debugger
         - golang-go-install-packages
         - golang-install-go-lang
-        - hardware-ac1200-usb-wifi
         - hardware-android-studio
         - hardware-arduino
         - node-node-install
