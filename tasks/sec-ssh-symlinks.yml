@@ -10,7 +10,7 @@
 # RMLINKS: ~/.ssh/*
 
 - name: Remove symlinks from ~/.ssh/
-  command: "find . -maxdepth 1 -type l -exec /bin/rm {} +"
+  command: 'find . -maxdepth 1 -type l -name "id_*" -o -name "config" -exec /bin/rm {} +'
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh/"
 
