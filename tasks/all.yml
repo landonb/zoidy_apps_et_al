@@ -50,8 +50,6 @@
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
     #
-    - app-gimp-plugin-export-layers
-    - app-gimp-plugin-wavelet-decompose
     - cli-cloc
     - cli-direnv
     - cli-parT
@@ -59,14 +57,18 @@
     - python-chjson
     - vid-ttygif
     #
-    # *** tmux
-    - app-tmux
+    # *** GIMP
+    - app-gimp-plugin-export-layers
+    - app-gimp-plugin-wavelet-decompose
     #
     # *** gnucash
     - app-gnucash-build
     - app-gnucash-conf
     - app-gnucash-docs
     - perl-finance-quote
+    #
+    # *** tmux
+    - app-tmux
 
 - name: Load all-tasks dispatcher
   include_role:

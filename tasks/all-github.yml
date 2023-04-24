@@ -57,7 +57,7 @@
     - vid-ttygif
 
 # ************************************************************************
-# *** Apps. ***
+# *** GIMP. ***
 
 - name: Load role to Install GIMP Export Layers Plug-in
   include_role:
@@ -137,19 +137,7 @@
     - all-gnucash
 
 # ************************************************************************
-# *** Tmux. ***
-
-- name: Load role to Clone, Build, and Install tmux
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-tmux
-    apply:
-      tags:
-        - app-tmux
-  tags: app-tmux
-
-# ************************************************************************
-# *** Clis. ***
+# *** Cli apps. ***
 
 - name: CLOC Installer
   include_role:
@@ -201,6 +189,18 @@
       tags:
         - python-chjson
   tags: python-chjson
+
+# ************************************************************************
+# *** Tmux. ***
+
+- name: Load role to clone-build-install tmux
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-tmux
+    apply:
+      tags:
+        - app-tmux
+  tags: app-tmux
 
 # ************************************************************************
 # *** Vids. ***
