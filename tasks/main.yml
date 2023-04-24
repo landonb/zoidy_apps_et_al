@@ -11,6 +11,7 @@
   tags:
     - all-github
     - all-init-ensure-dirs
+    - all-init-go-lang
     - all-tasks
     - all
     - app-chrome
@@ -50,7 +51,6 @@
     - hardware-android-studio
     - hardware-arduino
     - init-github-ssh
-    - init-go-lang
     - node-node-install
     - node-npm-packages
     - node-npmjs-install

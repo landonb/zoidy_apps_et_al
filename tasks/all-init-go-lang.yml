@@ -8,15 +8,17 @@
     tasks_from: golang-go-lang
     apply:
       tags:
-        - golang-go-lang
-        # Other tasks that rely on Go being available.
+        - all-init-go-lang
+        #
+        # Tasks that rely on Go being available.
         - cli-direnv
         - cli-ripgrep
         - golang-delve-debugger
         - golang-go-install-packages
   tags:
-    - golang-go-lang
-    # Other tasks that rely on Go being available.
+    - all-init-go-lang
+    #
+    # Tasks that rely on Go being available.
     - cli-direnv
     - cli-ripgrep
     - golang-delve-debugger

@@ -11,19 +11,11 @@
 
 # ***
 
-- name: Run tasks to ensure Go is good to go
+- name: Load dispatcher: Install Go Language
   include_role:
     name: zoidy_apps_et_al
-    tasks_from: init-go-lang
-    apply: { tags: "always" }
-  tags:
-    - all-github
-    - cli-direnv
-    - cli-ripgrep
-    - golang-delve-debugger
-    - golang-go-install-packages
-    - golang-go-lang
-    - init-go-lang
+    tasks_from: all-init-go-lang
+  tags: always
 
 - name: Run tasks related to GitHub SSH
   include_role:
