@@ -4,7 +4,7 @@
 # - I.e., don't load anything if user specified a tag defined by
 #   another, unrelated role.
 
-- name: Load zoidy_apps_et_al tasks dispatcher for tags
+- name: Load zoidy_apps_et_al tasks dispatcher for file tags
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all
