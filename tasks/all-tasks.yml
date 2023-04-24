@@ -302,15 +302,6 @@
 # ************************************************************************
 # *** Pips. ***
 
-- name: Python PIPs Installer
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: python-pip-packages
-    apply:
-      tags:
-        - python-pip-packages
-  tags: python-pip-packages
-
 - name: Python Sources Installer
   include_role:
     name: zoidy_apps_et_al

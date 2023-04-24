@@ -57,10 +57,6 @@
     - node-nvm-version-mgr
     - node-nvm-versions
     - perl-finance-quote
-    - python-pip-packages
-    - python-pip-pip2-user
-    - python-pip-pip3-user
-    - python-pip-pkg-list
     - python-sources
     - ref-dictionary
     # NEVER: sec-pass-plug-tomb
