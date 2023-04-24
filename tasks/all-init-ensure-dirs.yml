@@ -19,9 +19,6 @@
     - app-opera
     - app-pencil-project-evolus
     - app-tmux
-    - cli-exiftool
-    - cli-kcov
-    - cli-optipng
     - cli-parT
     - cli-ripgrep
     - dmn-dropbox

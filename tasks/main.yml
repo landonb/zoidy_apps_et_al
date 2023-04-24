@@ -33,9 +33,6 @@
     - app-spotify
     - app-tmux
     - app-virtualbox
-    - cli-exiftool
-    - cli-kcov
-    - cli-optipng
     - cli-parT
     - cli-ripgrep
     - dmn-dropbox
@@ -89,9 +86,6 @@
         - app-spotify
         - app-tmux
         - app-virtualbox
-        - cli-exiftool
-        - cli-kcov
-        - cli-optipng
         - cli-parT
         - cli-ripgrep
         - dmn-dropbox

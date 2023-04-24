@@ -74,9 +74,6 @@
     - app-pencil-project-evolus
     - app-spotify
     - app-virtualbox
-    - cli-exiftool
-    - cli-kcov
-    - cli-optipng
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix

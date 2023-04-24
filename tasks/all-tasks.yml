@@ -107,33 +107,6 @@
 # ************************************************************************
 # *** Clis. ***
 
-- name: Install Latest exiftool application
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-exiftool
-    apply:
-      tags:
-        - cli-exiftool
-  tags: cli-exiftool
-
-- name: Install Latest kcov application
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-kcov
-    apply:
-      tags:
-        - cli-kcov
-  tags: cli-kcov
-
-- name: OptiPNG Installer
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-optipng
-    apply:
-      tags:
-        - cli-optipng
-  tags: cli-optipng
-
 - name: Load role to Install ripgrep
   include_role:
     name: zoidy_apps_et_al
