@@ -2,8 +2,11 @@
 
 # *** Local variables (Facts).
 
+# CXREF: https://github.com/roddhjav/pass-tomb/releases
+# - 2023-04-23: Latest release, 2021-05-15: v1.3.
 - set_fact:
-    PASS_TOMB_VER: "1.1"
+    # PASS_TOMB_VER: "1.1"
+    PASS_TOMB_VER: "1.3"
 
 - set_fact:
     PASS_TOMB_NOM: "pass-tomb-{{ PASS_TOMB_VER }}"
