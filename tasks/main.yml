@@ -33,7 +33,6 @@
     - app-spotify
     - app-tmux
     - app-virtualbox
-    - cli-cloc
     - cli-exiftool
     - cli-exiv2
     - cli-kcov
@@ -91,7 +90,6 @@
         - app-spotify
         - app-tmux
         - app-virtualbox
-        - cli-cloc
         - cli-exiftool
         - cli-exiv2
         - cli-kcov

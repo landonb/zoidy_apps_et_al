@@ -31,7 +31,6 @@
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
     #
-    - cli-cloc
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
