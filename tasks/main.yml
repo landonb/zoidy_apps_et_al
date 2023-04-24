@@ -75,7 +75,6 @@
     - node-npm-packages
     - node-nvm-version-mgr
     - node-nvm-versions
-    - python-deadsnakes
     - python-pip-packages
     - python-sources
     - ref-dictionary
