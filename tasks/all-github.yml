@@ -61,7 +61,9 @@
     apply:
       tags:
         - app-gimp-plugin-wavelet-decompose
-  tags: app-gimp-plugin-wavelet-decompose
+  # OPTIN/2023-04-23: Use explicit --tag to run this task.
+  #   tags: app-gimp-plugin-wavelet-decompose
+  tags: never
 
 # ************************************************************************
 # *** Gnucash. ***

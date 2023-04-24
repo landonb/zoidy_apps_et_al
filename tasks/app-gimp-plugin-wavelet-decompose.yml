@@ -1,5 +1,22 @@
 ---
 
+# DUNNO/2023-04-23: GIMP includes a plug-in with the same name:
+#
+# - GIMP > Help > Plug-in Browser > Wavelet-decompose
+#
+#     Date: 19january 2017
+#     Copyright: Miroslav Talasek <miroslav.talasek@seznam.cz>
+#
+# - Whereas this plugin
+#
+#   - CXREF: https://github.com/gimp-plugins-justice/wavelet-decompose
+#
+#   Is 9 years stale, replaces the built-in plug-in, and reports:
+#
+#     Copyright: Copyright 2008 Marco Rossini
+#
+# So making this plug-in opt-in.
+
 - name: Clone wavelet-decompose repo
   git:
     repo: "git@github.com:gimp-plugins-justice/wavelet-decompose.git"
@@ -25,6 +42,15 @@
     chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
 
 # ***
+
+# make-install calls something 
+#
+#   $ gimptool-2.0 --install-bin <>
+#   cp '<>' '/home/user/.config/GIMP/2.10/plug-ins/<>/'
+#
+# And installs to, e.g.,
+#
+#   ~/.config/GIMP/2.10/plug-ins/wavelet-decompose/
 
 - name: Install wavelet-decompose for all users
   become: true
