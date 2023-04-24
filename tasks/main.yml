@@ -15,10 +15,12 @@
   # and then the playbook run list is much cleaner
   # (i.e. when just running specific --tags).
   tags:
+    #
     # *** From all.yml:
     - init-go-lang
     - all-github
     - all-tasks
+    #
     # *** From all-github.yml:
     - sec-ssh-symlinks
     - init-github-ssh
@@ -30,15 +32,18 @@
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
-    # tmux et al:
+    #
+    # *** tmux
     - lib-libevent
     - lib-ncurses
     - app-tmux
-    # gnucash
+    #
+    # *** gnucash
     - app-gnucash-build
     - app-gnucash-conf
     - app-gnucash-docs
     - perl-finance-quote
+    #
     # *** From all-tasks.yml:
     - app-chrome
     - app-cinelerra-gg

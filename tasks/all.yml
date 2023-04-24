@@ -57,11 +57,13 @@
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
-    # tmux et al.
+    #
+    # *** tmux
     - lib-libevent
     - lib-ncurses
     - app-tmux
-    # gnucash
+    #
+    # *** gnucash
     - app-gnucash-build
     - app-gnucash-conf
     - app-gnucash-docs
