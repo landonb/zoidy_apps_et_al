@@ -37,7 +37,7 @@
     # gnucash
     - lib-gettext
     - lib-libboost
-    - app-gnucash
+    - app-gnucash-build
     - app-gnucash-docs
     - perl-finance-quote
     # *** From all-tasks.yml:

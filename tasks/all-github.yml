@@ -95,20 +95,20 @@
 - name: Load role to Install gnucash
   include_role:
     name: zoidy_apps_et_al
-    # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash
-    # (add app-gnucash to each of their apply-tags and tags):
+    # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash-build
+    # (add app-gnucash-build to each of their apply-tags and tags):
     #    - lib-gettext
     #    - lib-libboost
-    #    - app-gnucash
+    #    - app-gnucash-build
     #    - app-gnucash-docs
     #    - perl-finance-quote
-    tasks_from: app-gnucash
+    tasks_from: app-gnucash-build
     apply:
       tags:
-        - app-gnucash
+        - app-gnucash-build
         - all-gnucash
   tags:
-    - app-gnucash
+    - app-gnucash-build
     - all-gnucash
 
 - name: Load role to Install gnucash docs
