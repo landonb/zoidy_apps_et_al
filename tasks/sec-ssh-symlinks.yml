@@ -101,7 +101,7 @@
   #   file:
   #     path: "{{ item }}"
   #     mode: 0600
-  ansible.builtin.shell: '[[ -f "{{ item }}" ]] && chmod 600 "{{ item }}" || true'
+  ansible.builtin.shell: '[ -f "{{ item }}" ] && chmod 600 "{{ item }}" || true'
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh"
     executable: /bin/bash
