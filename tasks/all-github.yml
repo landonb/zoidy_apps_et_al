@@ -4,13 +4,13 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: sec-ssh-symlinks
-    apply:
-      tags:
-        - sec-ssh-symlinks
+    apply: { tags: "always" }
   tags:
     - sec-ssh-symlinks
     # Also ensure SSH setup if ensuring GH SSH setup.
     - init-github-ssh
+    # Let's you skip this task via `--skip-tags skip-github-ssh`.
+    - skip-github-ssh
     # Also ensure SSH if ensuring GH if running any task
     # with a repo: module that clones using user's GH key.
     - app-gimp-plugin-export-layers
@@ -27,11 +27,11 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: init-github-ssh
-    apply:
-      tags:
-        - init-github-ssh
+    apply: { tags: "always" }
   tags:
     - init-github-ssh
+    # Let's you skip this task via `--skip-tags skip-github-ssh`.
+    - skip-github-ssh
     # If running any task expecting GH key.
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
