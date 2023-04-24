@@ -1,87 +1,71 @@
 ---
-# Main task: Load package installers, or not, based on tags.
+
+# Main task: Load tasks and dispatchers for any mathcing role tags.
+# - I.e., don't load anything if user specified a tag defined by
+#   another, unrelated role.
 
 - name: Load tasks dispatcher for ‘zoidy_apps_et_al’
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all
-  # (lb): Yes, this tags list could be removed, e.g.,
-  #
-  #   tags: always
-  #
-  # but then you always see this task run! (and any
-  # task therein that is also tagged always). So best
-  # to add a fragile list of all tasks in the role,
-  # and then the playbook run list is much cleaner
-  # (i.e. when just running specific --tags).
   tags:
-    #
-    # *** From all.yml:
-    - init-go-lang
     - all-github
+    - all-init-ensure-dirs
     - all-tasks
-    #
-    # *** From all-github.yml:
-    - sec-ssh-symlinks
-    - init-github-ssh
-    - app-gimp-plugin-export-layers
-    - app-gimp-plugin-wavelet-decompose
-    - cli-cloc
-    - cli-direnv
-    - cli-parT
-    - golang-delve-debugger
-    - vid-ttygif
-    #
-    # *** tmux
-    - app-tmux
-    #
-    # *** gnucash
-    - app-gnucash-build
-    - app-gnucash-conf
-    - app-gnucash-docs
-    - perl-finance-quote
-    #
-    # *** From all-tasks.yml:
+    - all
     - app-chrome
     - app-cinelerra-gg
     - app-darktable
     - app-digikam
-    - app-firefox-fix_scroll
+    - app-gimp-plugin-export-layers
+    - app-gimp-plugin-wavelet-decompose
+    - app-gnucash-build
+    - app-gnucash-conf
+    - app-gnucash-docs
     - app-google-earth
     - app-kdocker
     - app-openjump
     - app-opera
     - app-pencil-project-evolus
     - app-spotify
+    - app-tmux
     - app-virtualbox
+    - cli-cloc
+    - cli-direnv
     - cli-exiftool
     - cli-exiv2
     - cli-kcov
     - cli-optipng
+    - cli-parT
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
-    - font-hack, dubs-vim
     - font-hack-nerd-font
+    - font-hack
     - font-mania
+    - golang-delve-debugger
     - golang-go-install-packages
     - golang-go-lang
+    - hardware-ac1200-usb-wifi
     - hardware-android-studio
     - hardware-arduino
-    - hardware-ac1200-usb-wifi
+    - init-github-ssh
+    - init-go-lang
     - node-node-install
-    - node-npmjs-install
     - node-npm-packages
+    - node-npmjs-install
     - node-nvm-version-mgr
     - node-nvm-versions
+    - perl-finance-quote
     - python-pip-packages
+    - python-pip-pip2-user
+    - python-pip-pip3-user
+    - python-pip-pkg-list
     - python-sources
     - ref-dictionary
-    - ruby-install-base
-    - ruby-install-chruby
-    - ruby-install-versions
-    - ruby-rubygems-packages
     - sec-net-ivpn
     # NEVER: sec-pass-plug-tomb
+    - sec-ssh-symlinks
+    - vid-ttygif
     - virt-vagrant
 
