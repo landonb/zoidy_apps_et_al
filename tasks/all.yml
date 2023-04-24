@@ -60,8 +60,6 @@
     - vid-ttygif
     #
     # *** tmux
-    - lib-libevent
-    - lib-ncurses
     - app-tmux
     #
     # *** gnucash

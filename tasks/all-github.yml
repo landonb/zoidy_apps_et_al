@@ -139,24 +139,6 @@
 # ************************************************************************
 # *** Tmux. ***
 
-- name: Load role to install libevent
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: lib-libevent
-    apply:
-      tags:
-        - lib-libevent
-  tags: lib-libevent
-
-- name: Load role to install ncurses
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: lib-ncurses
-    apply:
-      tags:
-        - lib-ncurses
-  tags: lib-ncurses
-
 - name: Load role to Clone, Build, and Install tmux
   include_role:
     name: zoidy_apps_et_al

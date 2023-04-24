@@ -32,8 +32,6 @@
     - hardware-ac1200-usb-wifi
     - hardware-android-studio
     - hardware-arduino
-    - lib-libevent
-    - lib-ncurses
     - node-node-install
     - node-npmjs-install
     - node-nvm-version-mgr
