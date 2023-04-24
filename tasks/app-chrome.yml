@@ -1,5 +1,27 @@
 ---
 
+# FIXME/2023-04-23 18:42: Creates redundant apt-sources:
+#
+#   $ cat /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
+#   deb [arch=amd64] https://dl.google.com/linux/chrome/deb stable main
+#
+#   $ cat /etc/apt/sources.list.d/google-chrome.list 
+#   #  # # THIS FILE IS AUTOMATICALLY CONFIGURED ###
+#   # You may comment out this entry, but any other modifications may be lost.
+#   deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+#
+# ERROR/2023-04-23 18:43: What I saw running apt-install (of unrelated pkg):
+#
+#   ...
+#   W: Target Packages (main/binary-amd64/Packages) is configured multiple times in /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list:1 and /etc/apt/sources.list.d/google-chrome.list:3
+#   ...
+#
+# FIXME: So now I do think this was installed by Mint 21.1, and I can retire this task.
+#
+#   sudo /bin/rm /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
+
+# ***
+
 # CXREF:
 #
 #   https://www.google.com/chrome/thank-you.html?brand=QMKX&statcb=0&installdataindex=empty&defaultbrowser=0#
