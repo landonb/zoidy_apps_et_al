@@ -16,12 +16,9 @@
     # with a repo: module that clones using user's GH key.
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
-    - app-vim-brams
     - cli-cloc
     - cli-direnv
     - cli-parT
-    - cli-reptile
-    - cli-xrandr-invert-colors
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
@@ -39,12 +36,9 @@
     # If running any task expecting GH key.
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
-    - app-vim-brams
     - cli-cloc
     - cli-direnv
     - cli-parT
-    - cli-reptile
-    - cli-xrandr-invert-colors
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif
@@ -69,15 +63,6 @@
       tags:
         - app-gimp-plugin-wavelet-decompose
   tags: app-gimp-plugin-wavelet-decompose
-
-- name: Load role to Clone, Build, and Install Latest Vim
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-vim-brams
-    apply:
-      tags:
-        - app-vim-brams
-  tags: app-vim-brams
 
 # ************************************************************************
 # *** Gnucash. ***
@@ -208,24 +193,6 @@
       tags:
         - cli-parT
   tags: cli-parT
-
-- name: Load role to Install reptile
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-reptile
-    apply:
-      tags:
-        - cli-reptile
-  tags: cli-reptile
-
-- name: Install Screen Color Inverter, i.e., Alert! Mechanism
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-xrandr-invert-colors
-    apply:
-      tags:
-        - cli-xrandr-invert-colors
-  tags: cli-xrandr-invert-colors
 
 # ************************************************************************
 # *** Glng apps. ***

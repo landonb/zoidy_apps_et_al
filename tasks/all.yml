@@ -70,15 +70,14 @@
     - sec-ssh-symlinks
     # If ensuring GH SSH present.
     - init-github-ssh
+    #
     # If running any task expecting GH key.
+    #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
-    - app-vim-brams
     - cli-cloc
     - cli-direnv
     - cli-parT
-    - cli-reptile
-    - cli-xrandr-invert-colors
     - golang-delve-debugger
     - python-chjson
     - vid-ttygif

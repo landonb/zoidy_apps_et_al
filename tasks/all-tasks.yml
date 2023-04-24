@@ -77,18 +77,6 @@
         - app-kdocker
   tags: app-kdocker
 
-# FIXME/2023-04-23: Retire this task.
-- name: Load role to Install meld
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-meld
-    apply:
-      tags:
-        - app-meld
-  tags: app-meld
-  # Prefer Flatpak install.
-  when: False
-
 - name: Load role to Install OpenJUMP
   include_role:
     name: zoidy_apps_et_al
@@ -172,16 +160,6 @@
       tags:
         - cli-optipng
   tags: cli-optipng
-
-- name: Load role to Install reptile keybindings
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-reptile-keybindings
-    apply:
-      tags:
-        - cli-reptile-keybindings
-        - reset-keybindings
-  tags: cli-reptile-keybindings, reset-keybindings
 
 - name: Load role to Install ripgrep
   include_role:
