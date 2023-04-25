@@ -29,12 +29,14 @@
       - url_base: "https://noto-website-2.storage.googleapis.com/pkgs"
         zip_base: "NotoEmoji-unhinted.zip"
 
-      - url_base: http://dl.1001fonts.com
-        zip_base: santos-dumont.zip
-      - url_base: http://dl.1001fonts.com
-        zip_base: pinewood.zip
-      - url_base: http://dl.1001fonts.com
-        zip_base: open-sans.zip
+      # 2023-04-25: "HTTP Error 404: Not Found"
+      #
+      # - url_base: http://dl.1001fonts.com
+      #   zip_base: santos-dumont.zip
+      # - url_base: http://dl.1001fonts.com
+      #   zip_base: pinewood.zip
+      # - url_base: http://dl.1001fonts.com
+      #   zip_base: open-sans.zip
 
       # Arial MT.
       - url_base: https://www.cufonfonts.com/download/font
@@ -53,11 +55,14 @@
         zip_base: frutiger-lt-std-font.zip
         #  dst_base: FrutigerLTStd
 
-      # Wingus, Dingus, listen up.
-      # - Can also fetch direct (identical TTF): https://www.fontsupply.com/fonts/WINGDNG2.TTF
-      # - Also read Wingdings-2 in `sudo apt install gsfonts-x11` but didn't see it.
-      - url_base: https://www.wfonts.com/download/data/2016/03/29/wingdings-2/wingdings-2.zip
-        zip_base: wingdings-2.zip
+      # 2023-04-25: "HTTP Error 404: Not Found", though addy looks correct...
+      #   https://www.wfonts.com/font/wingdings-2
+      #
+      # # Wingus, Dingus, listen up.
+      # # - Can also fetch direct (identical TTF): https://www.fontsupply.com/fonts/WINGDNG2.TTF
+      # # - Also read Wingdings-2 in `sudo apt install gsfonts-x11` but didn't see it.
+      # - url_base: https://www.wfonts.com/download/data/2016/03/29/wingdings-2/wingdings-2.zip
+      #   zip_base: wingdings-2.zip
 
 - set_fact:
     zip_file_regex: >-
