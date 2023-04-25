@@ -4,7 +4,7 @@
 
 # ***
 
-# REPLICA/2019-03-14: [zoidy_matecocido|zoidy_apps_et_al]/tasks/font-hack.yml
+# DUPLD/2019-03-14: [zoidy_matecocido|zoidy_apps_et_al]/tasks/font-hack.yml
 
 # *** Local variables (Facts).
 
@@ -20,11 +20,20 @@
 
 # *** Alert user if newer version.
 
-# FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
+# SAVVY/2023-04-20: `command` is not found by 'command' module,
+# because it's a shell construct. I.e., cannot call:
+#   ansible.builtin.command: "command -v jq"
+- name: 'Test if ‘jq’ is available'
+  ansible.builtin.shell: "command -v jq"
+  register: is_jq_avail_raw
 
+# Note that this requires sudo/-K if `jq` not installed, but so does the
+# 'Build font information cache files' handler, so you're probably running
+# this task file with privileges.
 - name: 'Ensure ‘jq’ is available'
   become: true
   ansible.builtin.apt: name=jq
+  when: is_jq_avail_raw.failed
 
 - name: Check for new version of Hack.
   ansible.builtin.shell: "curl -s https://api.github.com/repos/source-foundry/Hack/releases/latest | jq -r '.tag_name'"
