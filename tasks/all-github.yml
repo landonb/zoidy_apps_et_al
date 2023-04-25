@@ -133,18 +133,6 @@
     - all-gnucash
 
 # ************************************************************************
-# *** Cli apps. ***
-
-- name: parT Installer
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-parT
-    apply:
-      tags:
-        - cli-parT
-  tags: cli-parT
-
-# ************************************************************************
 # *** Glng apps. ***
 
 - name: Load role to Install Delve
@@ -165,6 +153,18 @@
     tasks_from: app-kdocker
     apply: { tags: app-kdocker }
   tags: app-kdocker
+
+# ************************************************************************
+# *** parT. ***
+
+- name: parT Installer
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: cli-parT
+    apply:
+      tags:
+        - cli-parT
+  tags: cli-parT
 
 # ************************************************************************
 # *** Tmux. ***
