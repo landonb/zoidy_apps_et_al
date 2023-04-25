@@ -25,7 +25,6 @@
     - app-gnucash-build
     - app-gnucash-conf
     - app-gnucash-docs
-    - app-google-earth
     - app-kdocker
     - app-openjump
     - app-opera
@@ -78,7 +77,6 @@
         - app-gnucash-build
         - app-gnucash-conf
         - app-gnucash-docs
-        - app-google-earth
         - app-kdocker
         - app-openjump
         - app-opera

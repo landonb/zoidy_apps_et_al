@@ -41,15 +41,6 @@
         - app-digikam
   tags: app-digikam
 
-- name: Load role to Install Google Earth
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-google-earth
-    apply:
-      tags:
-        - app-google-earth
-  tags: app-google-earth
-
 - name: Load role to Install Kdocker
   include_role:
     name: zoidy_apps_et_al
