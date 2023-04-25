@@ -187,25 +187,7 @@
   tags: hardware-arduino
 
 # ************************************************************************
-# *** Npms. ***
-
-- name: Node.js node Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: node-npmjs-install
-    apply:
-      tags:
-        - node-npmjs-install
-  tags: node-npmjs-install
-
-- name: Node.js npm Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: node-node-install
-    apply:
-      tags:
-        - node-node-install
-  tags: node-node-install
+# *** Node & Npms. ***
 
 - name: Node.js npm Packages Installer
   ansible.builtin.include_role:

@@ -85,8 +85,6 @@
     - golang-go-install-packages
     - hardware-android-studio
     - hardware-arduino
-    - node-npmjs-install
-    - node-node-install
     - node-npm-packages
     - node-nvm-version-mgr
     - node-nvm-versions
