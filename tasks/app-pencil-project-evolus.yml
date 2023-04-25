@@ -4,20 +4,33 @@
 
 # ***
 
-# See also source under:
+# CXREF: https://pencil.evolus.vn/
+#
+#    https://pencil.evolus.vn/Downloads.html
+#
+# - See also source under:
 #
 #   https://linux.dropbox.com/packages/
 
 - set_fact:
-    PENCIL_VER: '3.0.4'
+    # 2019-01-03:
+    #  PENCIL_VER: '3.0.4'
+    # 2023-04-24:
+    PENCIL_VER: '3.1.1.ga'
 
-# https://pencil.evolus.vn/dl/V3.0.4/CHECKSUM
 - set_fact:
-    PENCIL_XSM: "13baebb94d552789338eaa6cec260d0d39afa059"
+    # 2019-01-03: PENCIL_VER: '3.0.4':
+    #   https://pencil.evolus.vn/dl/V3.0.4/CHECKSUM
+    #  PENCIL_XSM: "13baebb94d552789338eaa6cec260d0d39afa059"
+    # 2023-04-24: PENCIL_VER: '3.1.1.ga':
+    #   https://pencil.evolus.vn/dl/V3.1.1.ga/CHECKSUM
+    PENCIL_XSM: "7faa077207ac33bcaa90294c8cc8b4abec8f687e"
 
 - set_fact:
     PENCIL_DEB: "Pencil_{{ PENCIL_VER }}_amd64.deb"
 
+# E.g.,
+#   https://pencil.evolus.vn/dl/V3.1.1.ga/Pencil_3.1.1.ga_amd64.deb
 - set_fact:
     PENCIL_URI: "http://pencil.evolus.vn/dl/V{{ PENCIL_VER }}/{{ PENCIL_DEB }}"
 
