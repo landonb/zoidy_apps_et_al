@@ -45,8 +45,6 @@
     - hardware-android-studio
     - hardware-arduino
     - node-npm-packages
-    - node-nvm-version-mgr
-    - node-nvm-versions
     - perl-finance-quote
     - python-sources
     - ref-dictionary
@@ -97,8 +95,6 @@
         - hardware-android-studio
         - hardware-arduino
         - node-npm-packages
-        - node-nvm-version-mgr
-        - node-nvm-versions
         - perl-finance-quote
         - python-sources
         - ref-dictionary

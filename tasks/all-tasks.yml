@@ -198,24 +198,6 @@
         - node-npm-packages
   tags: node-npm-packages
 
-- name: Node.js nvm Version Manager Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: node-nvm-version-mgr
-    apply:
-      tags:
-        - node-nvm-version-mgr
-  tags: node-nvm-version-mgr
-
-- name: Install various Node.js versions using nvm
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: node-nvm-versions
-    apply:
-      tags:
-        - node-nvm-versions
-  tags: node-nvm-versions
-
 # ************************************************************************
 # *** Pips. ***
 

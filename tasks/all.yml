@@ -86,8 +86,6 @@
     - hardware-android-studio
     - hardware-arduino
     - node-npm-packages
-    - node-nvm-version-mgr
-    - node-nvm-versions
     - python-sources
     - virt-vagrant
 

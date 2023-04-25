@@ -26,7 +26,6 @@
     - golang-install-go-lang
     - hardware-android-studio
     - hardware-arduino
-    - node-nvm-version-mgr
     - python-sources
     - vid-ttygif
     - virt-vagrant
