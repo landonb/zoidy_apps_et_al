@@ -4,9 +4,17 @@
 
 # ***
 
+# CXREF: https://github.com/go-delve/delve
+
 # 2019-01-04: You'd think a simple `go get` would work,
 # but I had issues in the past, and this is what I have.
 # I'm not sure if this funny business is still necessary.
+
+# 2023-04-24: Using Go >= 1.16, you can install without cloning:
+#
+#  go install github.com/go-delve/delve/cmd/dlv@latest
+#
+# But I've already got this task rolling, so whatever.
 
 - set_fact:
     gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/go-delve"
@@ -19,10 +27,20 @@
     repo: "git@github.com:go-delve/delve.git"
     dest: "{{ gopath_src_delve }}/delve"
 
+# 2023-04-24: Circa 2019-01-04 install task:
+#
+#   - name: Install delve
+#     ansible.builtin.make:
+#       chdir: "{{ gopath_src_delve }}/delve"
+#       target: install
+#     environment:
+#       PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+#       GOPATH: "{{ ansible_env.HOME }}/.gopath"
+
 - name: Install delve
-  ansible.builtin.make:
+  ansible.builtin.shell: go install github.com/go-delve/delve/cmd/dlv
+  args:
     chdir: "{{ gopath_src_delve }}/delve"
-    target: install
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     GOPATH: "{{ ansible_env.HOME }}/.gopath"
