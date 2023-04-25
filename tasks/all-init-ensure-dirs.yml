@@ -3,7 +3,7 @@
 # *** Task Setup (Ensures-Dirs)
 
 - name: Ensure ~/.downloads directory exists
-  file: path={{ zoidy_homefries_downloads_dir }} state=directory
+  ansible.builtin.file: path={{ zoidy_homefries_downloads_dir }} state=directory
   tags:
     - all-init-ensure-dirs
     #
@@ -36,7 +36,7 @@
 # ***
 
 - name: Ensure ~/.downloads/fonts directory exists
-  file: path={{ zoidy_homefries_dls_fonts_dir }} state=directory
+  ansible.builtin.file: path={{ zoidy_homefries_dls_fonts_dir }} state=directory
   tags:
     - all-init-ensure-dirs
     #
@@ -45,20 +45,20 @@
 # ***
 
 - name: Ensure ~/.local directory exists
-  file: path="{{ zoidy_homefries_user_local_dir }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_user_local_dir }}" state=directory
   tags:
     - all-init-ensure-dirs
     #
     - node-npm-packages
 
 - name: Ensure ~/.local/bin directory exists
-  file: path="{{ zoidy_homefries_user_local_bin_dir }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_user_local_bin_dir }}" state=directory
   tags:
     - all-init-ensure-dirs
     #
 
 - name: Ensure ~/.local/docs directory exists
-  file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_user_docs_dir }}" state=directory
   tags:
     - all-init-ensure-dirs
     #

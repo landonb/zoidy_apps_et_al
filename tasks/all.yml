@@ -4,7 +4,7 @@
 
 # Ensures dirs: ~/.downloads, ~/.local/, etc.
 - name: Load dispatcher » Ensure target directories exist
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-ensure-dirs
   tags: always
@@ -12,13 +12,13 @@
 # ***
 
 - name: Load dispatcher » Install Go Language
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-go-lang
   tags: always
 
 - name: Run tasks that use sources obtained via GitHub SSH
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-github
   tags:
@@ -53,7 +53,7 @@
     - app-tmux
 
 - name: Load all-tasks dispatcher
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-tasks
   tags:

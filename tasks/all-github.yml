@@ -4,7 +4,7 @@
 # *** Prep tasks. ***
 
 - name: SSH directory symlink populator
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-ssh-links
     apply: { tags: "always" }
@@ -29,7 +29,7 @@
   when: zoidy_homefries_ssh_root_dir != ''
 
 - name: Run tasks to verify or configure GitHub SSH
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-github-ssh
     apply: { tags: "always" }
@@ -56,7 +56,7 @@
 # *** GIMP. ***
 
 - name: Load role to Install GIMP Export Layers Plug-in
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-export-layers
     apply:
@@ -65,7 +65,7 @@
   tags: app-gimp-plugin-export-layers
 
 - name: Load role to Install GIMP Wavelet Decompose Plug-in
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-wavelet-decompose
     apply:
@@ -79,7 +79,7 @@
 # *** Gnucash. ***
 
 - name: Load role to Install gnucash
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash-build
     # (add app-gnucash-build to each of their apply-tags and tags):
@@ -97,7 +97,7 @@
     - all-gnucash
 
 - name: Load role to Configure GnuCash
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-conf
     apply:
@@ -109,7 +109,7 @@
     - all-gnucash
 
 - name: Load role to Install gnucash docs
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-docs
     apply:
@@ -121,7 +121,7 @@
     - all-gnucash
 
 - name: Load role to Install Perl Finance::Quote
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: perl-finance-quote
     apply:
@@ -136,7 +136,7 @@
 # *** Glng apps. ***
 
 - name: Load role to Install Delve
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-delve-debugger
     apply:
@@ -148,7 +148,7 @@
 # *** Kdocker. ***
 
 - name: Load role to Install Kdocker
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
     apply: { tags: app-kdocker }
@@ -158,7 +158,7 @@
 # *** parT. ***
 
 - name: parT Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-parT
     apply:
@@ -170,7 +170,7 @@
 # *** Tmux. ***
 
 - name: Load role to clone-build-install tmux
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-tmux
     apply:
@@ -182,7 +182,7 @@
 # *** Vids. ***
 
 - name: ttygif Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: vid-ttygif
     apply:

@@ -3,17 +3,18 @@
 # *** Verify/Setup ~/.ssh/config
 
 - name: Check SSH config or create fresh, for GitHub key
-  stat: path="{{ ansible_env.HOME }}/.ssh/config"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.ssh/config"
   register: ssh_config_f
 
 - name: Deploy SSH config, if necessary
-  template:
+  ansible.builtin.template:
     src: ../templates/ssh-config.j2
     dest: "{{ ansible_env.HOME }}/.ssh/config"
   when: not ssh_config_f.stat.exists
 
 - name: Ensure proper permissions on SSH config
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/config"
     mode: 0600
     follow: yes
@@ -22,18 +23,21 @@
 
 - name: Stat GitHub SSH key (local)
   delegate_to: localhost
-  stat: path="{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
   register: ssh_github_f_local
 
-- fail: msg="Please ensure GitHub SSH key exists of the controller node"
+- ansible.builtin.fail:
+    msg: "Please ensure GitHub SSH key exists of the controller node"
   when: not ssh_github_f_local.stat.exists
 
 - name: Stat GitHub SSH key (remote)
-  stat: path="{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
   register: ssh_github_f_remote
 
 - name: Copy GitHub SSH key (private)
-  copy:
+  ansible.builtin.copy:
     src: "~/.ssh/{{ zoidy_homefries_github_file }}"
     dest: "~/.ssh/{{ zoidy_homefries_github_file }}"
     local_follow: true
@@ -41,7 +45,7 @@
   when: not ssh_github_f_remote.stat.exists
 
 - name: Copy GitHub SSH key (public)
-  copy:
+  ansible.builtin.copy:
     src: "~/.ssh/{{ zoidy_homefries_github_file }}.pub"
     dest: "~/.ssh/{{ zoidy_homefries_github_file }}.pub"
     local_follow: true
@@ -49,13 +53,13 @@
   when: not ssh_github_f_remote.stat.exists
 
 - name: Ensure proper permissions on SSH GitHub key (private)
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
     mode: 0400
     follow: yes
 
 - name: Ensure proper permissions on SSH GitHub key (public)
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}.pub"
     mode: 0440
     follow: yes
@@ -63,7 +67,8 @@
 # *** Verify/Setup ~/.ssh/known_hosts.
 
 - name: Stat SSH known_hosts
-  stat: path="{{ ansible_env.HOME }}/.ssh/known_hosts"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
   register: ssh_known_hosts_f
 
 # Add GitHub to trusted hosts. Otherwise, interruption, e.g.,
@@ -91,7 +96,7 @@
   when: not ssh_known_hosts_f.stat.exists
 
 - name: Ensure proper permissions on SSH known_host
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
     mode: 0600
     follow: yes
@@ -106,6 +111,7 @@
   register: gh_known
   ignore_errors: yes
 
-- fail: msg="Please setup the machine's GitHub SSH key first"
+- ansible.builtin.fail:
+    msg: "Please setup the machine's GitHub SSH key first"
   when: gh_known.rc != 0
 

@@ -4,7 +4,7 @@
 # *** Apps. ***
 
 - name: Load role to Install Chrome browser
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-chrome
     apply:
@@ -13,7 +13,7 @@
   tags: app-chrome
 
 - name: Load role to Install Cinelerra-GG
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-cinelerra-gg
     apply:
@@ -22,7 +22,7 @@
   tags: app-cinelerra-gg
 
 - name: Load role to Install Darktable
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-darktable
     apply:
@@ -33,7 +33,7 @@
   tags: app-darktable
 
 - name: Load role to Install Digikam
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-digikam
     apply:
@@ -42,7 +42,7 @@
   tags: app-digikam
 
 - name: Load role to Install OpenJUMP
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-openjump
     apply:
@@ -51,7 +51,7 @@
   tags: app-openjump
 
 - name: Load role to Install Opera
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-opera
     apply:
@@ -60,7 +60,7 @@
   tags: app-opera
 
 - name: "Load role to Install Pencil [Project]"
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-pencil-project-evolus
     apply:
@@ -69,7 +69,7 @@
   tags: app-pencil-project-evolus
 
 - name: "Load role to Install Spotify"
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-spotify
     apply:
@@ -78,7 +78,7 @@
   tags: app-spotify
 
 - name: "Load role to Install VirtualBox"
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox
     apply:
@@ -90,7 +90,7 @@
 # *** Clis. ***
 
 - name: Load role to Install ripgrep
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-ripgrep
     apply:
@@ -102,7 +102,7 @@
 # *** Dmns. ***
 
 - name: Dropbox Daemon Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: dmn-dropbox
     apply:
@@ -114,7 +114,7 @@
 # *** Emai. ***
 
 - name: Gmail Email Postfix setup
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: email-gmail-postfix
     apply:
@@ -127,7 +127,7 @@
 # *** Font 'ackch. ***
 
 - name: Load role to Install Font “Hack”
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-hack
     apply:
@@ -136,7 +136,7 @@
   tags: font-hack, dubs-vim
 
 - name: Load role to Install Font “Hack Nerd Font”
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-hack-nerd-font
     apply:
@@ -145,7 +145,7 @@
   tags: font-hack-nerd-font
 
 - name: Load role to Install Fonts
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-mania
     apply:
@@ -157,7 +157,7 @@
 # *** Glng apps. ***
 
 - name: Load role to Install Go Lang Projects
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-go-install-packages
     apply:
@@ -169,7 +169,7 @@
 # *** Pltfs. ***
 
 - name: Android Studio Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: hardware-android-studio
     apply:
@@ -178,7 +178,7 @@
   tags: hardware-android-studio
 
 - name: Arduino Platform Developer Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: hardware-arduino
     apply:
@@ -190,7 +190,7 @@
 # *** Npms. ***
 
 - name: Node.js node Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-npmjs-install
     apply:
@@ -199,7 +199,7 @@
   tags: node-npmjs-install
 
 - name: Node.js npm Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-node-install
     apply:
@@ -208,7 +208,7 @@
   tags: node-node-install
 
 - name: Node.js npm Packages Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-npm-packages
     apply:
@@ -217,7 +217,7 @@
   tags: node-npm-packages
 
 - name: Node.js nvm Version Manager Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-nvm-version-mgr
     apply:
@@ -226,7 +226,7 @@
   tags: node-nvm-version-mgr
 
 - name: Install various Node.js versions using nvm
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-nvm-versions
     apply:
@@ -238,7 +238,7 @@
 # *** Pips. ***
 
 - name: Python Sources Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: python-sources
     apply:
@@ -250,7 +250,7 @@
 # *** Virt. ***
 
 - name: Vagrant Installer
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: virt-vagrant
     apply:

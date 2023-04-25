@@ -5,7 +5,7 @@
 #   another, unrelated role.
 
 - name: Load zoidy_apps_et_al tasks dispatcher for file tags
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all
   tags:
@@ -56,7 +56,7 @@
     - virt-vagrant
 
 - name: Load zoidy_apps_et_al tasks dispatcher for role tag
-  include_role:
+  ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all
     apply:
