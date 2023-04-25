@@ -5,31 +5,40 @@
 # ***
 
 - name: List of Node projects to install
-  set_fact:
+  ansible.builtin.set_fact:
     node_npm_list:
-      - mocha
-      - parcel-bundler
+      # ISOFF/2023-04-25: Use local environments for dev-related pkgs.
+      #  - mocha
+      #  - parcel-bundler
+      # - But tldr is a CLI app we can install systemwide.
       - tldr
 
 - name: Ensure nodejs & npm installed
   become: true
   ansible.builtin.apt: name={{ item }}
   loop:
-    # 2020-07-07: `node` installed from latest. See:
-    #   node-npmjs-install.yml
-    #  - nodejs
-    # 2019-12-30: libssl1.0-dev dep. for nodejs-dev.
-    - libssl1.0-dev
-    # 2019-12-30: nodejs-dev dep. for node-gyp.
-    - nodejs-dev
-    # 2019-12-30: node-gyp dep. for parcel-bundler.
-    - node-gyp
-    # 2020-07-07: `npm` installed from latest. See:
-    #   node-npmjs-install.yml
-    #  - npm
+    - nodejs
+    - npm
+    # ISOFF/2023-04-25: Not install parcel-bundler, so don't need these.
+    # - Also, no such package 'nodejs-dev' in Linux Mint 21.1,
+    #   nor 'libssl1.0-dev' (though there is 'libssl-dev', but 2019
+    #   comments suggest needed for 'nodejs-dev', so don't care b/c
+    #   there's no 'nodejs-dev').
+    #
+    #  # 2019-12-30: libssl1.0-dev dep. for nodejs-dev.
+    #  - libssl1.0-dev
+    #  # 2019-12-30: nodejs-dev dep. for node-gyp.
+    #  - nodejs-dev
+    #  # 2019-12-30: node-gyp dep. for parcel-bundler.
+    #  - node-gyp
+  # ISOFF/2023-04-25: Disabling, so you don't need to enter -K credentials.
+  # - Assumes you apt-installed nodejs and npm otherwise.
+  #   - CXREF: See other role that handles apt-installs:
+  #       ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-develop-lang.yml
+  when: False
 
 - name: Install Node NPM projects
-  npm:
+  community.general.npm:
     path: "{{ zoidy_homefries_user_local_dir }}"
     name: "{{ item }}"
   loop: "{{ node_npm_list }}"
@@ -49,7 +58,7 @@
 #
 # So not really sure the utility of this app!
 - name: Install "@rafaelrinaldi/whereami" node.js package globally.
-  npm:
+  community.general.npm:
     path: "{{ zoidy_homefries_user_local_dir }}"
     name: "@rafaelrinaldi/whereami"
 
