@@ -22,6 +22,7 @@
     #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
+    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -46,6 +47,7 @@
     #
     - app-gimp-plugin-export-layers
     - app-gimp-plugin-wavelet-decompose
+    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -153,6 +155,16 @@
       tags:
         - golang-delve-debugger
   tags: golang-delve-debugger
+
+# ************************************************************************
+# *** Kdocker. ***
+
+- name: Load role to Install Kdocker
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-kdocker
+    apply: { tags: app-kdocker }
+  tags: app-kdocker
 
 # ************************************************************************
 # *** Tmux. ***

@@ -41,15 +41,6 @@
         - app-digikam
   tags: app-digikam
 
-- name: Load role to Install Kdocker
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-kdocker
-    apply:
-      tags:
-        - app-kdocker
-  tags: app-kdocker
-
 - name: Load role to Install OpenJUMP
   include_role:
     name: zoidy_apps_et_al

@@ -31,6 +31,7 @@
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
     #
+    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -67,7 +68,6 @@
     - app-cinelerra-gg
     - app-darktable
     - app-digikam
-    - app-kdocker
     - app-openjump
     - app-opera
     - app-pencil-project-evolus
