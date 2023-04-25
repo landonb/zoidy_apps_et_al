@@ -1,7 +1,42 @@
 ---
 
-# https://github.com/user-none/KDocker
-# (OLD: https://launchpad.net/kdocker.)
+# USAGE: Task builds and installs Kdocker from GitHub sources.
+
+# ***
+
+# CXREF: https://github.com/user-none/KDocker
+
+# ***
+
+# ISOFF/2023-04-24: Gonna try apt-install kdocker, see if that works,
+# so we can reduce our tech debt.
+
+- name: Kdocker » Prefer apt-install
+  debug: msg="Run apt install kdocker instead"
+
+- meta: end_play
+
+# ***
+
+# VERSN/2023-04-24:
+#
+# - This task builds v5.4:
+#
+#     $ kdocker -v
+#     KDocker version: 5.4
+#     Using Qt version: 5.15.3
+#
+# - Linux Mint 21.1 ships v5.3:
+#
+#     $ sudo apt install kdocker
+#     $ /usr/bin/kdocker -v
+#     KDocker version: 5.3
+#     Using Qt version: 5.15.3
+#
+# (This task originally written for a Linux Mint 19.3 install that I
+#  didn't update for 4 years, so I ended up building a lot of apps
+#  from sources, not just to have the latest version, but because bugs.
+#  - MAYBE: We could probably remove this task and just use apt-install.)
 
 # ***
 

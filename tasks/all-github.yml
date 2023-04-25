@@ -152,7 +152,7 @@
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
     apply: { tags: app-kdocker }
-  tags: app-kdocker
+  tags: app-kdocker, never
 
 # ************************************************************************
 # *** parT. ***
