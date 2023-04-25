@@ -1,16 +1,33 @@
 ---
 
-# https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/1.14/
+# USAGE: Task downloads and installs OpenJUMP app from zip archives.
+
+# ***
+
+# CXREF:
+#
+#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/
+#
+#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/
 
 - set_fact:
-    OPENJUMP_VER: '1.14'
-    OPENJUMP_BLD: 'r6065'
+    # 2019-01-03:
+    #  OPENJUMP_VER: '1.14'
+    #  OPENJUMP_BLD: 'r6065'
+    # 2023-04-25:
+    OPENJUMP_VER: '2.2.0'
+    OPENJUMP_BLD: 'r5193[9e7ba88]'
+    OPENJUMP_BLD_ENC: 'r5193%5B9e7ba88%5D'
 
 - set_fact:
     OPENJUMP_BASE_URI: 'https://downloads.sourceforge.net/project/jump-pilot/OpenJUMP/{{ OPENJUMP_VER }}'
-    OPENJUMP_BASE_ZIP: "OpenJUMP-Portable-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD }}"
-    OPENJUMP_BASE_UZP: "OpenJUMP-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD }}"
+    OPENJUMP_BASE_ZIP: "OpenJUMP-Portable-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD_ENC }}"
 
+# E.g.,
+# - OpenJUMP-Portable-2.2.0-r5193[9e7ba88]-PLUS.zip:
+#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/OpenJUMP-Portable-2.2.0-r5193%5B9e7ba88%5D-PLUS.zip/download
+# - OpenJUMP-Portable-2.2.0-r5193[9e7ba88]-CORE.zip:
+#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/OpenJUMP-Portable-2.2.0-r5193%5B9e7ba88%5D-CORE.zip/download
 - set_fact:
     OPENJUMP_CORE_ZIP: "{{ OPENJUMP_BASE_ZIP }}-CORE.zip"
     OPENJUMP_PLUS_ZIP: "{{ OPENJUMP_BASE_ZIP }}-PLUS.zip"
@@ -23,8 +40,7 @@
     OPENJUMP_DIR: "{{ zoidy_homefries_downloads_dir }}/OpenJUMP"
 
 - set_fact:
-    OPENJUMP_CORE_DIR: "{{ OPENJUMP_BASE_UZP }}-CORE"
-    OPENJUMP_PLUS_DIR: "{{ OPENJUMP_BASE_UZP }}-PLUS"
+    OPENJUMP_PLUS_DIR: "OpenJUMP-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD }}-PLUS"
 
 # ***
 
