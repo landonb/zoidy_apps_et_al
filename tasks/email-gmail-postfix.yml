@@ -8,7 +8,7 @@
 #   debconf-show postfix
 
 # I.e., debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
-- name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘mailname’"
+- name: "Seed/Pre-answer postfix package to avoid prompting » set default ‘mailname’"
   ansible.builtin.debconf:
     name: postfix
     question: postfix/mailname
@@ -17,7 +17,7 @@
   when: False
 
 # I.e., debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-- name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘main_mailer_type’"
+- name: "Seed/Pre-answer postfix package to avoid prompting » set default ‘main_mailer_type’"
   ansible.builtin.debconf:
     name: postfix
     question: postfix/main_mailer_type
@@ -40,7 +40,7 @@
 
 # ***
 
-- name: "Configure the Postfix main.cf: Set ‘myhostname’"
+- name: "Configure the Postfix main.cf » Set ‘myhostname’"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -51,7 +51,7 @@
 
 # ***
 
-- name: "Configure the Postfix sasl_passwd: Set TLS credentials"
+- name: "Configure the Postfix sasl_passwd » Set Gmail TLS credentials"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/sasl/sasl_passwd
@@ -65,15 +65,15 @@
   become: true
   ansible.builtin.command: postmap /etc/postfix/sasl/sasl_passwd
 
-- name: "Verify the Postfix hash db created/exists: run command"
+- name: "Verify the Postfix hash db created/exists » run command"
   ansible.builtin.command: "ls -la /etc/postfix/sasl/sasl_passwd.db"
   register: ls_la_out
 
-- name: "Verify the Postfix hash db created/exists: echo results"
+- name: "Verify the Postfix hash db created/exists » echo results"
   ansible.builtin.debug: var={{ item }}
   with_items: ls_la_out.stdout_lines
 
-- name: "Ensure the Postfix hash db secure: chown and chmod ’em"
+- name: "Ensure the Postfix hash db secure » chown and chmod ’em"
   become: true
   ansible.builtin.file:
     path: "{{ item }}"
@@ -86,7 +86,7 @@
 
 # ***
 
-- name: "Configure the Postfix main.cf: Set ‘relayhost’"
+- name: "Configure the Postfix main.cf » Set ‘relayhost’"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -97,7 +97,7 @@
 
 # ***
 
-- name: "Set main.cf: ‘smtp_sasl_auth_enable’: Enable SASL authentication"
+- name: "Set main.cf » ‘smtp_sasl_auth_enable’ » Enable SASL authentication"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -106,7 +106,7 @@
     state: present
   notify: Restart Postfix
 
-- name: "Set main.cf: ‘smtp_sasl_security_options’: Disallow methods that allow anonymous authentication"
+- name: "Set main.cf » ‘smtp_sasl_security_options’ » Disallow methods that allow anonymous authentication"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -115,7 +115,7 @@
     state: present
   notify: Restart Postfix
 
-- name: "Set main.cf: ‘smtp_sasl_password_maps’: Location of sasl_passwd"
+- name: "Set main.cf » ‘smtp_sasl_password_maps’ » Location of sasl_passwd"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -124,7 +124,7 @@
     state: present
   notify: Restart Postfix
 
-- name: "Set main.cf: ‘smtp_tls_security_level’: Enable STARTTLS encryption"
+- name: "Set main.cf » ‘smtp_tls_security_level’ » Enable STARTTLS encryption"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -133,7 +133,7 @@
     state: present
   notify: Restart Postfix
 
-- name: "Set main.cf: ‘smtp_tls_CAfile’: Location of CA certificates"
+- name: "Set main.cf » ‘smtp_tls_CAfile’ » Location of CA certificates"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -142,7 +142,7 @@
     state: present
   notify: Restart Postfix
 
-- name: "Set main.cf: ‘smtp_use_tls’: Use TLS"
+- name: "Set main.cf » ‘smtp_use_tls’ » Use TLS"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -154,7 +154,7 @@
 # ***
 
 # Remove the message_size_limit (= 10240000) restriction.
-- name: "Set main.cf: ‘message_size_limit’: Do not limit email size"
+- name: "Set main.cf » ‘message_size_limit’ » Do not limit email size"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -165,7 +165,7 @@
 
 # *** If you want more trace, add these:
 
-- name: "Set main.cf: ‘debug_peer_list’"
+- name: "Set main.cf » ‘debug_peer_list’"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
@@ -175,7 +175,7 @@
   notify: Restart Postfix
   when: False
 
-- name: "Set main.cf: ‘debug_peer_level’"
+- name: "Set main.cf » ‘debug_peer_level’"
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
