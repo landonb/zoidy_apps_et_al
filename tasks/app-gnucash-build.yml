@@ -4,6 +4,35 @@
 
 # ***
 
+# VERSN/2023-04-24:
+#
+# - This task builds v5.0:
+#
+#     $ ~/.local/bin/gnucash --version
+#     GnuCash 5.0 development version
+#     Build ID: git 5.0+(2023-03-25)
+#
+# - Linux Mint 21.1 ships v4.8... Huh, I apt-installed
+#   after running this task, and apt's gnucash fails
+#   (`apt install gnucash` installs
+#       gnucash-common
+#       gnucash-docs
+#       python3-gnucash
+#   ):
+#
+#     $ /usr/bin/gnucash --version
+#     /usr/bin/gnucash: symbol lookup error:
+#       /usr/lib/x86_64-linux-gnu/gnucash/gnucash/libgnc-gnome-utils.so:
+#         undefined symbol: gnc_option_get_widget
+#
+#   Which is weird... this task performs a local install, so unless
+#   system gnucash is loading local assets... yeah, no, I cannot ex-
+#   plain what's up.
+#   - FIXME: I'll try apt gnucash on fresh OS, before installing v5.0,
+#            and see if it still fails.
+
+# ***
+
 # CXREF:
 #
 #   https://wiki.gnucash.org/wiki/Building_On_Linux
@@ -383,9 +412,7 @@
   file: state=absent path="{{ item }}"
   with_fileglob: "{{ ansible_env.HOME }}/.local/lib/libgnc-*.so"
 
-# This includes my reports: ~/.local/share/gnucash/saved-reports-2.8
-# - Though I wonder if v4.2 files will conflict with v5.0...
-#   - FIXME/2023-04-24 00:22: Probably better to copy/import reports into v5.0.
+# This includes user's customs reports: ~/.local/share/gnucash/saved-reports-2.8
 #
 #  - name: Clean build » Remove GnuCash help files
 #    file: state="absent" path="{{ ansible_env.HOME }}/.local/share/gnucash/"
