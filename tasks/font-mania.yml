@@ -41,6 +41,7 @@
       # Arial MT.
       - url_base: https://www.cufonfonts.com/download/font
         zip_base: arial-mt
+        real_dst: arial-mt-cufonfonts.zip
         # MEH: Add option to name ~/.fonts destination.
         # - If you visit https://www.cufonfonts.com/font/arial-mt and click
         #   *Download*, it opens file download dialog and suggests the name,
@@ -53,6 +54,7 @@
       # https://font.gooova.com/fonts/13221/frutiger-lt-std-font.html#google_vignette
       - url_base: https://font.gooova.com/d/13221
         zip_base: frutiger-lt-std-font.zip
+        real_dst: "frutiger-lt-std-font.zip;"
         #  dst_base: FrutigerLTStd
 
       # 2023-04-25: "HTTP Error 404: Not Found", though addy looks correct...
@@ -89,11 +91,19 @@
 # ***
 
 # PROFILING: 2019-03-19: Task took: 22.51s (currently penutimate slowest task).
-- name: Fetch font ZIP archives
+- name: Fetch font archives
   get_url:
     url: "{{ item.url_base }}/{{ item.zip_base }}"
     dest: "{{ zoidy_homefries_dls_fonts_dir }}/"
   loop: "{{ FONT_URL_ZIPS }}"
+
+- name: Fix font archive names
+  copy:
+    remote_src: yes
+    src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.real_dst }}"
+    dest: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
+  loop: "{{ FONT_URL_ZIPS }}"
+  when: item.real_dst | default("") | length > 0
 
 # Copy the archive contents to the ~/.fonts directory, named without the .zip extension.
 - name: Unarchive the font archives
