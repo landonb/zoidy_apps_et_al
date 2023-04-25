@@ -88,6 +88,5 @@
     - node-nvm-version-mgr
     - node-nvm-versions
     - python-sources
-    - ref-dictionary
     - virt-vagrant
 

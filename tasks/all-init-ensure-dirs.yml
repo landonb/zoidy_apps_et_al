@@ -30,7 +30,6 @@
     - node-npmjs-install
     - node-nvm-version-mgr
     - python-sources
-    - ref-dictionary
     - vid-ttygif
     - virt-vagrant
 

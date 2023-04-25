@@ -256,18 +256,6 @@
   tags: python-sources
 
 # ************************************************************************
-# *** Refs. ***
-
-- name: Webster Dictionary Fetcher
-  include_role:
-    name: zoidy_apps_et_al
-    tasks_from: ref-dictionary
-    apply:
-      tags:
-        - ref-dictionary
-  tags: ref-dictionary
-
-# ************************************************************************
 # *** Virt. ***
 
 - name: Vagrant Installer
