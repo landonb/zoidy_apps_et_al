@@ -23,7 +23,10 @@
 #   where the OS pulls emoji characters from.
 
 - set_fact:
-    HACK_NERD_FONT_VERS: 'v2.2.2'
+    # 2022-09-21:
+    #  HACK_NERD_FONT_VERS: 'v2.2.2'
+    # 2023-04-25:
+    HACK_NERD_FONT_VERS: 'v2.3.3'
     HACK_NERD_FONT_FILE: 'Hack'
     # 2022-09-15: If you want to install another font, e.g., Noto,
     # just change the name, e.g.:
