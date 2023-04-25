@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs systemwide Node apps using npm.
+
+# ***
+
 - name: List of Node projects to install
   set_fact:
     node_npm_list:

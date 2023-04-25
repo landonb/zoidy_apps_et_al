@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task builds and installs parT from GitHub sources.
+
+# ***
+
 - name: Clone parT repo
   git:
     repo: "git@github.com:landonb/parT.git"

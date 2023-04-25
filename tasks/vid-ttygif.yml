@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task builds and installs ttygif from GitHub sources.
+
+# ***
+
 - name: Install ttygif prerequisites
   become: true
   apt: name={{ item }}

@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Hack font from GitHub release archive.
+
+# ***
+
 # REPLICA/2019-03-14: [zoidy_matecocido|zoidy_apps_et_al]/tasks/font-hack.yml
 
 # *** Local variables (Facts).

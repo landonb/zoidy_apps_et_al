@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task configures GnuCash gsettings/dconf settings.
+
+# ***
+
 - name: Setup Preferred GnuCash Preferences
   # You can write dconf or gsettings.
   # - Note that GnuCash populates gsettings defaults but not dconf.

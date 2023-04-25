@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Opera browser from deb package.
+
+# ***
+
 - set_fact:
     # 2019-01-04: The obscured direct-download link:
     OPERA_URL: "https://www.opera.com/download/get/?id=44732&amp;location=415&amp;nothanks=yes&amp;sub=marine&utm_tryagain=yes"

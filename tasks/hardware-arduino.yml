@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Arduino from zip archive.
+
+# ***
+
 - set_fact:
     ARDUINO_VER: "1.8.8"
 

@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs Spotify from third-party apt repo.
+
+# ***
+
 # CXREF/2023-04-22:
 #
 #   https://www.spotify.com/us/download/linux/

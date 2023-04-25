@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs darktable from distro apt repo.
+
+# ***
+
 # CXREF: https://www.darktable.org/
 #   https://github.com/darktable-org/darktable/releases
 

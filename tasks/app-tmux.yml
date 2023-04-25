@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task builds and installs tmux from GitHub sources.
+
+# ***
+
 # *** Local variables (Facts).
 
 # YOU: If you've checked out the repo elsewhere, set:

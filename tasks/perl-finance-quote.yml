@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs Perl Finance::Quote from local gnucash asset.
+
+# ***
+
 # Optional GnuCash extension (also runs on its own).
 
 # http://finance-quote.sourceforge.net/

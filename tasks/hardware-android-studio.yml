@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Android Studio from zip release archive.
+
+# ***
+
 - set_fact:
     ANDROID_STUDIO_VER: "3.2.1.0"
     ANDROID_STUDIO_BLD: "181.5056338"

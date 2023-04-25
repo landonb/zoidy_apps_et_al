@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task builds and installs GnuCash docs from GitHub sources.
+
+# ***
+
 # After installing gnucash-docs, you can access the docs through gnucash, or you
 # can open them directly, e.g., use yelp to open the *Tutorial and Concepts Guide*:
 #   /usr/bin/yelp ghelp:gnucash-guide

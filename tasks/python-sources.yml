@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and unpacks Python sources from tar archives.
+
+# ***
+
 # CXREF: https://devguide.python.org/versions/
 #
 #   pyenv install -l | grep "^  3\."

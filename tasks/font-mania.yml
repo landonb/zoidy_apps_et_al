@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Various Fonts from zip archives.
+
+# ***
+
 # *** Local variables (Facts).
 
 - set_fact:

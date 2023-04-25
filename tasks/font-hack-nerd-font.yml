@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs Hack Nerd font from GitHub release archive.
+
+# ***
+
 # *** Nerd Font verion -- perhaps includes latest emojis? At least include Font Awesome.
 
 # https://github.com/ryanoasis/nerd-fonts

@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs GIMP wavelet-decompose plugin.
+
+# ***
+
 # DUNNO/2023-04-23: GIMP includes a plug-in with the same name:
 #
 # - GIMP > Help > Plug-in Browser > Wavelet-decompose

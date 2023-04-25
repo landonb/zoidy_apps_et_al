@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs VirtualBox from third-party apt repo.
+
+# ***
+
 - name: Add Oracle VM VirtualBox repository
   become: true
   apt_repository:

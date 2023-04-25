@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs Chrome from third-party apt repo.
+
+# ***
+
 # FIXME/2023-04-23 18:42: Creates redundant apt-sources:
 #
 #   $ cat /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list

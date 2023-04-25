@@ -1,3 +1,9 @@
+---
+
+# USAGE: Task installs Go packages using go-install.
+
+# ***
+
 - name: List of Go Lang projects to install
   set_fact:
     go_install_list:

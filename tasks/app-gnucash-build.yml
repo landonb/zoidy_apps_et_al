@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task builds and installs GnuCash app from GitHub sources.
+
+# ***
+
 # CXREF:
 #
 #   https://wiki.gnucash.org/wiki/Building_On_Linux

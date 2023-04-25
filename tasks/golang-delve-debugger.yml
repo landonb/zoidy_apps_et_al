@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task clones and installs Go Delve debugger from GitHub sources using go-install.
+
+# ***
+
 # 2019-01-04: You'd think a simple `go get` would work,
 # but I had issues in the past, and this is what I have.
 # I'm not sure if this funny business is still necessary.

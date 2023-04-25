@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs multiple Node versions using nvm.
+
+# ***
+
 - name: "Install Nodes"
   ansible.builtin.shell: source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install v{{ item }}
   loop:

@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task installs GIMP export-layers plugin.
+
+# ***
+
 # SAVVY/2023-04-23: If you installed GIMP from aptitude (or at least this is
 # how apt's GIMP 2.8 worked), the plugins dir is, e.g., ~/.gimp-2.8/plug-ins.
 #

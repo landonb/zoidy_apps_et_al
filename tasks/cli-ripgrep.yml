@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs rg from tar archive; and go-installs tag.
+
+# ***
+
 # *** Local variables (Facts).
 
 # CXREF:

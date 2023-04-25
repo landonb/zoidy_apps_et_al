@@ -1,5 +1,9 @@
 ---
 
+# USAGE: Task downloads and installs vagrant from deb package.
+
+# ***
+
 - set_fact:
     vagrant_ver: "2.2.2"
 
