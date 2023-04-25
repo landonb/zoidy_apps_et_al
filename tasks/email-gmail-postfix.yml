@@ -1,9 +1,12 @@
 ---
 
+# USAGE: Task configures /etc/postfix/main.cf, and creates
+#            /etc/postfix/sasl_passwd[.db], and ~/.forward.
+
 # ***
 
-# NOTE: (lb): postfix already installed, so not necessary to run these apt tasks.
-# (I think I was prompted during initial Linux Mint installation process.)
+# ISOFF/2019-03-24: (lb): postfix already installed, so not running these apt
+# tasks. (I think I was prompted during initial Linux Mint installation process.)
 # You can see the postfix defaults you choose when it was installed using:
 #   debconf-show postfix
 
@@ -29,6 +32,8 @@
   become: true
   ansible.builtin.apt: name={{ item }}
   loop:
+    # 2023-04-24: Confirmed installed on Linux Mint 21.1 (not by me directly;
+    # so either stock Mint packages, or installed as deps of other packages).
     - libsasl2-modules
     - postfix
     # (lb): Not sure if we need; found to be already installed on my machine.
@@ -40,6 +45,14 @@
 
 # ***
 
+# Update /etc/postfix/main.cf
+
+# ***
+
+# - Update myhostname, e.g., changes:
+#     myhostname = {{ ansible_hostname }}.lan
+# - to:
+#     myhostname = {{ ansible_hostname }}.your.domain
 - name: "Configure the Postfix main.cf » Set ‘myhostname’"
   become: true
   ansible.builtin.lineinfile:
@@ -184,6 +197,10 @@
     state: present
   notify: Restart Postfix
   when: False
+
+# ***
+
+# Create ~/.forward
 
 # ***
 
