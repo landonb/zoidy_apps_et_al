@@ -78,7 +78,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/sasl/sasl_passwd
-    regexp: "^\[smtp.gmail.com\]:587"
+    regexp: "^\\[smtp.gmail.com\\]:587"
     line: "[smtp.gmail.com]:587 {{ zoidy_homefries_postfix_user }}@gmail.com:{{ zoidy_homefries_postfix_pass }}"
     state: present
     create: yes
