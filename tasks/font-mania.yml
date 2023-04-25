@@ -84,7 +84,7 @@
 # ***
 
 # PROFILING: 2019-03-19: Task took: 22.51s (currently penutimate slowest task).
-- name: Fetch font archives
+- name: Fetch font ZIP archives
   get_url:
     url: "{{ item.url_base }}/{{ item.zip_base }}"
     dest: "{{ zoidy_homefries_dls_fonts_dir }}/"
@@ -101,7 +101,7 @@
 
 # ***
 
-- name: Fetch font files
+- name: Fetch font TTF files
   get_url:
     url: "{{ item.url_base }}/{{ item.ttf_base }}"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.ttf_base }}"
