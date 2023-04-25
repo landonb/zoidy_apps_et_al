@@ -1,6 +1,6 @@
 ---
 
-# USAGE: Task downloads and installs Dropbox from deb package.
+# USAGE: Task installs Dropbox from apt, and then downloads the daemon.
 
 # ***
 
@@ -12,80 +12,43 @@
 #
 #   https://linux.dropbox.com/packages/
 
-- set_fact:
-    # 2019-01-03:
-    #  DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
-    # 2023-04-24:
-    DROPBOX_INSTALLER_WRAPPER_VER: '2022.12.05'
+# DUNNO/2023-04-25: I was unable to install the Debian package from their
+# website, complains:
+#   Dependency is not satisfiable: libgtk-4-1 (>= 4.8.0)
+# even though I apt-installed libgtk-4-1 (and libgtk-4-dev).
+# - Fortunately, you can find packages in the distro repo.
 
-- set_fact:
-    DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
-
-- name: Check if Dropbox installed
-  ansible.builtin.shell: command -v dropbox >/dev/null 2>&1
-  register: dropbox_exists
-  ignore_errors: yes
-
-# 2023-04-24:
-#   https://linux.dropbox.com/packages/ubuntu/dropbox_2022.12.05_amd64.deb
-#   https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2022.12.05_amd64.deb
-- name: Fetch Dropbox 64-bit Debian package installer
-  get_url:
-    # The package is a simple script to download the latest actual Dropbox code.
-    url: "https://www.dropbox.com/download?dl=packages/ubuntu/{{ DROPBOX_DEB }}"
-    dest: "{{ zoidy_homefries_downloads_dir }}/"
-    # checksum: "sha256:{{ <sha> }}"
-  when: dropbox_exists.rc != 0
-
-- name: Install Dropbox Debian package
-  # [lb]: MEH: I'd rather not have sudo command in Home Fries (prefer user installs),
-  # but Aptitude only installs as root. We could install from source, e.g., resurrect
-  #   0005__stage_4_dropbox_install.sh
-  # At least we can use a "when" to make this task reentrant without sudo.
-  become: yes
-  ansible.builtin.apt:
-    deb: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_DEB }}"
-  when: dropbox_exists.rc != 0
-
-- name: Install python-gpg, so propreitary daemon downloader can verify signatures
+- name: Install Dropbox apt pkgs
   become: true
   ansible.builtin.apt: name={{ item }}
   loop:
-    # - python-gpg
-    - python3-gpg
-  when: dropbox_exists.rc != 0
+    - dropbox
+    - caja-dropbox
 
-- name: Check if Dropbox is running
-  command: dropbox status
-  register: dropbox_status
-
-- debug: msg={{ dropbox_status.stdout }}
-
-# MEH: We could check `ps aux` for the daemon, e.g.,
+# - name: Check if Dropbox is running
+#   command: dropbox status
+#   register: dropbox_status
 #
-#   ${HOME}/.dropbox-dist/dropbox-lnx.x86_64-63.4.107/dropbox
-#
-# or we could look for the executable in the user home, e.g.,
-#
-#   ${HOME}/.dropbox-dist/dropboxd
-#
-# but this script won't be rerun regularly, so why bother;
-# just always tell the user to run the manual setup.
+# - debug: msg={{ dropbox_status.stdout }}
 
-- set_fact:
-    DROPBOX_MANUALLY: "{{ zoidy_homefries_downloads_dir }}/dropbox-manually.sh"
+- name: Download Dropbox daemon (answer yes to download prompt)
+  ansible.builtin.shell: echo y | DISPLAY='' dropbox start -i
 
-# If you wanted to select both "Don't show this again" and "OK", you could do, e.g.,
-#   ... && xdotool windowactivate --sync $(...) key alt+d key alt+o windowactivate ...
-- name: Create Dropbox script to manually finish installation
-  ansible.builtin.shell: >
-    echo '(sleep 0.25 && xdotool windowactivate --sync $(xdotool search --name "Dropbox Installation") key alt+o windowactivate $(xdotool getactivewindow) &) ; dropbox start -i' > {{ DROPBOX_MANUALLY }}
+# ***
 
-- name: Make Manually Install Dropbox script executable
-  file:
-    path: "{{ DROPBOX_MANUALLY }}"
-    mode: 0775
+- name: Tell user to run Dropbox to complete setup
+  ansible.builtin.pause:
+    seconds: 0
+    prompt: |
+       
 
-- name: Run Dropbox, after Downloading Proprietary Daemon
-  debug: msg="YOU– Run Dropbox manually (from terminal with display access) to install proproetary daemon∷ {{ DROPBOX_MANUALLY }}"
+      CHORE » Link your Dropbox account. Run this:
+
+        sensible-open $(dropbox start -i 2> /dev/null | tail -1)"
+
+       
+    # ↑ This is an em space ( ), necessary to protect trailing newline(s)
+    #   from chomp().
+    #   - There's also an em space on the first line, in case you want
+    #     first line of content-containing output to be indented.
 
