@@ -49,6 +49,16 @@
 
 # ***
 
+# Back up file first.
+- name: "Backup /etc/postfix/main.cf (using ansible_date_time for unique path)"
+  become: true
+  ansible.builtin.copy:
+    remote_src: True
+    src: /etc/postfix/main.cf
+    dest: "/etc/postfix/main.cf-{{ ansible_date_time.iso8601_basic_short }}-zoidy_apps_et_al"
+
+# ***
+
 # - Update myhostname, e.g., changes:
 #     myhostname = {{ ansible_hostname }}.lan
 # - to:
