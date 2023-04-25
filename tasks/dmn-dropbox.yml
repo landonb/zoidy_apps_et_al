@@ -1,11 +1,22 @@
 ---
 
-# See also source under:
+# USAGE: Task downloads and installs Dropbox from deb package.
+
+# ***
+
+# CXREF: https://linux.dropbox.com/packages/ubuntu/
+#
+#   https://www.dropbox.com/install?os=lnx
+#
+# - Source archives:
 #
 #   https://linux.dropbox.com/packages/
 
 - set_fact:
-    DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
+    # 2019-01-03:
+    #  DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
+    # 2023-04-24:
+    DROPBOX_INSTALLER_WRAPPER_VER: '2022.12.05'
 
 - set_fact:
     DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
@@ -15,12 +26,15 @@
   register: dropbox_exists
   ignore_errors: yes
 
+# 2023-04-24:
+#   https://linux.dropbox.com/packages/ubuntu/dropbox_2022.12.05_amd64.deb
+#   https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2022.12.05_amd64.deb
 - name: Fetch Dropbox 64-bit Debian package installer
   get_url:
     # The package is a simple script to download the latest actual Dropbox code.
     url: "https://www.dropbox.com/download?dl=packages/ubuntu/{{ DROPBOX_DEB }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
-    #checksum: "sha256:{{ XXX? }}"
+    # checksum: "sha256:{{ <sha> }}"
   when: dropbox_exists.rc != 0
 
 - name: Install Dropbox Debian package
@@ -37,7 +51,7 @@
   become: true
   ansible.builtin.apt: name={{ item }}
   loop:
-    - python-gpg
+    # - python-gpg
     - python3-gpg
   when: dropbox_exists.rc != 0
 
