@@ -3,7 +3,7 @@
 # *** Task Setup (Ensures-Dirs)
 
 # Ensures dirs: ~/.downloads, ~/.local/, etc.
-- name: Load dispatcher: Ensure target directories exist
+- name: Load dispatcher » Ensure target directories exist
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-ensure-dirs
@@ -11,7 +11,7 @@
 
 # ***
 
-- name: Load dispatcher: Install Go Language
+- name: Load dispatcher » Install Go Language
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-go-lang
