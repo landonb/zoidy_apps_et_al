@@ -87,14 +87,17 @@
 - name: Create the Postfix hash db file
   become: true
   ansible.builtin.command: postmap /etc/postfix/sasl/sasl_passwd
+  when: zoidy_homefries_postfix_pass != ''
 
 - name: "Verify the Postfix hash db created/exists » run command"
   ansible.builtin.command: "ls -la /etc/postfix/sasl/sasl_passwd.db"
   register: ls_la_out
+  when: zoidy_homefries_postfix_pass != ''
 
 - name: "Verify the Postfix hash db created/exists » echo results"
   ansible.builtin.debug: var={{ item }}
   with_items: ls_la_out.stdout_lines
+  when: zoidy_homefries_postfix_pass != ''
 
 - name: "Ensure the Postfix hash db secure » chown and chmod ’em"
   become: true
@@ -106,6 +109,7 @@
   with_items:
     - /etc/postfix/sasl/sasl_passwd
     - /etc/postfix/sasl/sasl_passwd.db
+  when: zoidy_homefries_postfix_pass != ''
 
 # ***
 
