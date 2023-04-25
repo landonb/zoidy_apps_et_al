@@ -6,7 +6,7 @@
 
 - name: Install ttygif prerequisites
   become: true
-  apt: name={{ item }}
+  ansible.builtin.apt: name={{ item }}
   loop:
     - imagemagick
     - ttyrec
@@ -19,11 +19,11 @@
     dest: "{{ zoidy_homefries_downloads_dir }}/ttygif"
 
 - name: Build ttygif
-  make:
+  ansible.builtin.make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/ttygif"
 
 - name: Install ttygif
-  make:
+  ansible.builtin.make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/ttygif"
     target: install
   args:

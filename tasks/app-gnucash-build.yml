@@ -157,7 +157,7 @@
 
 - name: Run command "apt-get update" (app-gnucash-build)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
 
@@ -182,7 +182,7 @@
 #     the build doc doesn't specify, and I haven't investigated further).
 
 - name: gnucash » install build dependencies (individually)
-  apt: name="{{ item }}" state="present"
+  ansible.builtin.apt: name="{{ item }}" state="present"
   become: true
   loop:
     # v5.0 Required Dependencies
@@ -439,11 +439,11 @@
 #     chdir: "{{ GNUCASH_BUILD_DIR }}"
 #
 # - name: "gnucash make"
-#   make:
+#   ansible.builtin.make:
 #     chdir: "{{ GNUCASH_BUILD_DIR }}"
 #
 # - name: "gnucash make install"
-#   make:
+#   ansible.builtin.make:
 #     chdir: "{{ GNUCASH_BUILD_DIR }}"
 #     target: install
 

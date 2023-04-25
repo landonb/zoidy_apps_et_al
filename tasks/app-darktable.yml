@@ -24,7 +24,7 @@
 #
 #   - name: Add Darktable release repo
 #     become: true
-#     apt_repository:
+#     ansible.builtin.apt_repository:
 #       # /etc/apt/sources.list.d/ppa_pmjdebruijn_darktable_release_bionic.list
 #       repo: ppa:pmjdebruijn/darktable-release
 #       # E.g., 'jammy'
@@ -34,12 +34,12 @@
 
 - name: Run command "apt-get update" (app-darktable)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     # Skip the cache time so that the new repo gets picked up.
     #   cache_valid_time: 3600
 
 - name: Install Darktable from distro package repo
   become: true
-  apt: name=darktable
+  ansible.builtin.apt: name=darktable
 

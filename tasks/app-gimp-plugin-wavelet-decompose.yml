@@ -30,19 +30,19 @@
 
 - name: Run command "apt-get update" (app-gimp-plugin-wavelet-decompose)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     # Skip the cache time so that the new repo gets picked up.
     #   cache_valid_time: 3600
 
 - name: Install GIMP development headers, etc.
   become: true
-  apt: name=libgimp2.0-dev
+  ansible.builtin.apt: name=libgimp2.0-dev
 
 # ***
 
 - name: Build wavelet-decompose plugin
-  make:
+  ansible.builtin.make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
 
 # ***
@@ -58,13 +58,13 @@
 
 - name: Install wavelet-decompose for all users
   become: true
-  make:
+  ansible.builtin.make:
     target: install
     chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
   when: False
 
 - name: Install wavelet-decompose for your user
-  make:
+  ansible.builtin.make:
     chdir: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
     target: userinstall
   when: True

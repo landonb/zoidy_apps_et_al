@@ -29,13 +29,13 @@
   #   0005__stage_4_dropbox_install.sh
   # At least we can use a "when" to make this task reentrant without sudo.
   become: yes
-  apt:
+  ansible.builtin.apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_DEB }}"
   when: dropbox_exists.rc != 0
 
 - name: Install python-gpg, so propreitary daemon downloader can verify signatures
   become: true
-  apt: name={{ item }}
+  ansible.builtin.apt: name={{ item }}
   loop:
     - python-gpg
     - python3-gpg

@@ -33,7 +33,7 @@
 # MEH: This requires sudo/-K, but so does Build font information cache files.
 - name: 'Ensure ‘jq’ is available'
   become: true
-  apt: name=jq
+  ansible.builtin.apt: name=jq
 
 - name: Check for new version of Hack.
   ansible.builtin.shell: "curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r '.tag_name'"

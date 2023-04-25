@@ -13,7 +13,7 @@
 
 - name: Ensure nodejs & npm installed
   become: true
-  apt: name={{ item }}
+  ansible.builtin.apt: name={{ item }}
   loop:
     # 2020-07-07: `node` installed from latest. See:
     #   node-npmjs-install.yml

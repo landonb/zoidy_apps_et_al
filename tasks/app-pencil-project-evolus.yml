@@ -40,6 +40,6 @@
 
 - name: Install Pencil Debian package
   become: yes
-  apt:
+  ansible.builtin.apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ PENCIL_DEB }}"
 

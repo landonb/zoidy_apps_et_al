@@ -6,7 +6,7 @@
 
 - name: Add Oracle VM VirtualBox repository
   become: true
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ zoidy_distrib_codename }} contrib"
     state: present
     # To disable:
@@ -14,13 +14,13 @@
 
 - name: Run command "apt-get update" (app-virtualbox)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
 
 - name: Install VirtualBox (app-virtualbox)
   become: true
-  apt:
+  ansible.builtin.apt:
     name: virtualbox-6.1
     state: present
 

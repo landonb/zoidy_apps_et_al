@@ -34,6 +34,6 @@
 
 - name: Install Vagrant package
   become: yes
-  apt:
+  ansible.builtin.apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
 

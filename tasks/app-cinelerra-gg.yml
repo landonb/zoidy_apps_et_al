@@ -22,19 +22,19 @@
 #
 # - name: Add Cinelerra GG Community (CINfinity) proprietary repository
 #   become: true
-#   apt_repository:
+#   ansible.builtin.apt_repository:
 #     repo: deb [trusted=yes] https://cinelerra-gg.org/download/pkgs/mint19 bionic main
 #     state: present
 #
 # - name: Run command "apt-get update" (app-cinelerra-gg)
 #   become: true
-#   apt:
+#   ansible.builtin.apt:
 #     update_cache: yes
 #     cache_valid_time: 3600
 #
 # - name: Install Cinelerra (app-cinelerra-gg)
 #   become: true
-#   apt:
+#   ansible.builtin.apt:
 #     name: cin
 #     state: present
 

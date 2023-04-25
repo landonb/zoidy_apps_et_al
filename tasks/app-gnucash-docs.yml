@@ -75,7 +75,7 @@
 
 - name: Run command "apt-get update" (app-gnucash-docs)
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
 
@@ -86,7 +86,7 @@
 #    ansible.builtin.shell: apt-get build-dep gnucash-docs
 
 - name: gnucash » install build dependencies (individually)
-  apt: name="{{ item }}" state="present"
+  ansible.builtin.apt: name="{{ item }}" state="present"
   become: true
   loop:
     - cmake
@@ -124,7 +124,7 @@
 #                   which is nice and fairly quick.
 
 # - name: "gnucash-docs make"
-#   make:
+#   ansible.builtin.make:
 #     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 #     target: install
 

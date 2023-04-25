@@ -18,6 +18,6 @@
 
 - name: Install Opera Debian package
   become: yes
-  apt:
+  ansible.builtin.apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
 

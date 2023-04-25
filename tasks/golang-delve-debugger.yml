@@ -20,7 +20,7 @@
     dest: "{{ gopath_src_delve }}/delve"
 
 - name: Install delve
-  make:
+  ansible.builtin.make:
     chdir: "{{ gopath_src_delve }}/delve"
     target: install
   environment:

@@ -9,7 +9,7 @@
 
 # I.e., debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
 - name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘mailname’"
-  debconf:
+  ansible.builtin.debconf:
     name: postfix
     question: postfix/mailname
     value: "{{ zoidy_homefries_postfix_fqdn }}"
@@ -18,7 +18,7 @@
 
 # I.e., debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 - name: "Seed/Pre-answer postfix package to avoid prompting: set default ‘main_mailer_type’"
-  debconf:
+  ansible.builtin.debconf:
     name: postfix
     question: postfix/main_mailer_type
     value: Internet Site
@@ -27,7 +27,7 @@
 
 - name: Install Postfix and related packages
   become: true
-  apt: name={{ item }}
+  ansible.builtin.apt: name={{ item }}
   loop:
     - libsasl2-modules
     - postfix
@@ -63,19 +63,19 @@
 
 - name: Create the Postfix hash db file
   become: true
-  command: postmap /etc/postfix/sasl/sasl_passwd
+  ansible.builtin.command: postmap /etc/postfix/sasl/sasl_passwd
 
 - name: "Verify the Postfix hash db created/exists: run command"
-  command: "ls -la /etc/postfix/sasl/sasl_passwd.db"
+  ansible.builtin.command: "ls -la /etc/postfix/sasl/sasl_passwd.db"
   register: ls_la_out
 
 - name: "Verify the Postfix hash db created/exists: echo results"
-  debug: var={{ item }}
+  ansible.builtin.debug: var={{ item }}
   with_items: ls_la_out.stdout_lines
 
 - name: "Ensure the Postfix hash db secure: chown and chmod ’em"
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     mode: 0600
     owner: postfix
@@ -189,7 +189,7 @@
 
 # Because you setup postfix SMTP relay, can also setup user mail forwarding.
 - name: "Configure email forwarding"
-  copy:
+  ansible.builtin.copy:
     dest: "{{ ansible_env.HOME }}/.forward"
     content: "{{ zoidy_homefries_email_forward }}"
   when: zoidy_homefries_email_forward != ''

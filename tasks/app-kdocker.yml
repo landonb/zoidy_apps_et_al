@@ -64,7 +64,7 @@
 # ***
 
 - name: KDocker » Ensure dev libs available
-  apt: name="{{ item }}" state="present"
+  ansible.builtin.apt: name="{{ item }}" state="present"
   loop:
     - qt5-qmake
     - libqt5x11extras5-dev
