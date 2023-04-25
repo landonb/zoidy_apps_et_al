@@ -4,17 +4,28 @@
 
 # ***
 
+# CXREF: https://www.opera.com/download/
+#
+#  https://www.opera.com/computer/thanks?partner=www&par=id%3D61294%26location%3D424&gaprod=opera
+#
+# - opera-stable_98.0.4759.6_amd64.deb
+#
+#     https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes
+
 - set_fact:
-    # 2019-01-04: The obscured direct-download link:
-    OPERA_URL: "https://www.opera.com/download/get/?id=44732&amp;location=415&amp;nothanks=yes&amp;sub=marine&utm_tryagain=yes"
-    # 2019-01-04: The archive name as seen once download starts:
-    OPERA_DEB: "opera-stable_57.0.3098.110_amd64.deb"
+    # 2023-04-24: The obscured direct-download link, and
+    #             the archive name you see once download starts.
+    OPERA_URL: "https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes"
+    OPERA_DEB: "opera-stable_98.0.4759.6_amd64.deb"
+    # - 2019-01-04:
+    #   OPERA_URL: "https://www.opera.com/download/get/?id=44732&amp;location=415&amp;nothanks=yes&amp;sub=marine&utm_tryagain=yes"
+    #   OPERA_DEB: "opera-stable_57.0.3098.110_amd64.deb"
 
 - name: Fetch Opera Debian package
   get_url:
     url: "{{ OPERA_URL }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
-    #checksum: "sha256:{{ XXX }}"
+    # checksum: "sha256:{{ <sha> }}"
 
 - name: Install Opera Debian package
   become: yes
