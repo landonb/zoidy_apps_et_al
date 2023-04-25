@@ -4,17 +4,34 @@
 
 # ***
 
-- set_fact:
-    ARDUINO_VER: "1.8.8"
+# CXREF: http://www.arduino.cc/
+#
+#   https://www.arduino.cc/en/software
+
+# MAYBE/2023-04-25: Convert to AppImage install, e.g.:
+#
+#   https://downloads.arduino.cc/arduino-ide/arduino-ide_2.1.0_Linux_64bit.AppImage
+#
+# - Except this task already writ, and fairly simple, so... why bother.
 
 - set_fact:
-    ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}"
+    # 2019-01-04:
+    #  ARDUINO_VER: "1.8.8"
+    # 2023-04-25:
+    ARDUINO_VER: "2.1.0"
 
 - set_fact:
-    ARDUINO_NOM: "{{ ARDUINO_DIR }}-linux64"
+    # 2019-01-04:
+    #  ARDUINO_ARC: "arduino-{{ ARDUINO_VER }}-linux64.tar.xz"
+    # 2023-04-25:
+    ARDUINO_ARC: "arduino-ide_{{ ARDUINO_VER }}_Linux_64bit.zip"
 
 - set_fact:
-    ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_NOM }}.tar.xz"
+    # 2019-01-04:
+    #  ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_ARC }}"
+    # 2023-04-25:
+    # - E.g., https://downloads.arduino.cc/arduino-ide/arduino-ide_2.1.0_Linux_64bit.zip
+    ARDUINO_URL: "https://downloads.arduino.cc/arduino-ide/{{ ARDUINO_ARC }}"
 
 # ***
 
@@ -22,21 +39,34 @@
   get_url:
     # The package is a simple script to download the latest actual Dropbox code.
     url: "{{ ARDUINO_URL }}"
-    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_NOM }}.tar.xz"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_ARC }}"
+
+- set_fact:
+    ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}"
+
+# 2023-04-26: Arduino 2.1.0 does not unpack to top-level dir like 1.8.8,
+# so specify that top-level unpack path.
+- name: Create/Ensure Arduino archive unpack path
+  ansible.builtin.file:
+    path: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}"
+    state: directory
 
 - name: Unarchive Arduino archive
   unarchive:
-    src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_NOM }}.tar.xz"
-    dest: "{{ zoidy_homefries_downloads_dir }}/"
     remote_src: yes
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_ARC }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}"
 
-- name: Install Arduino
-  # "Adding desktop shortcut, menu item and file associations for Arduino IDE... done!"
-  command: ./install.sh
-  args:
-    chdir: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}"
+# 2023-04-26: Arduino 1.8.8 used ./install.sh script; Arduino 2.1.0 ready to go.
+- name: Symlink Arduino executable from user bin
+  file:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}/arduino-ide"
+    dest: "{{ ansible_env.HOME }}/.local/bin/arduino-ide"
+    state: link
 
 # Fix it so normal users can hook US port (otherwise you have to `sudo arduino`, blech).
+# - DUNNO/2023-04-26: I assume this still valid for Arduino 2.1.0 (it was for 1.8.8)
+#                     but unconfirmed.
 - name: 'Add user to dialout group'
   become: true
   user:
