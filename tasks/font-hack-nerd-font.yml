@@ -67,8 +67,8 @@
 
 - name: Unarchive the Hack Nerd Font font release archive (Install Font- HACK NERD FONT!)
   unarchive:
+    remote_src: yes
     src: "{{ zoidy_homefries_downloads_dir }}/{{ HACK_NERD_FONT_FILE }}.zip"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ HACK_NERD_FONT_FILE }}/"
-    remote_src: yes
   notify: Build font information cache files
 

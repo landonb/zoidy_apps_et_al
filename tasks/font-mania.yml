@@ -87,9 +87,9 @@
 # Copy the archive contents to the ~/.fonts directory, named without the .zip extension.
 - name: Unarchive the font archives
   unarchive:
+    remote_src: yes
     src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
-    remote_src: yes
   loop: "{{ FONT_URL_ZIPS }}"
   notify: Build font information cache files
 
