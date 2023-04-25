@@ -38,9 +38,6 @@
 - name: Check for new version of Hack.
   ansible.builtin.shell: "curl -s https://api.github.com/repos/source-foundry/Hack/releases/latest | jq -r '.tag_name'"
   register: LATEST_VERSION
-  args:
-    # else, ansible bugs us to use get_url:
-    warn: False
 
 #  if [[ "${LATEST_VERS}" != "${HACK_VERS}" ]]; then
 #    echo "A new version of Hack! ${LATEST_VERS}"

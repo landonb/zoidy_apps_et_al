@@ -46,9 +46,6 @@
 - name: Check for new version of Hack.
   ansible.builtin.shell: "curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r '.tag_name'"
   register: LATEST_VERSION
-  args:
-    # else, ansible bugs us to use get_url:
-    warn: False
 
 - debug: msg="Latest HACK NERD FONT∷ {{ LATEST_VERSION.stdout }}"
 
