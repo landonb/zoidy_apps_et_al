@@ -27,10 +27,13 @@
     - all-init-ssh-links
     # If ensuring GH SSH present.
     - all-init-github-ssh
+    # The go tasks rely on GH repos.
+    - all-init-go-lang
     #
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
     #
+    # *** One-offs
     - app-kdocker
     - cli-parT
     - golang-delve-debugger
