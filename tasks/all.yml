@@ -85,6 +85,7 @@
     - hardware-android-studio
     - hardware-arduino
     - node-npm-packages
+    - meld-configure
     - python-sources
     - virt-vagrant
 

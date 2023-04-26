@@ -158,6 +158,18 @@
   tags: golang-go-install-packages
 
 # ************************************************************************
+# *** Melds. ***
+
+- name: Load role to Configure Meld Preferences
+  include_role:
+    name: zoidy_apps_et_al
+    tasks_from: meld-configure
+    apply:
+      tags:
+        - meld-configure
+  tags: meld-configure
+
+# ************************************************************************
 # *** Pltfs. ***
 
 - name: Android Studio Installer

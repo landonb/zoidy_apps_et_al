@@ -43,6 +43,7 @@
     - golang-install-go-lang
     - hardware-android-studio
     - hardware-arduino
+    - meld-configure
     - node-npm-packages
     - perl-finance-quote
     - python-sources
@@ -92,6 +93,7 @@
         - golang-install-go-lang
         - hardware-android-studio
         - hardware-arduino
+        - meld-configure
         - node-npm-packages
         - perl-finance-quote
         - python-sources
