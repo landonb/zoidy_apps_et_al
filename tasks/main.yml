@@ -36,8 +36,7 @@
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
-    - font-hack-nerd-font
-    - font-hack
+    - font-hack-classic
     - font-mania
     - golang-delve-debugger
     - golang-go-install-packages
@@ -86,8 +85,7 @@
         - cli-ripgrep
         - dmn-dropbox
         - email-gmail-postfix
-        - font-hack-nerd-font
-        - font-hack
+        - font-hack-classic
         - font-mania
         - golang-delve-debugger
         - golang-go-install-packages

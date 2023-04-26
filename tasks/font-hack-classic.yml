@@ -4,9 +4,15 @@
 
 # ***
 
-# DUPLD/2019-03-14: [zoidy_matecocido|zoidy_apps_et_al]/tasks/font-hack.yml
+# CXREF: This task mostly for posterity, superseded by Hack Nerd font.
+# - See the zoidy_matecocido Hack Nerd font task:
+#   https://github.com/landonb/zoidy_matecocido/blob/release/tasks/font-hack-nerd-font.yml
+#     ~/.kit/ansible/roles/zoidy_matecocido/tasks/font-hack-nerd-font.yml
+# - Hack font itself (what we'll call "classic") unlikely to ever change versions.
+# - Hack Nerd font, on the other hand, is periodically updated.
+#   - SPIKE: Describe benefits of Nerd fonts.
 
-# *** Local variables (Facts).
+# ***
 
 - set_fact:
     HACK_VERS_MAJOR: 'v3'

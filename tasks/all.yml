@@ -79,8 +79,7 @@
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
-    - font-hack, dubs-vim
-    - font-hack-nerd-font
+    - font-hack-classic
     - font-mania
     - golang-go-install-packages
     - hardware-android-studio

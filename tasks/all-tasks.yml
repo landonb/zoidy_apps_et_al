@@ -126,23 +126,15 @@
 # ************************************************************************
 # *** Font 'ackch. ***
 
-- name: Load role to Install Font “Hack”
+# 2023-04-26: This task for posterity; see zoidy_matecocido/tasks/font-hack-nerd-font
+- name: Load role to Install Font “Hack” (aka Hack Classic; not “Hack Nerd Font”)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
-    tasks_from: font-hack
+    tasks_from: font-hack-classic
     apply:
       tags:
-        - font-hack
-  tags: font-hack, dubs-vim
-
-- name: Load role to Install Font “Hack Nerd Font”
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: font-hack-nerd-font
-    apply:
-      tags:
-        - font-hack-nerd-font
-  tags: font-hack-nerd-font
+        - font-hack-classic
+  tags: font-hack-classic
 
 - name: Load role to Install Fonts
   ansible.builtin.include_role:
