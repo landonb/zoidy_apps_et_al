@@ -124,6 +124,27 @@
   when: zoidy_homefries_postfix_fqdn != ''
 
 # ************************************************************************
+# *** Embbd Dev. ***
+
+- name: Android Studio Installer
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: hardware-android-studio
+    apply:
+      tags:
+        - hardware-android-studio
+  tags: hardware-android-studio
+
+- name: Arduino Platform Developer Installer
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: hardware-arduino
+    apply:
+      tags:
+        - hardware-arduino
+  tags: hardware-arduino
+
+# ************************************************************************
 # *** Font 'ackch. ***
 
 # 2023-04-26: This task for posterity; see zoidy_matecocido/tasks/font-hack-nerd-font
@@ -168,27 +189,6 @@
       tags:
         - meld-configure
   tags: meld-configure
-
-# ************************************************************************
-# *** Pltfs. ***
-
-- name: Android Studio Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: hardware-android-studio
-    apply:
-      tags:
-        - hardware-android-studio
-  tags: hardware-android-studio
-
-- name: Arduino Platform Developer Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: hardware-arduino
-    apply:
-      tags:
-        - hardware-arduino
-  tags: hardware-arduino
 
 # ************************************************************************
 # *** Node & Npms. ***
