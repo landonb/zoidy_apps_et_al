@@ -108,6 +108,10 @@
   args:
     chdir: "{{ zoidy_virtualbox_downloads_dir }}"
   register: zoidy_vbox_extpack_install
+  # BWARE/2023-04-27: Fails if already installed (tells you to uninstall first).
+  # - MAYBE/2023-04-27: Perhaps we should ignore the error?
+  #
+  #  ignore_errors: true
 
 - debug: msg="zoidy_vbox_extpack_install » {{ zoidy_vbox_extpack_install }}"
 
