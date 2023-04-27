@@ -4,13 +4,94 @@
 
 # ***
 
+# CXREF: https://www.virtualbox.org/wiki/Linux_Downloads
+
+# Says vbox.org: "The Oracle public key for verifying the signatures
+#                 can be downloaded here:"
+#     https://www.virtualbox.org/download/oracle_vbox_2016.asc
+
+- name: "Fetch VirtualBox GPG key file"
+  get_url:
+    url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    dest: "{{ zoidy_homefries_downloads_dir }}/oracle_vbox_2016.asc"
+    # checksum: "sha256:{{ <sha> }}"
+
+# Says vbox.org: "The key fingerprint for oracle_vbox_2016.asc is:"
+#
+#   B9F8 D658 297A F3EF C18D  5CDF A2F6 83C5 2980 AECF
+#   Oracle Corporation (VirtualBox archive signing key) <info@virtualbox.org>
+
+- name: Retrieve GPG key fingerprint
+  command: "gpg --fingerprint --show-keys {{ zoidy_homefries_downloads_dir }}/oracle_vbox_2016.asc"
+  register: gpg_fingerprint_result
+
+- debug: msg="{{ gpg_fingerprint_result }}"
+
+# E.g.,
+#
+#  $ gpg --fingerprint --show-keys ~/.downloads/oracle_vbox_2016.asc
+#  pub   rsa4096 2016-04-22 [SC]
+#        B9F8 D658 297A F3EF C18D  5CDF A2F6 83C5 2980 AECF
+#  uid                      Oracle Corporation (VirtualBox archive signing key) <info@virtualbox.org>
+#  sub   rsa4096 2016-04-22 [E]
+
+- name: "Fail if unable to verify VirtualBox GPG key fingerprint"
+  fail: msg="ERROR∷ Fingerprint Mismatch"
+  when: >
+    (
+      gpg_fingerprint_result.stdout_lines[1] !=
+        '      B9F8 D658 297A F3EF C18D  5CDF A2F6 83C5 2980 AECF'
+    ) or (
+      gpg_fingerprint_result.stdout_lines[2] !=
+        'uid                      Oracle Corporation (VirtualBox archive signing key) <info@virtualbox.org>'
+    )
+
+# Says vbox.org: "You can add these keys with:"
+#
+#   sudo gpg --dearmor oracle_vbox_2016.asc --yes --output \
+#     /usr/share/keyrings/oracle-virtualbox-2016.gpg
+#
+# "or combine downloading and registering:"
+#
+#   wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc \
+#     | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+
+- name: Import VirtualBox GPG key
+  become: yes
+  ansible.builtin.shell: >
+    cd {{ zoidy_homefries_downloads_dir }} && \
+      gpg \
+        --dearmor \
+        --yes \
+        --output /usr/share/keyrings/oracle-virtualbox-2016.gpg \
+        oracle_vbox_2016.asc
+  # No output:
+  #  register: gpg_import_result
+
+# ***
+
+# SAVVY/2023-04-26: Update /etc/apt/sources.list after adding key, lest, e.g.,:
+#   Failed to update apt cache: W:GPG error:
+#     https://download.virtualbox.org/virtualbox/debian jammy InRelease:
+#   The following signatures couldn't be verified because the public key
+#   is not available: NO_PUBKEY A2F683C52980AECF, E:The repository
+#   'https://download.virtualbox.org/virtualbox/debian jammy InRelease'
+#   is not signed.
+
+# SAVVY/2023-04-26 21:58: The `dev [signed-by=...]` and separate /usr/share/keyrings/*.gpg
+# file is new GPG wiring, to avoid security issue adding repo keys to main
+# /etc/apt/trusted.gpg. (Though not sure how /usr/share/keyrings/*.gpg
+# compares to /etc/apt/trusted.gpg.d/*.gpg.)
+
 - name: Add Oracle VM VirtualBox repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ zoidy_distrib_codename }} contrib"
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian {{ zoidy_distrib_codename }} contrib"
     state: present
-    # To disable:
+    # To remove:
     #  state: absent
+
+# ***
 
 - name: Run command "apt-get update" (app-virtualbox)
   become: true
@@ -18,19 +99,35 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install VirtualBox (app-virtualbox)
+# Note that VBox v6 required a multiple packages (e.g., 'virtualbox',
+# 'virtualbox-dkms', 'virtualbox-qt', 'virtualbox-guest-x11', etc.),
+# but VBox v7.0 appears to be just the one package (and separate ext-
+# pack).
+- name: Install VirtualBox apt packages
   become: true
   ansible.builtin.apt:
-    name: virtualbox-6.1
+    name: virtualbox-7.0
     state: present
 
-# FIXME/2020-04-26 15:01: Missing the Extension Pack, according to Vagrant.
+# ***
+
+# SAVVY/2023-04-26: In past, I've seen two groups: vboxsf, and vboxusers.
+# - But only vboxusers important, AFAIK.
+# - If you don't add your user to vboxusers (or log off after `groupadd`),
+#   when you run virtualbox, you'll see the error:
 #
-# - Download:
-#
-#   https://download.virtualbox.org/virtualbox/6.1.6/Oracle_VM_VirtualBox_Extension_Pack-6.1.6.vbox-extpack
-#
-# - Install:
-#
-#   VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.6.vbox-extpack
+#     Failed to enumerate host USB devices.
+#     VirtualBox is not currently allowed to access USB devices.
+#     ...
+
+- name: 'Add user to VirtualBox groups'
+  become: true
+  user:
+    name: "{{ ansible_env.LOGNAME }}"
+    # INERT/2019-03-14: Maybe add back vboxsf (I think that's the shared file system driver).
+    #  groups: vboxsf, vboxusers
+    groups: vboxusers
+    append: yes
+
+- debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
 
