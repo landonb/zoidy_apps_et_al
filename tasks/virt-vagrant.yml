@@ -35,16 +35,33 @@
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sig }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sig }}"
 
+# E.g., gpg --keyserver keys.openpgp.org --recv-keys C820C6D5CD27AB87
+- name: Import HashiCorp Public Key from the OpenGPG Public Key Server
+  # CPYST/2023-04-27: If you run next `gpg --verify` command and it fails,
+  # it'll tell you the full key that's missing. Take the postfix (tail) of
+  # that key and use here. E.g., 374EC75B485913604A831CC7C820C6D5CD27AB87 →
+  command: "gpg --keyserver keys.openpgp.org --recv-keys C820C6D5CD27AB87"
+  register: virt_vagrant_gpg_import
+
+- debug: msg="virt_vagrant_gpg_import » {{ virt_vagrant_gpg_import }}"
+
+- name: Import HashiCorp Public Key from the OpenGPG Public Key Server
+  command: "gpg --verify {{ hashicorp_com_sig }} {{ hashicorp_com_sha }}"
+  args:
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
+  register: virt_vagrant_gpg_verify
+
+- debug: msg="virt_vagrant_gpg_verify » {{ virt_vagrant_gpg_verify }}"
+
 - name: Download Vagrant package
   get_url:
     url: "{{ vagrant_url }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
-    # 2019-01-05:
-    #  # https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_SHA256SUMS
-    #  checksum: "sha256:4dec711612c4350733e01745ab9f5acee2fbf9756ab9728b19a4664cae5c275d"
-    # 2023-04-25:
-    # https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4_SHA256SUMS
-    checksum: "sha256:d86a174063eea4376d71f7e5e34cd1e9c2be1e71c8f3ba64e70f2fac9f53c85c"
+    checksum: "sha256:file://{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sha }}"
+    # Also works:
+    #  checksum: "sha256:https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sha }}"
+    #  checksum: "sha256:d86a174063eea4376d71f7e5e34cd1e9c2be1e71c8f3ba64e70f2fac9f53c85c"
+    #  - 2023-04-25: https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4_SHA256SUMS
 
 - name: Install Vagrant package
   become: yes
