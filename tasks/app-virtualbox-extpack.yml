@@ -25,36 +25,12 @@
 
 # ***
 
-# E.g., /home/user/.downloads/virtualbox-7.0.8-SHA256SUMS
-- set_fact:
-    zoidy_vbox_checksums_path: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-{{ virtualbox_latest_version }}-SHA256SUMS"
-
-# E.g., https://download.virtualbox.org/virtualbox/7.0.8/SHA256SUMS
-- name: 'Fetch latest VirtualBox checksums'
-  get_url:
-    url: "http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
-    dest: "{{ zoidy_vbox_checksums_path }}"
-
-# ***
-
 # 2023-04-26: Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack:
 #   checksum: 452320f3b1da42b30c32ea5ab5887983b575638ceb4e3beacfefbbb3b0510a48
 
 # E.g., Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack
 - set_fact:
     virtualbox_extpack_name: "Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_latest_version }}.vbox-extpack"
-
-- name: Read VirtualBox extension pack checksum
-  ansible.builtin.shell: >
-    /bin/grep "{{ virtualbox_extpack_name }}" "{{ zoidy_vbox_checksums_path }}"
-    | awk '{print $1}'
-  register: virtualbox_extpack_xsum_raw
-
-- set_fact:
-    virtualbox_extpack_xsum: "{{ virtualbox_extpack_xsum_raw.stdout }}"
-
-- fail: msg="Unsensed extpack checksum!"
-  when: not virtualbox_extpack_xsum
 
 # ***
 
@@ -64,7 +40,7 @@
     #   https://download.virtualbox.org/virtualbox/6.0.0/Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack
     url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/{{ virtualbox_extpack_name }}"
     dest: "{{ zoidy_virtualbox_downloads_dir }}/"
-    checksum: "sha256:{{ virtualbox_extpack_xsum }}"
+    checksum: "sha256:http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
 
 # ***
 

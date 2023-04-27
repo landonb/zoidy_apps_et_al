@@ -63,18 +63,6 @@
 
 # ***
 
-# E.g., /home/user/.downloads/virtualbox-7.0.8-SHA256SUMS
-- set_fact:
-    zoidy_vbox_checksums_path: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-{{ virtualbox_latest_version }}-SHA256SUMS"
-
-# E.g., https://download.virtualbox.org/virtualbox/7.0.8/SHA256SUMS
-- name: 'Fetch latest VirtualBox checksums'
-  get_url:
-    url: "http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
-    dest: "{{ zoidy_vbox_checksums_path }}"
-
-# ***
-
 - set_fact:
     zoidy_vbox_version_index: "virtualbox-version-{{ virtualbox_latest_version }}-index.htm"
 
@@ -104,20 +92,6 @@
 # 2023-04-26: virtualbox-7.0_7.0.8-156879~Ubuntu~jammy_amd64.deb:
 #   checksum: a5e721c333aeea6301303cefbd1cf7a8520655634f54dc8c32bb3beff73f5ebf
 
-- name: Read VirtualBox latest build checksum
-  ansible.builtin.shell: >
-    /bin/grep "{{ virtualbox_deb_pkg.stdout }}" "{{ zoidy_vbox_checksums_path }}"
-    | awk "{print $1}"
-  register: virtualbox_latest_xsum_raw
-
-- set_fact:
-    virtualbox_latest_xsum: "{{ virtualbox_latest_xsum_raw.stdout }}"
-
-- fail: msg="Unsensed download checksum!"
-  when: not virtualbox_latest_xsum
-
-# ***
-
 - name: 'Download latest VirtualBox'
   get_url:
     # E.g.,
@@ -125,7 +99,7 @@
     #   https://download.virtualbox.org/virtualbox/7.0.8/virtualbox-7.0_7.0.8-156879~Ubuntu~jammy_amd64.deb
     url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/{{ virtualbox_deb_pkg.stdout }}"
     dest: "{{ zoidy_virtualbox_downloads_dir }}/{{ virtualbox_deb_pkg.stdout }}"
-    checksum: "sha256:{{ virtualbox_latest_xsum }}"
+    checksum: "sha256:http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
 
 # E.g., sudo dpkg -i <pkg>
 - name: Install VirtualBox package
