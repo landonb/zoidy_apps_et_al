@@ -7,9 +7,9 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-suss-distro
-    apply: { tags: "app-virtualbox" }
+    apply: { tags: "app-virtualbox-apt" }
   tags:
-    - app-virtualbox
+    - app-virtualbox-apt
 
 # ************************************************************************
 # *** Apps. ***
@@ -86,14 +86,14 @@
         - app-spotify
   tags: app-spotify
 
-- name: "Load role to Install VirtualBox"
+- name: "Load role to install VirtualBox using apt"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
-    tasks_from: app-virtualbox
+    tasks_from: app-virtualbox-apt
     apply:
       tags:
-        - app-virtualbox
-  tags: app-virtualbox
+        - app-virtualbox-apt
+  tags: app-virtualbox-apt
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
 

@@ -31,7 +31,7 @@
     - app-pencil-project-evolus
     - app-spotify
     - app-tmux
-    - app-virtualbox
+    - app-virtualbox-apt
     - cli-parT
     - cli-ripgrep
     - dmn-dropbox
@@ -81,7 +81,7 @@
         - app-pencil-project-evolus
         - app-spotify
         - app-tmux
-        - app-virtualbox
+        - app-virtualbox-apt
         - cli-parT
         - cli-ripgrep
         - dmn-dropbox
