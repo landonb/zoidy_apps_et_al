@@ -59,3 +59,9 @@ zoidy_homefries_tmux_repo_remote: "origin"
 zoidy_homefries_vim_repo_path: ""
 zoidy_homefries_vim_repo_remote: "origin"
 
+# CXREF: See task for instructions on generating this UUID:
+#   ~/.kit/ansible/roles/zoidy_apps_et_al/tasks/app-virtualbox-extpack.yml @ 94
+# - (Run `VBoxManage extpack install <path/to/extpack>`
+#    and copy-paste license UUID it outputs.)
+zoidy_homefries_virtualbox_license_uuid: ""
+

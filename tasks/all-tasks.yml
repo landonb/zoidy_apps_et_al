@@ -111,6 +111,15 @@
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
 
+- name: "Load role to install VirtualBox ExtPack from extpack download"
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-virtualbox-extpack
+    apply:
+      tags:
+        - app-virtualbox-extpack
+  tags: app-virtualbox-extpack
+
 # ************************************************************************
 # *** Clis. ***
 

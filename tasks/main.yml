@@ -33,6 +33,7 @@
     - app-tmux
     - app-virtualbox-apt
     - app-virtualbox-deb
+    - app-virtualbox-extpack
     - cli-parT
     - cli-ripgrep
     - dmn-dropbox
@@ -84,6 +85,7 @@
         - app-tmux
         - app-virtualbox-apt
         - app-virtualbox-deb
+        - app-virtualbox-extpack
         - cli-parT
         - cli-ripgrep
         - dmn-dropbox

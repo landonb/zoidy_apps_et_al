@@ -1,0 +1,154 @@
+---
+
+# USAGE: Task installs VirtualBox Extension Pack from file download.
+
+# ***
+
+# CHORE/2023-04-27: You must run VBoxManage once manually to generate
+# the license UUID that this task needs to run an unattended install.
+#
+# - If you run this task without the UUID, it tells you how to generate it.
+
+# ***
+
+- name: Fetch latest VirtualBox version file
+  get_url:
+    url: "http://download.virtualbox.org/virtualbox/LATEST.TXT"
+    dest: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+
+- name: Read VirtualBox latest version file
+  command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+  register: virtualbox_latest_version_raw
+
+- set_fact:
+    virtualbox_latest_version: "{{ virtualbox_latest_version_raw.stdout }}"
+
+# ***
+
+# E.g., /home/user/.downloads/virtualbox-7.0.8-SHA256SUMS
+- set_fact:
+    zoidy_vbox_checksums_path: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-{{ virtualbox_latest_version }}-SHA256SUMS"
+
+# E.g., https://download.virtualbox.org/virtualbox/7.0.8/SHA256SUMS
+- name: 'Fetch latest VirtualBox checksums'
+  get_url:
+    url: "http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
+    dest: "{{ zoidy_vbox_checksums_path }}"
+
+# ***
+
+# 2023-04-26: Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack:
+#   checksum: 452320f3b1da42b30c32ea5ab5887983b575638ceb4e3beacfefbbb3b0510a48
+
+# E.g., Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack
+- set_fact:
+    virtualbox_extpack_name: "Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_latest_version }}.vbox-extpack"
+
+- name: Read VirtualBox extension pack checksum
+  ansible.builtin.shell: >
+    /bin/grep "{{ virtualbox_extpack_name }}" "{{ zoidy_vbox_checksums_path }}"
+    | awk '{print $1}'
+  register: virtualbox_extpack_xsum_raw
+
+- set_fact:
+    virtualbox_extpack_xsum: "{{ virtualbox_extpack_xsum_raw.stdout }}"
+
+- fail: msg="Unsensed extpack checksum!"
+  when: not virtualbox_extpack_xsum
+
+# ***
+
+- name: 'Download VirtualBox Extension Pack'
+  get_url:
+    # E.g.,
+    #   https://download.virtualbox.org/virtualbox/6.0.0/Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack
+    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/{{ virtualbox_extpack_name }}"
+    dest: "{{ zoidy_virtualbox_downloads_dir }}/"
+    checksum: "sha256:{{ virtualbox_extpack_xsum }}"
+
+# ***
+
+# LATER/2023-04-26: After next VBox release, add note if UUID still valid or not.
+
+- name: "Tell user how to restore ~"
+  ansible.builtin.pause:
+    seconds: 0
+    prompt: |
+       
+
+      {{ lookup('pipe', '
+        fg_red () { printf "\033[31m"; }
+        attr_bold () { printf "\033[1m"; }
+        attr_reset () { printf "\033[0m"; }
+        printf "$(fg_red)$(attr_bold)  Generate a UUID PUEL License Key
+        ================================$(attr_reset)";') }}
+
+        You must generate a license key to enabled unattended extpack install.
+
+        - For comparison, here's an attended install:
+
+          - Install as superuser from terminal:
+
+            $ sudo VBoxManage extpack install {{ virtualbox_extpack_name }}
+
+        - The unattended install is similar, but you need a UUID:
+
+          - Run installer as normal user from terminal and capture UUID, e.g.,:
+
+            $ VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack
+            VirtualBox Extension Pack Personal Use and Evaluation License (PUEL)
+            ...
+            Do you agree to these license terms and conditions (y/n)? y
+
+            License accepted. For batch installation add
+            --accept-license=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            to the VBoxManage command line.
+
+        - Copy the UUID it prints (the XXX's above) and paste to your
+          group_vars/ variables file, e.g.,
+
+            zoidy_homefries_virtualbox_license_uuid="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+        - Finally, run this task again (with privileges).
+
+       
+    # ↑ This is an em space ( ), necessary to protect trailing newline(s)
+    #   from chomp().
+    #   - There's also an em space on the first line, in case you want
+    #     first line of content-containing output to be indented.
+  when: not zoidy_homefries_virtualbox_license_uuid
+
+- fail: msg="UUID required (see previous message)"
+  when: not zoidy_homefries_virtualbox_license_uuid
+
+# ***
+
+- name: Install VirtualBox Extension Pack
+  become: yes
+  ansible.builtin.shell: >
+    VBoxManage extpack install \
+      --accept-license={{ zoidy_homefries_virtualbox_license_uuid }} \
+      "{{ virtualbox_extpack_name }}"
+  args:
+    chdir: "{{ zoidy_virtualbox_downloads_dir }}"
+  register: zoidy_vbox_extpack_install
+
+- debug: msg="zoidy_vbox_extpack_install » {{ zoidy_vbox_extpack_install }}"
+
+# ***
+
+- name: Remove old VirtualBox Extension Packs
+  # E.g., ./Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack
+  ansible.builtin.shell: >
+    find . -maxdepth 1 \
+      -name "Oracle_VM_VirtualBox_Extension_Pack-[0-9]*\\.[0-9]*\\.[0-9]\\.vbox-extpack" \
+      -exec echo {} + \
+      | sed s/\\.\\/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_latest_version }}\\.vbox-extpack// \
+      | xargs /bin/rm &> /dev/null
+      #| xargs echo
+  args:
+    chdir: "{{ zoidy_virtualbox_downloads_dir }}"
+  register: zoidy_rm_vbox_extpacks
+
+- debug: msg="zoidy_rm_vbox_extpacks » {{ zoidy_rm_vbox_extpacks.stdout }}"
+
