@@ -76,6 +76,7 @@
     - app-pencil-project-evolus
     - app-spotify
     - app-virtualbox-apt
+    - app-virtualbox-deb
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix

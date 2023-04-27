@@ -97,6 +97,20 @@
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
 
+- name: "Load role to install VirtualBox from deb download"
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-virtualbox-deb
+    apply:
+      tags:
+        - app-virtualbox-deb
+  # ISOFF/2023-04-27: Using 'never' tag. Prefer installing via apt.
+  # - This task kept for posterity, just in case apt release ever
+  #   lags behind apt release (which historically has happened, so).
+  tags: app-virtualbox-deb, never
+  vars:
+    zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+
 # ************************************************************************
 # *** Clis. ***
 
