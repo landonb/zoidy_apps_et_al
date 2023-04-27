@@ -43,7 +43,7 @@
 - name: Test Finance::Quote Perl module (gnucash)
   ansible.builtin.shell: gnc-fq-dump nasdaq amzn
   args:
-    chdir: {{ ansible_env.HOME }}/.local/bin
+    chdir: "{{ ansible_env.HOME }}/.local/bin"
   # (lb): This needs an API key, best stored in pass...
   when: False
   environment:
