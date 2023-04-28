@@ -15,19 +15,19 @@
 
 # *** Local variables (Facts).
 
+# CXREF: https://go.dev/dl/
+
+# MAYBE/2019-10-17: Automate version determinating.
+
+# HSTRY/2023-04-28: Verisions I've used:
+#
+# - 2019-10-17: GOLANG_VER: '1.13.3'
+# - 2020-07-07: GOLANG_VER: '1.14.4'
+# - 2023-04-22: GOLANG_VER: '1.20.3' aka go1.20 [2023-02-01]
 - set_fact:
-    # MAYBE/2019-10-17: Automate version determinating.
+    # USYNC: See also same GOLANG_VER in task dispatcher:
     #
-    # 2019-10-17:
-    #  GOLANG_VER: '1.13.3'
-    #  GOLANG_XSUM: "0804bf02020dceaa8a7d7275ee79f7a142f1996bfd0c39216ccb405f93f994c0"
-    #
-    # 2020-07-07:
-    #  GOLANG_VER: '1.14.4'
-    #  GOLANG_XSUM: "aed845e4185a0b2a3c3d5e1d0a35491702c55889192bb9c30e67a3de6849c067"
-    #
-    # 2023-04-22: From 2023-02-01: go1.20
-    #   https://go.dev/dl/
+    #   ~/.kit/working/ansible/roles/zoidy_apps_et_al/tasks/all-init-go-lang.yml
     GOLANG_VER: '1.20.3'
     GOLANG_XSUM: "979694c2c25c735755bf26f4f45e19e64e4811d661dd07b8c010f7a8e18adfca"
 

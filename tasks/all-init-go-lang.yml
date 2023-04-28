@@ -2,18 +2,47 @@
 
 # *** Ensure that Go is setup, for other tasks to use/rely upon.
 
-- name: Load role to Install Go Language
+# Don't install Go if already installed, or unless
+# install-go task explicitly requested.
+- ansible.builtin.set_fact:
+    # USYNC: See also same GOLANG_VER in task dispatcher:
+    #
+    #   ~/.kit/ansible/roles/zoidy_apps_et_al/tasks/golang-install-go-lang.yml
+    GOLANG_VER: '1.20.3'
+
+- name: Check if Go installed
+  ansible.builtin.shell: command -v go >/dev/null 2>&1
+  register: go_exists
+  ignore_errors: yes
+
+# Prints, e.g.,
+#   go version go1.20.3 linux/amd64
+- name: Check Go version
+  ansible.builtin.shell: go version | grep -q "go version go{{ GOLANG_VER }} "
+  register: go_versioned
+  when: go_exists.rc == 0
+
+# ***
+
+- name: Load role to Install Go Language (explicit)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-install-go-lang
     apply: { tags: "always" }
   tags:
-    - golang-install-go-lang
     - all-init-go-lang
     #
+    - golang-install-go-lang
+
+- name: Load role to Install Go Language (explicit)
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: golang-install-go-lang
+    apply: { tags: "always" }
+  tags:
     # Tasks that rely on Go being available.
     - cli-ripgrep
     - golang-delve-debugger
     - golang-go-install-packages
-    - golang-install-go-lang
+  when: go_exists.rc != 0 or go_versioned.rc != 0
 
