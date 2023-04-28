@@ -70,9 +70,6 @@
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/"
     remote_src: yes
 
-# Done:
-#  - fail: msg="VERIFY UNPACK"
-
 - name: Check obsolete godoc symlink (replaced by `go doc`)
   ansible.builtin.stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
   register: local_bin_godoc
