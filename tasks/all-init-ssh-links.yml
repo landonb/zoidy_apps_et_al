@@ -123,20 +123,14 @@
 
 # ***
 
-- name: List identity fingerprints currently being managed
-  ansible.builtin.shell: ssh-add -l | grep "^The agent has no identities.$"
-  register: ssh_add_l
-  ignore_errors: yes
+# DUNNO/2023-04-27: Not sure there's a way to call ssh-agent -k over SSH
+# (much less `ssh-add -l` to list keys, which reports
+#   "Could not open a connection to your authentication agent."
+#  or `ssh-agent bash -c "ssh-add -l"`'s "The agent has no identities.").
+#   - See also SSH_AUTH_SOCK environ, not set on SSH.
+# - AFAIK, you must run ssh-agent/ssh-add from local terminal, not over SSH.
 
-- name: Restart SSH agent and point at new stuff
-  ansible.builtin.command: ssh-agent -k
-  when: ssh_add_l.rc == 0
-
-- name: Kick the SSH agent
-  ansible.builtin.shell: >
-    SSH_SECRETS="{{ zoidy_homefries_ssh_root_dir }}/.cheat" \
-      "{{ ansible_env.HOME }}/.homefries/bin/ssh-agent-kick"
-  when: ssh_add_l.rc == 0
+- debug: msg="CHORE » Restart SSH agent from a terminal: ssh-agent -k"
 
 # Verify by connecting to a server, e.g., try connecting to GitHub:
 #  $ ssh -T git@github.com
