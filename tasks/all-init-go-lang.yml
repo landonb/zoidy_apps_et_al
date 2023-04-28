@@ -8,6 +8,7 @@
     tasks_from: golang-install-go-lang
     apply: { tags: "always" }
   tags:
+    - golang-install-go-lang
     - all-init-go-lang
     #
     # Tasks that rely on Go being available.
