@@ -7,7 +7,7 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-suss-distro
-    apply: { tags: "app-virtualbox-apt" }
+    apply: { tags: "always" }
   tags:
     - app-virtualbox-apt
 
@@ -18,81 +18,63 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-chrome
-    apply:
-      tags:
-        - app-chrome
+    apply: { tags: "always" }
   tags: app-chrome
 
 - name: Load role to Install Cinelerra-GG
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-cinelerra-gg
-    apply:
-      tags:
-        - app-cinelerra-gg
+    apply: { tags: "always" }
   tags: app-cinelerra-gg
 
 - name: Load role to Install Darktable
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-darktable
-    apply:
-      tags:
-        - app-darktable
+    apply: { tags: "always" }
   tags: app-darktable
 
 - name: Load role to Install Digikam
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-digikam
-    apply:
-      tags:
-        - app-digikam
+    apply: { tags: "always" }
   tags: app-digikam
 
 - name: Load role to Install OpenJUMP
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-openjump
-    apply:
-      tags:
-        - app-openjump
+    apply: { tags: "always" }
   tags: app-openjump
 
 - name: Load role to Install Opera
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-opera
-    apply:
-      tags:
-        - app-opera
+    apply: { tags: "always" }
   tags: app-opera
 
 - name: "Load role to Install Pencil [Project]"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-pencil-project-evolus
-    apply:
-      tags:
-        - app-pencil-project-evolus
+    apply: { tags: "always" }
   tags: app-pencil-project-evolus
 
 - name: "Load role to Install Spotify"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-spotify
-    apply:
-      tags:
-        - app-spotify
+    apply: { tags: "always" }
   tags: app-spotify
 
 - name: "Load role to install VirtualBox using apt"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-apt
-    apply:
-      tags:
-        - app-virtualbox-apt
+    apply: { tags: "always" }
   tags: app-virtualbox-apt
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
@@ -101,9 +83,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-deb
-    apply:
-      tags:
-        - app-virtualbox-deb
+    apply: { tags: "always" }
   # ISOFF/2023-04-27: Using 'never' tag. Prefer installing via apt.
   # - This task kept for posterity, just in case apt release ever
   #   lags behind apt release (which historically has happened, so).
@@ -115,9 +95,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-extpack
-    apply:
-      tags:
-        - app-virtualbox-extpack
+    apply: { tags: "always" }
   tags: app-virtualbox-extpack
 
 # ************************************************************************
@@ -127,9 +105,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-ripgrep
-    apply:
-      tags:
-        - cli-ripgrep
+    apply: { tags: "always" }
   tags: cli-ripgrep
 
 # ************************************************************************
@@ -139,9 +115,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: dmn-dropbox
-    apply:
-      tags:
-        - dmn-dropbox
+    apply: { tags: "always" }
   tags: dmn-dropbox
 
 # ************************************************************************
@@ -151,9 +125,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: email-gmail-postfix
-    apply:
-      tags:
-        - email-gmail-postfix
+    apply: { tags: "always" }
   tags: email-gmail-postfix
   when: zoidy_homefries_postfix_fqdn != ''
 
@@ -164,18 +136,14 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: hardware-android-studio
-    apply:
-      tags:
-        - hardware-android-studio
+    apply: { tags: "always" }
   tags: hardware-android-studio
 
 - name: Arduino Platform Developer Installer
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: hardware-arduino
-    apply:
-      tags:
-        - hardware-arduino
+    apply: { tags: "always" }
   tags: hardware-arduino
 
 # ************************************************************************
@@ -186,18 +154,14 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-hack-classic
-    apply:
-      tags:
-        - font-hack-classic
+    apply: { tags: "always" }
   tags: font-hack-classic
 
 - name: Load role to Install Fonts
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-mania
-    apply:
-      tags:
-        - font-mania
+    apply: { tags: "always" }
   tags: font-mania
 
 # ************************************************************************
@@ -207,9 +171,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-go-install-packages
-    apply:
-      tags:
-        - golang-go-install-packages
+    apply: { tags: "always" }
   tags: golang-go-install-packages
 
 # ************************************************************************
@@ -219,9 +181,7 @@
   include_role:
     name: zoidy_apps_et_al
     tasks_from: meld-configure
-    apply:
-      tags:
-        - meld-configure
+    apply: { tags: "always" }
   tags: meld-configure
 
 # ************************************************************************
@@ -231,9 +191,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: node-npm-packages
-    apply:
-      tags:
-        - node-npm-packages
+    apply: { tags: "always" }
   tags: node-npm-packages
 
 # ************************************************************************
@@ -243,9 +201,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: python-sources
-    apply:
-      tags:
-        - python-sources
+    apply: { tags: "always" }
   tags: python-sources
 
 # ************************************************************************
@@ -255,8 +211,6 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: virt-vagrant
-    apply:
-      tags:
-        - virt-vagrant
+    apply: { tags: "always" }
   tags: virt-vagrant
 

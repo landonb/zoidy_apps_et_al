@@ -59,18 +59,14 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-export-layers
-    apply:
-      tags:
-        - app-gimp-plugin-export-layers
+    apply: { tags: "always" }
   tags: app-gimp-plugin-export-layers
 
 - name: Load role to Install GIMP Wavelet Decompose Plug-in
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-wavelet-decompose
-    apply:
-      tags:
-        - app-gimp-plugin-wavelet-decompose
+    apply: { tags: "always" }
   # OPTIN/2023-04-23: Use explicit --tag to run this task.
   #   tags: app-gimp-plugin-wavelet-decompose
   tags: never
@@ -88,10 +84,7 @@
     #    - app-gnucash-docs
     #    - perl-finance-quote
     tasks_from: app-gnucash-build
-    apply:
-      tags:
-        - app-gnucash-build
-        - all-gnucash
+    apply: { tags: "always" }
   tags:
     - app-gnucash-build
     - all-gnucash
@@ -100,10 +93,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-conf
-    apply:
-      tags:
-        - app-gnucash-conf
-        - all-gnucash
+    apply: { tags: "always" }
   tags:
     - app-gnucash-conf
     - all-gnucash
@@ -112,10 +102,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-docs
-    apply:
-      tags:
-        - app-gnucash-docs
-        - all-gnucash
+    apply: { tags: "always" }
   tags:
     - app-gnucash-docs
     - all-gnucash
@@ -124,10 +111,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: perl-finance-quote
-    apply:
-      tags:
-        - perl-finance-quote
-        - all-gnucash
+    apply: { tags: "always" }
   tags:
     - perl-finance-quote
     - all-gnucash
@@ -139,9 +123,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-delve-debugger
-    apply:
-      tags:
-        - golang-delve-debugger
+    apply: { tags: "always" }
   tags: golang-delve-debugger
 
 # ************************************************************************
@@ -151,7 +133,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
-    apply: { tags: app-kdocker }
+    apply: { tags: "always" }
   tags: app-kdocker, never
 
 # ************************************************************************
@@ -161,9 +143,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-parT
-    apply:
-      tags:
-        - cli-parT
+    apply: { tags: "always" }
   tags: cli-parT
 
 # ************************************************************************
@@ -173,9 +153,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-tmux
-    apply:
-      tags:
-        - app-tmux
+    apply: { tags: "always" }
   tags: app-tmux
 
 # ************************************************************************
@@ -185,8 +163,6 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: vid-ttygif
-    apply:
-      tags:
-        - vid-ttygif
+    apply: { tags: "always" }
   tags: vid-ttygif
 

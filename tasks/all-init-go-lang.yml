@@ -6,15 +6,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-install-go-lang
-    apply:
-      tags:
-        - all-init-go-lang
-        #
-        # Tasks that rely on Go being available.
-        - cli-ripgrep
-        - golang-delve-debugger
-        - golang-go-install-packages
-        - golang-install-go-lang
+    apply: { tags: "always" }
   tags:
     - all-init-go-lang
     #
