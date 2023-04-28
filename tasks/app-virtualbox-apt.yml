@@ -11,7 +11,7 @@
 #     https://www.virtualbox.org/download/oracle_vbox_2016.asc
 
 - name: "Fetch VirtualBox GPG key file"
-  get_url:
+  ansible.builtin.get_url:
     url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
     dest: "{{ zoidy_homefries_downloads_dir }}/oracle_vbox_2016.asc"
     # checksum: "sha256:{{ <sha> }}"
@@ -22,10 +22,10 @@
 #   Oracle Corporation (VirtualBox archive signing key) <info@virtualbox.org>
 
 - name: Retrieve GPG key fingerprint
-  command: "gpg --fingerprint --show-keys {{ zoidy_homefries_downloads_dir }}/oracle_vbox_2016.asc"
+  ansible.builtin.command: "gpg --fingerprint --show-keys {{ zoidy_homefries_downloads_dir }}/oracle_vbox_2016.asc"
   register: gpg_fingerprint_result
 
-- debug: msg="{{ gpg_fingerprint_result }}"
+- ansible.builtin.debug: msg="{{ gpg_fingerprint_result }}"
 
 # E.g.,
 #
@@ -36,7 +36,7 @@
 #  sub   rsa4096 2016-04-22 [E]
 
 - name: "Fail if unable to verify VirtualBox GPG key fingerprint"
-  fail: msg="ERROR∷ Fingerprint Mismatch"
+  ansible.builtin.fail: msg="ERROR∷ Fingerprint Mismatch"
   when: >
     (
       gpg_fingerprint_result.stdout_lines[1] !=
@@ -122,12 +122,12 @@
 
 - name: 'Add user to VirtualBox groups'
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_env.LOGNAME }}"
     # INERT/2019-03-14: Maybe add back vboxsf (I think that's the shared file system driver).
     #  groups: vboxsf, vboxusers
     groups: vboxusers
     append: yes
 
-- debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
+- ansible.builtin.debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
 

@@ -44,17 +44,17 @@
 # https://cinelerra-gg.org/download/images/README_appimage.txt
 # https://www.cinelerra-gg.org/mint-package/
 
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_cinelerra_gg_version: "20230331"
     # zoidy_cinelerra_gg_sha256: "???"
 
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_cinelerra_gg_uri: "https://cinelerra-gg.org/download/images"
     zoidy_cinelerra_gg_appimage: "CinGG-{{ zoidy_cinelerra_gg_version }}-x86_64.AppImage"
     zoidy_html_manual_basename: "HTML_Manual-{{ zoidy_cinelerra_gg_version }}.tgz"
 
 - name: "Download Cinelerra GG AppImage"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ zoidy_cinelerra_gg_uri }}/{{ zoidy_cinelerra_gg_appimage }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_appimage }}"
     # checksum: "sha256:{{ zoidy_cinelerra_gg_sha256 }}"
@@ -62,7 +62,7 @@
   #  when: False
 
 - name: "Download Cinelerra GG HTML Manual"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ zoidy_cinelerra_gg_uri }}/{{ zoidy_cinelerra_gg_appimage }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_appimage }}"
   # YOU: Uncomment to re-test this task easily, once appimage downloaded.
@@ -73,22 +73,22 @@
 # COPYD/2023-04-11 14:38: From /kit/working/ansible/roles/zoidy_apps_et_al/tasks/app-digikam.yml
 # - But Cinelerra does not sign their releases.
 #
-# - set_fact:
+# - ansible.builtin.set_fact:
 #     zoidy_cinelerra_gg_signature: "{{ zoidy_cinelerra_gg_appimage }}.sig"
 #     # Get public key: gpg {{ zoidy_cinelerra_gg_signature }}
 #
 # - name: "Download Cinelerra GG Signature"
-#   get_url:
+#   ansible.builtin.get_url:
 #     url: "{{ zoidy_cinelerra_gg_uri }}/{{ zoidy_cinelerra_gg_signature }}"
 #     dest: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_signature }}"
 #   when: "{{ not zoidy_cinelerra_gg_sha256 }}"
 #
 # - name: "Import Cinelerra GG Signing Key"
-#   command: "gpg --recv-key D1CF2444A7858C5F2FB095B74A77747BC2386E50"
+#   ansible.builtin.command: "gpg --recv-key D1CF2444A7858C5F2FB095B74A77747BC2386E50"
 #   when: "{{ not zoidy_cinelerra_gg_sha256 }}"
 #
 # - name: "Verify Cinelerra GG Download"
-#   command: "gpg {{ zoidy_cinelerra_gg_signature }}"
+#   ansible.builtin.command: "gpg {{ zoidy_cinelerra_gg_signature }}"
 #   args:
 #     chdir: "{{ zoidy_homefries_downloads_dir }}"
 #   when: "{{ not zoidy_cinelerra_gg_sha256 }}"
@@ -96,12 +96,12 @@
 # ***
 
 - name: "Make the AppImage executable"
-  file:
+  ansible.builtin.file:
     path: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_appimage }}"
     mode: 0755
 
 - name: "Symlink Cinelerra GG AppImage from user bin/"
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_appimage }}"
     dest: "{{ ansible_env.HOME }}/.local/bin/cinelerra-gg"
     state: link

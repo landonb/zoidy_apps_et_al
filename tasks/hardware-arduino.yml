@@ -14,19 +14,19 @@
 #
 # - Except this task already writ, and fairly simple, so... why bother.
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-04:
     #  ARDUINO_VER: "1.8.8"
     # 2023-04-25:
     ARDUINO_VER: "2.1.0"
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-04:
     #  ARDUINO_ARC: "arduino-{{ ARDUINO_VER }}-linux64.tar.xz"
     # 2023-04-25:
     ARDUINO_ARC: "arduino-ide_{{ ARDUINO_VER }}_Linux_64bit.zip"
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-04:
     #  ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_ARC }}"
     # 2023-04-25:
@@ -36,12 +36,12 @@
 # ***
 
 - name: Fetch Arduino archive
-  get_url:
+  ansible.builtin.get_url:
     # The package is a simple script to download the latest actual Dropbox code.
     url: "{{ ARDUINO_URL }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_ARC }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}"
 
 # 2023-04-26: Arduino 2.1.0 does not unpack to top-level dir like 1.8.8,
@@ -52,14 +52,14 @@
     state: directory
 
 - name: Unarchive Arduino archive
-  unarchive:
+  ansible.builtin.unarchive:
     remote_src: yes
     src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_ARC }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}"
 
 # 2023-04-26: Arduino 1.8.8 used ./install.sh script; Arduino 2.1.0 ready to go.
 - name: Symlink Arduino executable from user bin
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}/arduino-ide"
     dest: "{{ ansible_env.HOME }}/.local/bin/arduino-ide"
     state: link
@@ -69,7 +69,7 @@
 #                     but unconfirmed.
 - name: 'Add user to dialout group'
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_env.LOGNAME }}"
     groups: dialout
     append: yes

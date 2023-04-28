@@ -3,21 +3,21 @@
 # *** Verify distro.
 
 # Linux Mint 21-21.1
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_distrib_codename_: 'jammy'
   when: ansible_lsb.codename in ['vanessa', 'vera',]
 
 # Linux Mint 20-20.3
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_distrib_codename_: 'focal'
   when: ansible_lsb.codename in ['ulyana', 'ulyssa', 'uma', 'una',]
 
 # Linux Mint 19-19.3
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_distrib_codename_: 'bionic'
   when: ansible_lsb.codename in ['tara', 'tessa', 'tricia',]
 
-- fail:
+- ansible.builtin.fail:
     msg: "Unexpected distro: “{{ ansible_facts.lsb.codename }}”"
   when: zoidy_distrib_codename_ is not defined
 

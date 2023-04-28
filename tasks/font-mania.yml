@@ -6,7 +6,7 @@
 
 # *** Local variables (Facts).
 
-- set_fact:
+- ansible.builtin.set_fact:
     FONT_URL_ZIPS:
       # 2019-01-03: Skip it: The complete Noto family zip is 1.1G.
       #   And the extracted directory is 1.5G. Get only what's relevant.
@@ -66,11 +66,11 @@
       # - url_base: https://www.wfonts.com/download/data/2016/03/29/wingdings-2/wingdings-2.zip
       #   zip_base: wingdings-2.zip
 
-- set_fact:
+- ansible.builtin.set_fact:
     zip_file_regex: >-
       ^.zip$
 
-- set_fact:
+- ansible.builtin.set_fact:
     FONT_URL_TTFS:
       # FIXME/2022-01-24 04:41: This will place duplicate of wingdings-2.zip, but curious
       # that it'll run (never tested) and what'll happen (with the duplicate file).
@@ -80,10 +80,10 @@
 # ***
 
 - name: Ensure font download directory exists
-  file: path="{{ zoidy_homefries_dls_fonts_dir }}/" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_dls_fonts_dir }}/" state=directory
 
 - name: Ensure destination font directories exist
-  file:
+  ansible.builtin.file:
     path="{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
     state=directory
   loop: "{{ FONT_URL_ZIPS }}"
@@ -92,13 +92,13 @@
 
 # PROFILING: 2019-03-19: Task took: 22.51s (currently penutimate slowest task).
 - name: Fetch font archives
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url_base }}/{{ item.zip_base }}"
     dest: "{{ zoidy_homefries_dls_fonts_dir }}/"
   loop: "{{ FONT_URL_ZIPS }}"
 
 - name: Fix font archive names
-  copy:
+  ansible.builtin.copy:
     remote_src: yes
     src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.real_dst }}"
     dest: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
@@ -107,7 +107,7 @@
 
 # Copy the archive contents to the ~/.fonts directory, named without the .zip extension.
 - name: Unarchive the font archives
-  unarchive:
+  ansible.builtin.unarchive:
     remote_src: yes
     src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
@@ -117,7 +117,7 @@
 # ***
 
 - name: Fetch font TTF files
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url_base }}/{{ item.ttf_base }}"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.ttf_base }}"
   loop: "{{ FONT_URL_TTFS }}"

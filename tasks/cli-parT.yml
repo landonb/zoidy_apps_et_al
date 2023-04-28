@@ -5,12 +5,12 @@
 # ***
 
 - name: Clone parT repo
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:landonb/parT.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/parT"
 
 - name: Build parT
-  command: ./build.sh
+  ansible.builtin.command: ./build.sh
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/parT"
 
@@ -18,7 +18,7 @@
 #  sudo chown root:root /usr/bin/parT
 
 - name: Symlink parT from user bin/
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/parT/parT"
     dest: "{{ ansible_env.HOME }}/.local/bin/parT"
     state: link

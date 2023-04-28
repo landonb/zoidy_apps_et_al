@@ -12,13 +12,13 @@
 #
 #   https://linux.dropbox.com/packages/
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-03:
     #  PENCIL_VER: '3.0.4'
     # 2023-04-24:
     PENCIL_VER: '3.1.1.ga'
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-03: PENCIL_VER: '3.0.4':
     #   https://pencil.evolus.vn/dl/V3.0.4/CHECKSUM
     #  PENCIL_XSM: "13baebb94d552789338eaa6cec260d0d39afa059"
@@ -26,16 +26,16 @@
     #   https://pencil.evolus.vn/dl/V3.1.1.ga/CHECKSUM
     PENCIL_XSM: "7faa077207ac33bcaa90294c8cc8b4abec8f687e"
 
-- set_fact:
+- ansible.builtin.set_fact:
     PENCIL_DEB: "Pencil_{{ PENCIL_VER }}_amd64.deb"
 
 # E.g.,
 #   https://pencil.evolus.vn/dl/V3.1.1.ga/Pencil_3.1.1.ga_amd64.deb
-- set_fact:
+- ansible.builtin.set_fact:
     PENCIL_URI: "http://pencil.evolus.vn/dl/V{{ PENCIL_VER }}/{{ PENCIL_DEB }}"
 
 - name: Stat Pencil Debian package previously downloaded
-  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ PENCIL_DEB }}"
+  ansible.builtin.stat: path="{{ zoidy_homefries_downloads_dir }}/{{ PENCIL_DEB }}"
   register: local_bin_pencil_f
 
 # If you're curious about the few dozen of so stat attributes, uncomment:
@@ -45,7 +45,7 @@
 #  - debug: msg="{{ PENCIL_URI }}"
 
 - name: Fetch Pencil Debian package
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ PENCIL_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ PENCIL_DEB }}"
     checksum: "sha1:{{ PENCIL_XSM }}"

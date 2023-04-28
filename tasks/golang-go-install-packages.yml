@@ -5,7 +5,7 @@
 # ***
 
 - name: List of Go Lang projects to install
-  set_fact:
+  ansible.builtin.set_fact:
     go_install_list:
       # These projects install to, e.g.,
       #   ~/.gopath/src/{{ item }}
@@ -33,7 +33,7 @@
   # 2023-04-22: `go get` no longer works. Use go-install.
   #   # Specify "-u"/update to always update projects previously got.
   #   command: "go get -u {{ item }}"
-  command: "go install {{ item }}"
+  ansible.builtin.command: "go install {{ item }}"
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     GOPATH: "{{ ansible_env.HOME }}/.gopath"

@@ -6,14 +6,14 @@
 
 # CXREF: https://releases.hashicorp.com/vagrant
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-05:
     #  vagrant_ver: "2.2.2"
     # 2023-04-25:
     # - CXREF: https://releases.hashicorp.com/vagrant/2.3.4/
     vagrant_ver: "2.3.4"
 
-- set_fact:
+- ansible.builtin.set_fact:
     hashicorp_com_sha: "vagrant_{{ vagrant_ver }}_SHA256SUMS"
     hashicorp_com_sig: "vagrant_{{ vagrant_ver }}_SHA256SUMS.sig"
     # 2019-01-05:
@@ -22,16 +22,16 @@
     vargrant_deb: "vagrant_{{ vagrant_ver }}-1_amd64.deb"
 
 # E.g., https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4-1_amd64.deb
-- set_fact:
+- ansible.builtin.set_fact:
     vagrant_url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ vargrant_deb }}"
 
 - name: Download Hashicorp.com SHA list
-  get_url:
+  ansible.builtin.get_url:
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sha }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sha }}"
 
 - name: Download Hashicorp.com Signature
-  get_url:
+  ansible.builtin.get_url:
     url: "https://releases.hashicorp.com/vagrant/{{ vagrant_ver }}/{{ hashicorp_com_sig }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sig }}"
 
@@ -40,21 +40,21 @@
   # CPYST/2023-04-27: If you run next `gpg --verify` command and it fails,
   # it'll tell you the full key that's missing. Take the postfix (tail) of
   # that key and use here. E.g., 374EC75B485913604A831CC7C820C6D5CD27AB87 →
-  command: "gpg --keyserver keys.openpgp.org --recv-keys C820C6D5CD27AB87"
+  ansible.builtin.command: "gpg --keyserver keys.openpgp.org --recv-keys C820C6D5CD27AB87"
   register: virt_vagrant_gpg_import
 
-- debug: msg="virt_vagrant_gpg_import » {{ virt_vagrant_gpg_import }}"
+- ansible.builtin.debug: msg="virt_vagrant_gpg_import » {{ virt_vagrant_gpg_import }}"
 
 - name: Import HashiCorp Public Key from the OpenGPG Public Key Server
-  command: "gpg --verify {{ hashicorp_com_sig }} {{ hashicorp_com_sha }}"
+  ansible.builtin.command: "gpg --verify {{ hashicorp_com_sig }} {{ hashicorp_com_sha }}"
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}"
   register: virt_vagrant_gpg_verify
 
-- debug: msg="virt_vagrant_gpg_verify » {{ virt_vagrant_gpg_verify }}"
+- ansible.builtin.debug: msg="virt_vagrant_gpg_verify » {{ virt_vagrant_gpg_verify }}"
 
 - name: Download Vagrant package
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ vagrant_url }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ vargrant_deb }}"
     checksum: "sha256:file://{{ zoidy_homefries_downloads_dir }}/{{ hashicorp_com_sha }}"

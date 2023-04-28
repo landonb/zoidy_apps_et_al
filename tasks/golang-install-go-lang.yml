@@ -24,20 +24,20 @@
 # - 2019-10-17: GOLANG_VER: '1.13.3'
 # - 2020-07-07: GOLANG_VER: '1.14.4'
 # - 2023-04-22: GOLANG_VER: '1.20.3' aka go1.20 [2023-02-01]
-- set_fact:
+- ansible.builtin.set_fact:
     # USYNC: See also same GOLANG_VER in task dispatcher:
     #
     #   ~/.kit/working/ansible/roles/zoidy_apps_et_al/tasks/all-init-go-lang.yml
     GOLANG_VER: '1.20.3'
     GOLANG_XSUM: "979694c2c25c735755bf26f4f45e19e64e4811d661dd07b8c010f7a8e18adfca"
 
-- set_fact:
+- ansible.builtin.set_fact:
     GOLANG_DIR: "go{{ GOLANG_VER }}.linux-amd64"
 
-- set_fact:
+- ansible.builtin.set_fact:
     GOLANG_TAR: "{{ GOLANG_DIR }}.tar.gz"
 
-- set_fact:
+- ansible.builtin.set_fact:
     # E.g.,
     #   https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
     GOLANG_URI: "https://dl.google.com/go/{{ GOLANG_TAR }}"
@@ -47,13 +47,13 @@
 # NOTE: 2019-03-19: Surprisingly, fetching golang archive can be a while, e.g., 17.09s.
 # So skip if already downloaded.
 - name: Stat golang release archive
-  stat: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_TAR }}"
+  ansible.builtin.stat: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_TAR }}"
   register: golang_tar_f
 
 # FIXME/2018-12-23: Run this and other curl's, or check GitHubs, for latest versions (of things).
 
 - name: Fetch latest golang release
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ GOLANG_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
     checksum: "sha256:{{ GOLANG_XSUM }}"
@@ -62,10 +62,10 @@
 # The archive is contained within a directory not named with the version,
 # i.e., simply 'go', so use the full archive name.
 - name: Ensure ~/.download/go<version>.linux-amd64 directory exists
-  file: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}" state=directory
 
 - name: Unarchive the golang release archive
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_TAR }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/"
     remote_src: yes
@@ -74,17 +74,17 @@
 #  - fail: msg="VERIFY UNPACK"
 
 - name: Check obsolete godoc symlink (replaced by `go doc`)
-  stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
+  ansible.builtin.stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
   register: local_bin_godoc
 
 - name: Remove obsolete godoc symlink (replaced by `go doc`)
-  file:
+  ansible.builtin.file:
     state: absent
     path: "{{ ansible_env.HOME }}/.local/bin/godoc"
   when: local_bin_godoc.stat.exists and local_bin_godoc.stat.islnk
 
 - name: Symlink golang binary from user local bin
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/go/bin/{{ item }}"
     dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
     state: link

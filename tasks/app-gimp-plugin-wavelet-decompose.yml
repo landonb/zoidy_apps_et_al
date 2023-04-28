@@ -22,7 +22,7 @@
 # So making this plug-in opt-in.
 
 - name: Clone wavelet-decompose repo
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:gimp-plugins-justice/wavelet-decompose.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/wavelet-decompose"
 

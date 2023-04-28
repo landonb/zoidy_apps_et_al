@@ -12,15 +12,15 @@
 # ***
 
 - name: Fetch latest VirtualBox version file
-  get_url:
+  ansible.builtin.get_url:
     url: "http://download.virtualbox.org/virtualbox/LATEST.TXT"
     dest: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
 
 - name: Read VirtualBox latest version file
-  command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+  ansible.builtin.command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
   register: virtualbox_latest_version_raw
 
-- set_fact:
+- ansible.builtin.set_fact:
     virtualbox_latest_version: "{{ virtualbox_latest_version_raw.stdout }}"
 
 # ***
@@ -29,13 +29,13 @@
 #   checksum: 452320f3b1da42b30c32ea5ab5887983b575638ceb4e3beacfefbbb3b0510a48
 
 # E.g., Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack
-- set_fact:
+- ansible.builtin.set_fact:
     virtualbox_extpack_name: "Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_latest_version }}.vbox-extpack"
 
 # ***
 
 - name: 'Download VirtualBox Extension Pack'
-  get_url:
+  ansible.builtin.get_url:
     # E.g.,
     #   https://download.virtualbox.org/virtualbox/6.0.0/Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack
     url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/{{ virtualbox_extpack_name }}"
@@ -94,7 +94,7 @@
     #     first line of content-containing output to be indented.
   when: not zoidy_homefries_virtualbox_license_uuid
 
-- fail: msg="UUID required (see previous message)"
+- ansible.builtin.fail: msg="UUID required (see previous message)"
   when: not zoidy_homefries_virtualbox_license_uuid
 
 # ***
@@ -113,7 +113,7 @@
   #
   #  ignore_errors: true
 
-- debug: msg="zoidy_vbox_extpack_install » {{ zoidy_vbox_extpack_install }}"
+- ansible.builtin.debug: msg="zoidy_vbox_extpack_install » {{ zoidy_vbox_extpack_install }}"
 
 # ***
 
@@ -130,5 +130,5 @@
     chdir: "{{ zoidy_virtualbox_downloads_dir }}"
   register: zoidy_rm_vbox_extpacks
 
-- debug: msg="zoidy_rm_vbox_extpacks » {{ zoidy_rm_vbox_extpacks.stdout }}"
+- ansible.builtin.debug: msg="zoidy_rm_vbox_extpacks » {{ zoidy_rm_vbox_extpacks.stdout }}"
 

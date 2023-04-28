@@ -15,7 +15,7 @@
 #   https://github.com/Gnucash/gnucash-docs/tags
 
 # LATER/2020-05-02: Somehow periodically check for new versions...
-- set_fact:
+- ansible.builtin.set_fact:
     # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
     # 2023-04-23: Versions: 3.11 is last 3.x; then 4.0 → 4.14; now 5.0 [2023-03-25].
     #   GNUCASH_DOCS_BRANCH: "3.10"
@@ -23,16 +23,16 @@
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_DOCS_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_DOCS_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash-docs"
   when: GNUCASH_DOCS_DIR == ""
 
 # CXREF: https://github.com/Gnucash/gnucash-docs
 - name: gnucash docs ∷ git clone
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:Gnucash/gnucash-docs.git"
     dest: "{{ GNUCASH_DOCS_DIR }}"
     remote: "{{ zoidy_homefries_gnucash_docs_repo_remote }}"
@@ -112,11 +112,11 @@
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_DOCS_BUILD_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}/build"
 
 - name: gnucash-docs » ensure build directory exists
-  file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
+  ansible.builtin.file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
 
 # **** BUILD OPT 1: Build w/ `make`
 #

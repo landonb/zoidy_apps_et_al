@@ -14,7 +14,7 @@
     - x11-apps
 
 - name: Clone ttygif repo
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:icholy/ttygif.git"
     dest: "{{ zoidy_homefries_downloads_dir }}/ttygif"
 

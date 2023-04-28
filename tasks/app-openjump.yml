@@ -10,7 +10,7 @@
 #
 #   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2019-01-03:
     #  OPENJUMP_VER: '1.14'
     #  OPENJUMP_BLD: 'r6065'
@@ -19,7 +19,7 @@
     OPENJUMP_BLD: 'r5193[9e7ba88]'
     OPENJUMP_BLD_ENC: 'r5193%5B9e7ba88%5D'
 
-- set_fact:
+- ansible.builtin.set_fact:
     OPENJUMP_BASE_URI: 'https://downloads.sourceforge.net/project/jump-pilot/OpenJUMP/{{ OPENJUMP_VER }}'
     OPENJUMP_BASE_ZIP: "OpenJUMP-Portable-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD_ENC }}"
 
@@ -28,39 +28,39 @@
 #   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/OpenJUMP-Portable-2.2.0-r5193%5B9e7ba88%5D-PLUS.zip/download
 # - OpenJUMP-Portable-2.2.0-r5193[9e7ba88]-CORE.zip:
 #   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/OpenJUMP-Portable-2.2.0-r5193%5B9e7ba88%5D-CORE.zip/download
-- set_fact:
+- ansible.builtin.set_fact:
     OPENJUMP_CORE_ZIP: "{{ OPENJUMP_BASE_ZIP }}-CORE.zip"
     OPENJUMP_PLUS_ZIP: "{{ OPENJUMP_BASE_ZIP }}-PLUS.zip"
 
-- set_fact:
+- ansible.builtin.set_fact:
     OPENJUMP_CORE_URI: "{{ OPENJUMP_BASE_URI }}/{{ OPENJUMP_CORE_ZIP }}"
     OPENJUMP_PLUS_URI: "{{ OPENJUMP_BASE_URI }}/{{ OPENJUMP_PLUS_ZIP }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     OPENJUMP_DIR: "{{ zoidy_homefries_downloads_dir }}/OpenJUMP"
 
-- set_fact:
+- ansible.builtin.set_fact:
     OPENJUMP_PLUS_DIR: "OpenJUMP-{{ OPENJUMP_VER }}-{{ OPENJUMP_BLD }}-PLUS"
 
 # ***
 
 - name: Fetch OpenJUMP CORE
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ OPENJUMP_CORE_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
 
 - name: Fetch OpenJUMP PLUS
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ OPENJUMP_PLUS_URI }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/"
 
 # ***
 
 - name: Ensure OpenJUMP unpack directory exists
-  file: path="{{ OPENJUMP_DIR }}" state=directory
+  ansible.builtin.file: path="{{ OPENJUMP_DIR }}" state=directory
 
 - name: Unarchive the OpenJUMP release archive
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ OPENJUMP_PLUS_ZIP }}"
     dest: "{{ OPENJUMP_DIR }}/"
     remote_src: yes
@@ -68,13 +68,13 @@
 # ***
 
 - name: Symlink oj_linux.sh from user bin
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/OpenJUMP/{{ OPENJUMP_PLUS_DIR }}/bin/oj_linux.sh"
     dest: "{{ ansible_env.HOME }}/.local/bin/oj_linux.sh"
     state: link
 
 - name: Symlink OpenJUMP from user bin
-  file:
+  ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/OpenJUMP/{{ OPENJUMP_PLUS_DIR }}/bin/oj_linux.sh"
     dest: "{{ ansible_env.HOME }}/.local/bin/OpenJUMP"
     state: link

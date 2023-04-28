@@ -12,9 +12,9 @@
 # so we can reduce our tech debt.
 
 - name: Kdocker » Prefer apt-install
-  debug: msg="Run apt install kdocker instead"
+  ansible.builtin.debug: msg="Run apt install kdocker instead"
 
-- meta: end_play
+- ansible.builtin.meta: end_play
 
 # ***
 
@@ -40,22 +40,22 @@
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     KDOCKER_BRANCH: "master"
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     KDOCKER_DIR: "{{ zoidy_homefries_kdocker_repo_path }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     KDOCKER_DIR: "{{ zoidy_homefries_downloads_dir }}/KDocker"
   when: KDOCKER_DIR == ""
 
 - debug: msg="KDOCKER_DIR={{ KDOCKER_DIR }}"
 
 - name: KDocker » git clone
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:user-none/KDocker.git"
     dest: "{{ KDOCKER_DIR }}"
     remote: "{{ zoidy_homefries_kdocker_repo_remote }}"
@@ -96,7 +96,7 @@
 # i.e., I don't ever call KDocker myself from the command line.
 
 - name: KDocker » symlink
-  file:
+  ansible.builtin.file:
     src: "{{ KDOCKER_DIR }}/kdocker"
     dest: "{{ ansible_env.HOME }}/.local/bin/kdocker"
     state: link

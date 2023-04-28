@@ -31,7 +31,7 @@
 # ***
 
 # ansible_facts.kernel » Same as `uname -r`
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_headers_kernel: linux-headers-{{ ansible_kernel }}
 
 - name: 'Install linux headers required by VirtualBox'
@@ -50,28 +50,28 @@
 #     meld app-virtualbox-extpack.yml app-virtualbox-deb.yml &
 
 - name: Fetch latest VirtualBox version file
-  get_url:
+  ansible.builtin.get_url:
     url: "http://download.virtualbox.org/virtualbox/LATEST.TXT"
     dest: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
 
 - name: Read VirtualBox latest version file
-  command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+  ansible.builtin.command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
   register: virtualbox_latest_version_raw
 
-- set_fact:
+- ansible.builtin.set_fact:
     virtualbox_latest_version: "{{ virtualbox_latest_version_raw.stdout }}"
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_vbox_version_index: "virtualbox-version-{{ virtualbox_latest_version }}-index.htm"
 
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_vbox_version_path: "{{ zoidy_virtualbox_downloads_dir }}/{{ zoidy_vbox_version_index }}"
 
 # E.g., http://download.virtualbox.org/virtualbox/7.0.8/
 - name: 'Fetch latest VirtualBox builds directory list'
-  get_url:
+  ansible.builtin.get_url:
     url: "http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/"
     dest: "{{ zoidy_vbox_version_path }}"
 
@@ -84,7 +84,7 @@
     | sed -E s/^[\ ]\+\(.*\.deb\).*$/\\1/
   register: virtualbox_deb_pkg
 
-- fail: msg="Undiscerned download URL!"
+- ansible.builtin.fail: msg="Undiscerned download URL!"
   when: not virtualbox_deb_pkg.stdout
 
 # ***
@@ -93,7 +93,7 @@
 #   checksum: a5e721c333aeea6301303cefbd1cf7a8520655634f54dc8c32bb3beff73f5ebf
 
 - name: 'Download latest VirtualBox'
-  get_url:
+  ansible.builtin.get_url:
     # E.g.,
     #   https://download.virtualbox.org/virtualbox/6.0.0/virtualbox-6.0_6.0.0-127566~Ubuntu~bionic_amd64.deb
     #   https://download.virtualbox.org/virtualbox/7.0.8/virtualbox-7.0_7.0.8-156879~Ubuntu~jammy_amd64.deb
@@ -124,7 +124,7 @@
     chdir: "{{ zoidy_virtualbox_downloads_dir }}"
   # register: zoidy_rm_vbox_indices
 
-# - debug: msg="zoidy_rm_vbox_indices » {{ zoidy_rm_vbox_indices.stdout }}"
+# - ansible.builtin.debug: msg="zoidy_rm_vbox_indices » {{ zoidy_rm_vbox_indices.stdout }}"
 
 - name: Remove old VirtualBox packages
   # E.g., ./virtualbox-5.1_5.1.6-110634~Ubuntu~trusty_amd64.deb
@@ -139,18 +139,18 @@
     chdir: "{{ zoidy_virtualbox_downloads_dir }}"
   # register: zoidy_rm_vbox_packages
 
-# - debug: msg="zoidy_rm_vbox_packages » {{ zoidy_rm_vbox_packages.stdout }}"
+# - ansible.builtin.debug: msg="zoidy_rm_vbox_packages » {{ zoidy_rm_vbox_packages.stdout }}"
 
 # ***
 
 - name: 'Add user to VirtualBox groups'
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_env.LOGNAME }}"
     # INERT/2019-03-14: Maybe add back vboxsf (I think that's the shared file system driver).
     #  groups: vboxsf, vboxusers
     groups: vboxusers
     append: yes
 
-- debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
+- ansible.builtin.debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
 

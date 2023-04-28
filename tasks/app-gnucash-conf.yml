@@ -86,7 +86,7 @@
 #     org.gnucash.dialogs.import.qif
 #     org.gnucash.dialogs.business.invoice
 
-- debug: msg="FIXME — Audit GnuCash settings"
+- ansible.builtin.debug: msg="FIXME — Audit GnuCash settings"
   loop:
 
     # 2023-04-24: "Show doc"s defaults off in GUI, and no gsettings key.

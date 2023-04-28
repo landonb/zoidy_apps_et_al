@@ -26,10 +26,10 @@
     - caja-dropbox
 
 # - name: Check if Dropbox is running
-#   command: dropbox status
+#   ansible.builtin.command: dropbox status
 #   register: dropbox_status
 #
-# - debug: msg={{ dropbox_status.stdout }}
+# - ansible.builtin.debug: msg={{ dropbox_status.stdout }}
 
 - name: Download Dropbox daemon (answer yes to download prompt)
   ansible.builtin.shell: echo y | DISPLAY='' dropbox start -i

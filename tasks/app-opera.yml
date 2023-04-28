@@ -12,7 +12,7 @@
 #
 #     https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2023-04-24: The obscured direct-download link, and
     #             the archive name you see once download starts.
     OPERA_URL: "https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes"
@@ -22,7 +22,7 @@
     #   OPERA_DEB: "opera-stable_57.0.3098.110_amd64.deb"
 
 - name: Fetch Opera Debian package
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ OPERA_URL }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
     # checksum: "sha256:{{ <sha> }}"

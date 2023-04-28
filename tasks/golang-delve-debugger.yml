@@ -16,14 +16,14 @@
 #
 # But I've already got this task rolling, so whatever.
 
-- set_fact:
+- ansible.builtin.set_fact:
     gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/go-delve"
 
 - name: Ensure Delve Go directory exists
-  file: path="{{ gopath_src_delve }}" state=directory
+  ansible.builtin.file: path="{{ gopath_src_delve }}" state=directory
 
 - name: Clone delve repo
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:go-delve/delve.git"
     dest: "{{ gopath_src_delve }}/delve"
 

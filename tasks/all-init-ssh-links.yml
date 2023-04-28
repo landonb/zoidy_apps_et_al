@@ -130,7 +130,7 @@
 #   - See also SSH_AUTH_SOCK environ, not set on SSH.
 # - AFAIK, you must run ssh-agent/ssh-add from local terminal, not over SSH.
 
-- debug: msg="CHORE » Restart SSH agent from a terminal: ssh-agent -k"
+- ansible.builtin.debug: msg="CHORE » Restart SSH agent from a terminal: ssh-agent -k"
 
 # Verify by connecting to a server, e.g., try connecting to GitHub:
 #  $ ssh -T git@github.com

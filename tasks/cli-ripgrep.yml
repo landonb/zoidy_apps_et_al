@@ -47,9 +47,9 @@
 #       # else, ansible bugs us to use get_url:
 #       warn: False
 #
-#   - debug: msg="Latest ripgrep∷ {{ LATEST_VERSION.stdout }}"
+#   - ansible.builtin.debug: msg="Latest ripgrep∷ {{ LATEST_VERSION.stdout }}"
 #
-#   - fail: msg="Update ripgrep! / Latest∷ {{ LATEST_VERSION.stdout }} / Current∷ {{ RIPGREP_VER }}"
+#   - ansible.builtin.fail: msg="Update ripgrep! / Latest∷ {{ LATEST_VERSION.stdout }} / Current∷ {{ RIPGREP_VER }}"
 #     when: RIPGREP_VER != LATEST_VERSION.stdout
 
 # *** Do the work.

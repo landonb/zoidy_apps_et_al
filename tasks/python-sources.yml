@@ -9,7 +9,7 @@
 #   pyenv install -l | grep "^  3\."
 
 - name: List Python Sources to Download
-  set_fact:
+  ansible.builtin.set_fact:
     python_versions:
       #       Date Added Here  Lifetime
       #            ==========  ========
@@ -25,29 +25,29 @@
     # - 3.3.7    # 2017-09-19  2012-09 → 2017-09
     # - 2.7.18   # 2019-10-19  2010-07 → 2020-01
 
-- set_fact:
+- ansible.builtin.set_fact:
     zoidy_homefries_dls_pydls_dir: "{{ zoidy_homefries_downloads_dir }}/python-dls"
     zoidy_homefries_dls_pysrc_dir: "{{ zoidy_homefries_downloads_dir }}/python-src"
 
 # ***
 
 - name: Ensure Python sources download directory exists
-  file: path="{{ zoidy_homefries_dls_pydls_dir }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_dls_pydls_dir }}" state=directory
 
 - name: Ensure Python sources unpack directory exists
-  file: path="{{ zoidy_homefries_dls_pysrc_dir }}" state=directory
+  ansible.builtin.file: path="{{ zoidy_homefries_dls_pysrc_dir }}" state=directory
 
 # ***
 
 # E.g., https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tar.xz
 - name: Fetch Python source archives
-  get_url:
+  ansible.builtin.get_url:
     url: "https://www.python.org/ftp/python/{{ item }}/Python-{{ item }}.tar.xz"
     dest: "{{ zoidy_homefries_dls_pydls_dir }}/"
   loop: "{{ python_versions }}"
 
 - name: Unarchive the Python source archives
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_dls_pydls_dir }}/Python-{{ item }}.tar.xz"
     dest: "{{ zoidy_homefries_dls_pysrc_dir }}/"
     remote_src: yes

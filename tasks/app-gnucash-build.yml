@@ -43,7 +43,7 @@
 #
 #   https://github.com/Gnucash/gnucash/releases
 
-- set_fact:
+- ansible.builtin.set_fact:
     # 2023-04-23:
     GNUCASH_BRANCH: "5.0"
     # 2021-09-10: The "Edit..." button for Invoice Group does not work...:
@@ -59,17 +59,17 @@
     # This app rocks.
     #  GNUCASH_BRANCH: "3.10"
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_FORCE: False
     # DEV: Set this True if you want to build even if gnucash at current version.
     #  GNUCASH_FORCE: True
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_DIR: "{{ zoidy_homefries_gnucash_repo_path }}"
 
-- set_fact:
+- ansible.builtin.set_fact:
     # Default checkout path if not specially specified.
     GNUCASH_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash"
   when: GNUCASH_DIR == ""
@@ -97,18 +97,18 @@
   ignore_errors: yes
 
 - name: gnucash » Announce version results
-  debug:
+  ansible.builtin.debug:
     msg: >
           Your GnuCash is already up to date!
   when: gncvers_output.stdout == 'OK'
 
-- meta: end_play
+- ansible.builtin.meta: end_play
   when: gncvers_output.stdout == 'OK' and not GNUCASH_FORCE
 
 # ***
 
 - name: gnucash ∷ git clone
-  git:
+  ansible.builtin.git:
     repo: "git@github.com:Gnucash/gnucash.git"
     dest: "{{ GNUCASH_DIR }}"
     remote: "{{ zoidy_homefries_gnucash_repo_remote }}"
@@ -400,16 +400,16 @@
 #   - But let's be selective, so we don't clobber some user files.
 
 - name: Clean build » Remove GnuCash executable
-  file: state=absent path="{{ ansible_env.HOME }}/.local/bin/gnucash"
+  ansible.builtin.file: state=absent path="{{ ansible_env.HOME }}/.local/bin/gnucash"
 
 # - name: Clean build » Remove GnuCash configuration information
 #   file: state=absent path="{{ ansible_env.HOME }}/.local/etc/gnucash/"
 
 - name: Clean build » Remove GnuCash libraries (lib/gnucash/*.so)
-  file: state=absent path="{{ ansible_env.HOME }}/.local/lib/gnucash/"
+  ansible.builtin.file: state=absent path="{{ ansible_env.HOME }}/.local/lib/gnucash/"
 
 - name: Clean build » Remove GnuCash libraries (lib/libgnc-*.so)
-  file: state=absent path="{{ item }}"
+  ansible.builtin.file: state=absent path="{{ item }}"
   with_fileglob: "{{ ansible_env.HOME }}/.local/lib/libgnc-*.so"
 
 # This includes user's customs reports: ~/.local/share/gnucash/saved-reports-2.8
@@ -419,11 +419,11 @@
 
 # ***
 
-- set_fact:
+- ansible.builtin.set_fact:
     GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../build-gnucash-{{ GNUCASH_BRANCH }}"
 
 - name: gnucash » ensure build directory exists
-  file: path={{ GNUCASH_BUILD_DIR }} state=directory
+  ansible.builtin.file: path={{ GNUCASH_BUILD_DIR }} state=directory
 
 # ***
 
