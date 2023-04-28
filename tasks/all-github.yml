@@ -7,7 +7,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-ssh-links
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     # Ensures ~/.ssh setup before configuring GitHub SSH.
     - all-init-ssh-links
@@ -32,7 +32,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: all-init-github-ssh
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     # Ensure GitHub SSH setup before running any super-task with a 'repo'
     # subtask that clones a GitHub repo (so clone uses user's GH key and
@@ -59,14 +59,14 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-export-layers
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: app-gimp-plugin-export-layers
 
 - name: Load role to Install GIMP Wavelet Decompose Plug-in
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-wavelet-decompose
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: app-gimp-plugin-wavelet-decompose
   # OPTIN/2023-04-23: To support site.yml tag inheritence (e.g., `--tags
   # zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
@@ -87,7 +87,7 @@
     #    - app-gnucash-docs
     #    - perl-finance-quote
     tasks_from: app-gnucash-build
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     - all-gnucash
     #
@@ -97,7 +97,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-conf
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     - all-gnucash
     #
@@ -107,7 +107,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-docs
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     - all-gnucash
     #
@@ -117,7 +117,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: perl-finance-quote
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags:
     - all-gnucash
     #
@@ -130,7 +130,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-delve-debugger
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: golang-delve-debugger
 
 # ************************************************************************
@@ -140,7 +140,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: app-kdocker
   # ISOFF/2023-04-24: KDocker opt-in; demoing apt version.
   # - MAYBE/2023-04-24: Remove task if apt version sufficient;
@@ -157,7 +157,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-parT
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: cli-parT
 
 # ************************************************************************
@@ -167,7 +167,7 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-tmux
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: app-tmux
 
 # ************************************************************************
@@ -177,6 +177,6 @@
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: vid-ttygif
-    apply: { tags: "always" }
+    apply: { tags: always }
   tags: vid-ttygif
 
