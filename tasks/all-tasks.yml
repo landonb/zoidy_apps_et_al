@@ -84,12 +84,16 @@
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-deb
     apply: { tags: "always" }
-  # ISOFF/2023-04-27: Using 'never' tag. Prefer installing via apt.
-  # - This task kept for posterity, just in case apt release ever
-  #   lags behind apt release (which historically has happened, so).
-  tags: app-virtualbox-deb, never
+  tags: app-virtualbox-deb
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
+  # ISOFF/2023-04-27: Prefer installing via apt.
+  # - This task kept for posterity, just in case apt release ever
+  #   lags behind apt release (which historically has happened, so).
+  # OPTIN/2023-04-27: To support site.yml tag inheritence (e.g., `--tags
+  # zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
+  # - Use explicit `--tags app-virtualbox-deb` to run this task.
+  when: "'app-virtualbox-deb' in ansible_run_tags"
 
 - name: "Load role to install VirtualBox ExtPack from extpack download"
   ansible.builtin.include_role:
