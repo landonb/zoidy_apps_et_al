@@ -86,8 +86,9 @@
     tasks_from: app-gnucash-build
     apply: { tags: "always" }
   tags:
-    - app-gnucash-build
     - all-gnucash
+    #
+    - app-gnucash-build
 
 - name: Load role to Configure GnuCash
   ansible.builtin.include_role:
@@ -95,8 +96,9 @@
     tasks_from: app-gnucash-conf
     apply: { tags: "always" }
   tags:
-    - app-gnucash-conf
     - all-gnucash
+    #
+    - app-gnucash-conf
 
 - name: Load role to Install gnucash docs
   ansible.builtin.include_role:
@@ -104,8 +106,9 @@
     tasks_from: app-gnucash-docs
     apply: { tags: "always" }
   tags:
-    - app-gnucash-docs
     - all-gnucash
+    #
+    - app-gnucash-docs
 
 - name: Load role to Install Perl Finance::Quote
   ansible.builtin.include_role:
@@ -113,8 +116,9 @@
     tasks_from: perl-finance-quote
     apply: { tags: "always" }
   tags:
-    - perl-finance-quote
     - all-gnucash
+    #
+    - perl-finance-quote
 
 # ************************************************************************
 # *** Glng apps. ***
