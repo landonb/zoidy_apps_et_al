@@ -69,7 +69,7 @@
     apply: { tags: "always" }
   # OPTIN/2023-04-23: Use explicit --tag to run this task.
   #   tags: app-gimp-plugin-wavelet-decompose
-  tags: never
+  tags: app-gimp-plugin-wavelet-decompose, never
 
 # ************************************************************************
 # *** Gnucash. ***
@@ -134,6 +134,9 @@
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
     apply: { tags: "always" }
+  # ISOFF/2023-04-24: KDocker opt-in; demoing apt version.
+  # - MAYBE/2023-04-24: Remove task if apt version sufficient;
+  #                     otherwise, remove 'never' tag.
   tags: app-kdocker, never
 
 # ************************************************************************

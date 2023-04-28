@@ -71,7 +71,8 @@
         - app-darktable
         - app-digikam
         - app-gimp-plugin-export-layers
-        - app-gimp-plugin-wavelet-decompose
+        # ISOFF/2023-04-28: wavelet plugin is opt-in
+        #  - app-gimp-plugin-wavelet-decompose
         - app-gnucash-build
         - app-gnucash-conf
         - app-gnucash-docs
@@ -84,7 +85,8 @@
         - app-spotify
         - app-tmux
         - app-virtualbox-apt
-        - app-virtualbox-deb
+        # ISOFF/2023-04-27: Prefer apt install.
+        #  - app-virtualbox-deb
         - app-virtualbox-extpack
         - cli-parT
         - cli-ripgrep
