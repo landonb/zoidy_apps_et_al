@@ -18,7 +18,7 @@
 #
 #   - 2019-03-14: Because Secure Boot (I think that's it), need to sign
 #     VirtualBox drivers.
-#   
+#
 #     So this task will run, but you won't be able to boot any virtual machines.
 #
 # CXREF/2023-04-27: If you do revive this task, and if you hit signing problems,
@@ -26,7 +26,7 @@
 #
 #   https://github.com/landonb/zoidy_virtualbox/blob/release/tasks/app-virtualbox-5-sign.yml
 #
-#     ~/.kit/ansible/roles/zoidy_virtualbox/tasks/app-virtualbox-5-sign.yml  
+#     ~/.kit/ansible/roles/zoidy_virtualbox/tasks/app-virtualbox-5-sign.yml
 
 # ***
 

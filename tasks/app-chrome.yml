@@ -9,7 +9,7 @@
 #   $ cat /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
 #   deb [arch=amd64] https://dl.google.com/linux/chrome/deb stable main
 #
-#   $ cat /etc/apt/sources.list.d/google-chrome.list 
+#   $ cat /etc/apt/sources.list.d/google-chrome.list
 #   #  # # THIS FILE IS AUTOMATICALLY CONFIGURED ###
 #   # You may comment out this entry, but any other modifications may be lost.
 #   deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main

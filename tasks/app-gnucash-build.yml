@@ -248,7 +248,7 @@
     - swig3.0
     # - swig4.0
     #
-    # *** webkit 2.14.1 
+    # *** webkit 2.14.1
     - libwebkit2gtk-4.0-37
     - libwebkit2gtk-4.0-dev
     # 2023-04-23: What about 4.1?:
@@ -300,8 +300,8 @@
     #
     # *** python 3.6.0 (python bindings; headers required, not just binaries)
     # 2023-04-24: Appears to work with system 3.10. cmake reports:
-    #   -- Found PythonInterp: /home/puck/.pyenv/shims/python3 (found suitable version "3.10.6", minimum required is "3") 
-    #   -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.6", minimum required is "3") 
+    #   -- Found PythonInterp: /home/puck/.pyenv/shims/python3 (found suitable version "3.10.6", minimum required is "3")
+    #   -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.6", minimum required is "3")
     #
     # *** libofx 0.9.12 (OFX/QFX import)
     - libofx-dev

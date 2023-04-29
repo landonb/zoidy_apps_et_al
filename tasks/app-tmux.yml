@@ -12,7 +12,7 @@
 #
 # Otherwise we'll fetch it for you.
 
-# YOUDO/2020-02-06: Keep this updated. 
+# YOUDO/2020-02-06: Keep this updated.
 # - MAYBE/2023-04-22: Suss version automatically.
 
 - ansible.builtin.set_fact:

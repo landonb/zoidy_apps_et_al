@@ -47,7 +47,7 @@
 
 # ***
 
-# make-install calls something 
+# make-install calls something
 #
 #   $ gimptool-2.0 --install-bin <>
 #   cp '<>' '/home/user/.config/GIMP/2.10/plug-ins/<>/'

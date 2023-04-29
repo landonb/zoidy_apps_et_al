@@ -9,7 +9,7 @@
     go_install_list:
       # These projects install to, e.g.,
       #   ~/.gopath/src/{{ item }}
-      
+
       # 2023-04-22: 8 years stale.
       # - CXREF: https://github.com/jmoiron/jsonq
       #   "simple json field access for golang"

@@ -21,7 +21,7 @@
     ANDROID_STUDIO_VER: "2022.2.1.18"
     # CXREF: https://developer.android.com/studio#android-studio-downloads
     ANDROID_STUDIO_SHA: "cdd852c4499b5f7402df44dfc69e8ca418ffc9a684caab34047476fd2cb24efc"
-    
+
 - ansible.builtin.set_fact:
     # 2019-01-05:
     #  ANDROID_STUDIO_NOM: "android-studio-ide-{{ ANDROID_STUDIO_BLD }}-linux"
