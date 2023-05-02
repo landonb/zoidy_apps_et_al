@@ -14,63 +14,63 @@
 # ************************************************************************
 # *** Apps. ***
 
-- name: Load role to Install Chrome browser
+- name: Load tasks to Install Chrome browser
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-chrome
     apply: { tags: always }
   tags: app-chrome
 
-- name: Load role to Install Cinelerra-GG
+- name: Load tasks to Install Cinelerra-GG
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-cinelerra-gg
     apply: { tags: always }
   tags: app-cinelerra-gg
 
-- name: Load role to Install Darktable
+- name: Load tasks to Install Darktable
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-darktable
     apply: { tags: always }
   tags: app-darktable
 
-- name: Load role to Install Digikam
+- name: Load tasks to Install Digikam
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-digikam
     apply: { tags: always }
   tags: app-digikam
 
-- name: Load role to Install OpenJUMP
+- name: Load tasks to Install OpenJUMP
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-openjump
     apply: { tags: always }
   tags: app-openjump
 
-- name: Load role to Install Opera
+- name: Load tasks to Install Opera
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-opera
     apply: { tags: always }
   tags: app-opera
 
-- name: "Load role to Install Pencil [Project]"
+- name: "Load tasks to Install Pencil [Project]"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-pencil-project-evolus
     apply: { tags: always }
   tags: app-pencil-project-evolus
 
-- name: "Load role to Install Spotify"
+- name: "Load tasks to Install Spotify"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-spotify
     apply: { tags: always }
   tags: app-spotify
 
-- name: "Load role to install VirtualBox using apt"
+- name: "Load tasks to install VirtualBox using apt"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-apt
@@ -79,7 +79,7 @@
   vars:
     zoidy_distrib_codename: "{{ zoidy_distrib_codename_ }}"
 
-- name: "Load role to install VirtualBox from deb download"
+- name: "Load tasks to install VirtualBox from deb download"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-deb
@@ -95,7 +95,7 @@
   # - Use explicit `--tags app-virtualbox-deb` to run this task.
   when: "'app-virtualbox-deb' in ansible_run_tags"
 
-- name: "Load role to install VirtualBox ExtPack from extpack download"
+- name: "Load tasks to install VirtualBox ExtPack from extpack download"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-virtualbox-extpack
@@ -105,7 +105,7 @@
 # ************************************************************************
 # *** Clis. ***
 
-- name: Load role to Install ripgrep
+- name: Load tasks to Install ripgrep
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: cli-ripgrep
@@ -154,14 +154,14 @@
 # *** Font 'ackch. ***
 
 # 2023-04-26: This task for posterity; see zoidy_matecocido/tasks/font-hack-nerd-font
-- name: Load role to Install Font “Hack” (aka Hack Classic; not “Hack Nerd Font”)
+- name: Load tasks to Install Font “Hack” (aka Hack Classic; not “Hack Nerd Font”)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-hack-classic
     apply: { tags: always }
   tags: font-hack-classic
 
-- name: Load role to Install Fonts
+- name: Load tasks to Install Fonts
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: font-mania
@@ -171,7 +171,7 @@
 # ************************************************************************
 # *** Glng apps. ***
 
-- name: Load role to Install Go Lang Projects
+- name: Load tasks to Install Go Lang Projects
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-go-install-packages
@@ -181,7 +181,7 @@
 # ************************************************************************
 # *** Melds. ***
 
-- name: Load role to Configure Meld Preferences
+- name: Load tasks to Configure Meld Preferences
   include_role:
     name: zoidy_apps_et_al
     tasks_from: meld-configure

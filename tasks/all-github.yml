@@ -55,14 +55,14 @@
 # ************************************************************************
 # *** GIMP. ***
 
-- name: Load role to Install GIMP Export Layers Plug-in
+- name: Load tasks to Install GIMP Export Layers Plug-in
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-export-layers
     apply: { tags: always }
   tags: app-gimp-plugin-export-layers
 
-- name: Load role to Install GIMP Wavelet Decompose Plug-in
+- name: Load tasks to Install GIMP Wavelet Decompose Plug-in
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gimp-plugin-wavelet-decompose
@@ -77,7 +77,7 @@
 # ************************************************************************
 # *** Gnucash. ***
 
-- name: Load role to Install gnucash
+- name: Load tasks to Install gnucash
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     # MAYBE/2020-11-14: Run these other dependent tasks before app-gnucash-build
@@ -93,7 +93,7 @@
     #
     - app-gnucash-build
 
-- name: Load role to Configure GnuCash
+- name: Load tasks to Configure GnuCash
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-conf
@@ -103,7 +103,7 @@
     #
     - app-gnucash-conf
 
-- name: Load role to Install gnucash docs
+- name: Load tasks to Install gnucash docs
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-gnucash-docs
@@ -113,7 +113,7 @@
     #
     - app-gnucash-docs
 
-- name: Load role to Install Perl Finance::Quote
+- name: Load tasks to Install Perl Finance::Quote
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: perl-finance-quote
@@ -126,7 +126,7 @@
 # ************************************************************************
 # *** Glng apps. ***
 
-- name: Load role to Install Delve
+- name: Load tasks to Install Delve
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-delve-debugger
@@ -136,7 +136,7 @@
 # ************************************************************************
 # *** Kdocker. ***
 
-- name: Load role to Install Kdocker
+- name: Load tasks to Install Kdocker
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-kdocker
@@ -163,7 +163,7 @@
 # ************************************************************************
 # *** Tmux. ***
 
-- name: Load role to clone-build-install tmux
+- name: Load tasks to clone-build-install tmux
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: app-tmux
