@@ -20,6 +20,11 @@
     tasks_from: app-chrome
     apply: { tags: always }
   tags: app-chrome
+  # ISOFF/2023-05-04: Linux Mint installs Chrome by default now.
+  # OPTIN/2023-05-04: To support site.yml tag inheritence (e.g., `--tags
+  # zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
+  # - Use explicit `--tags app-chrome` to run this task.
+  when: "'app-chrome' in ansible_run_tags"
 
 - name: Load tasks to Install Cinelerra-GG
   ansible.builtin.include_role:
