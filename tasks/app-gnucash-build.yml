@@ -64,6 +64,9 @@
     # and to not stop if gnucash at current version.
     GNUCASH_FORCE: "{{ lookup('ansible.builtin.env', 'GNUCASH_FORCE', default='False') }}"
 
+- ansible.builtin.set_fact:
+    PYENV_VERS: "3.10"
+
 # ***
 
 - ansible.builtin.set_fact:
@@ -439,6 +442,24 @@
 
 # ***
 
+# SAVVY/2023-05-08 13:37: Using `pyenv` is unnecessary if system Python
+# same minor version as pyenv version you intend to use. E.g., you could
+# `import gnucash` from Python 3.10.6 from apt, or from Python 3.10.10
+# from pyenv; and you'll find the package at:
+#   ~/.local/lib/python3.10/site-packages/gnucash/
+# - So we don't need to specify the version patch level on pyenv-shell.
+- name: "Stat ~/.local/bin/pyenv"
+  ansible.builtin.stat:
+    path: ~/.local/bin/pyenv
+  register: stat_local_bin_pyenv_raw
+
+- name: "Alert unless ~/.local/bin/pyenv"
+  ansible.builtin.debug:
+    msg: "ALERT: Install pyenv (~/.local/bin/pyenv) to target more Python versions"
+  when: not stat_local_bin_pyenv_raw.stat.exists
+
+# ***
+
 # **** BUILD OPT 1: Build w/ `make`
 #
 # ISOFF/2023-04-24: For v5.0, switched from classic 'make' to 'ninja' build,
@@ -463,17 +484,35 @@
 
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: Prepare GnuCash build (using ninja)
-  ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+  ansible.builtin.shell: >
+    if [ -e ~/.local/bin/pyenv ]; then
+      eval "$(~/.local/bin/pyenv init -)";
+      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    fi ;
+    \
+    cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
 - name: "gnucash ninja: build gnucash and libs"
-  ansible.builtin.shell: ninja
+  ansible.builtin.shell: >
+    if [ -e ~/.local/bin/pyenv ]; then
+      eval "$(~/.local/bin/pyenv init -)";
+      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    fi ;
+    \
+    ninja
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
 - name: "gnucash ninja install: install gnucash"
-  ansible.builtin.shell: ninja install
+  ansible.builtin.shell: >
+    if [ -e ~/.local/bin/pyenv ]; then
+      eval "$(~/.local/bin/pyenv init -)";
+      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    fi ;
+    \
+    ninja install
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
