@@ -140,6 +140,10 @@
   #       them periodically at shorter intervals, to avoid building up
   #       a huge backlog of tech debt.
 
+  # When forcing, assume previously installed, and user doesn't
+  # want/need to wait for git-clone, which takes a short moment.
+  when: not GNUCASH_FORCE
+
 - name: gnucash » checkout version branch
   ansible.builtin.shell: git checkout rel/{{ GNUCASH_BRANCH }}
   args:
@@ -160,6 +164,10 @@
   ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
+
+  # When forcing, assume previously installed, and user doesn't
+  # want/need to wait to cycle through all the apt commands.
+  when: not GNUCASH_FORCE
 
 # GnuCash docs suggest easy-install deps, but doesn't indicate URI.
 # - apt responds: "You must put some 'deb-src' URIs in your sources.list"
@@ -385,6 +393,10 @@
     # - libqt5x11extras5-dev
     # - libxmu-dev
     # - qt5-qmake
+
+  # When forcing, assume previously installed, and user doesn't
+  # want/need to wait to cycle through all the apt commands.
+  when: not GNUCASH_FORCE
 
 # ***
 
