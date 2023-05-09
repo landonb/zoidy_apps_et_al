@@ -68,9 +68,10 @@
     tasks_from: app-gimp-plugin-wavelet-decompose
     apply: { tags: always }
   tags: app-gimp-plugin-wavelet-decompose
-  # OPTIN/2023-04-23: To support site.yml tag inheritence (e.g., `--tags
-  # zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
-  # - Use explicit `--tags app-gimp-...` to run this task.
+  # Because GIMP includes a plug-in with the same name, task is opt-in.
+  # - OPTIN/2023-04-23: To support site.yml tag inheritence (e.g., `--tags
+  #   zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
+  #   - USAGE: Use explicit `--tags app-gimp-plugin-...` to run this task.
   when: "'app-gimp-plugin-wavelet-decompose' in ansible_run_tags"
 
 
