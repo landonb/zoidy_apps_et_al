@@ -60,9 +60,9 @@
     #  GNUCASH_BRANCH: "3.10"
 
 - ansible.builtin.set_fact:
-    GNUCASH_FORCE: False
-    # DEV: Set this True if you want to build even if gnucash at current version.
-    #  GNUCASH_FORCE: True
+    # DEV: Call using GNUCASH_FORCE=true to always build,
+    # and to not stop if gnucash at current version.
+    GNUCASH_FORCE: "{{ lookup('ansible.builtin.env', 'GNUCASH_FORCE', default='False') }}"
 
 # ***
 
