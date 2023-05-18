@@ -17,8 +17,26 @@
 #     org.gnome.meld style-scheme 'meld-base'
 #     org.gnome.meld style-scheme 'classic'  # default
 
+# SAVVY/2023-05-18: If meld is installed from apt, use the normal
+# gsettings command, e.g.,
+#
+#   ansible.builtin.shell: gsettings set {{ item.schema }} {{ item.key }} {{ item.val }}
+#
+# But now that meld comes from flatpak, we need to change the flatpak
+# settings, e.g.,
+#
+#   ansible.builtin.shell: flatpak run --command=gsettings <flatpak ID> set <...>
+#
+# https://lists.freedesktop.org/archives/flatpak/2020-October/002046.html
+#
+# - CXREF: Meld is installed by another role:
+#
+#     ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-flatpaks.yml
+
+# SAVVY/2023-05-18: No need to restart meld for changes to apply.
+
 - name: Configure Meld
-  ansible.builtin.shell: gsettings set {{ item.schema }} {{ item.key }} {{ item.val }}
+  ansible.builtin.shell: flatpak run --command=gsettings org.gnome.meld set {{ item.schema }} {{ item.key }} {{ item.val }}
   loop:
 
     - schema: org.gnome.meld
