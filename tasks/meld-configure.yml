@@ -6,6 +6,11 @@
 #
 #   ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-flatpaks.yml
 
+# TRACK/2023-05-17: There's a request for a `.meldignore` file:
+#   https://gitlab.gnome.org/GNOME/meld/-/issues/604
+# If this ever gets implemented, we could replace this gsettings
+# task with ~/.meldignore or something, and manage from DepoXy.
+
 # MAYBE/2018-12-24: Fiddle with style.
 # ::
 #
