@@ -18,7 +18,9 @@
 - ansible.builtin.set_fact:
     # 2022-09-06: Upgrading to 13.0.0, from 2021-06-12, from 0.10.0, 2018-09-07.
     #  RIPGREP_VER: '0.10.0'
-    RIPGREP_VER: '13.0.0'
+    # 2024-02-03: Upgrading to 14.1.0 from 2024-01-06.
+    #  RIPGREP_VER: '13.0.0'
+    RIPGREP_VER: '14.1.0'
 
 - ansible.builtin.set_fact:
     # For '0.10.0':
