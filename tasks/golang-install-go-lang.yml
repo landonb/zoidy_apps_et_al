@@ -24,12 +24,14 @@
 # - 2019-10-17: GOLANG_VER: '1.13.3'
 # - 2020-07-07: GOLANG_VER: '1.14.4'
 # - 2023-04-22: GOLANG_VER: '1.20.3' aka go1.20 [2023-02-01]
+# - 2024-02-04: GOLANG_VER: '1.21.6'
 - ansible.builtin.set_fact:
     # USYNC: See also same GOLANG_VER in task dispatcher:
     #
-    #   ~/.kit/working/ansible/roles/zoidy_apps_et_al/tasks/all-init-go-lang.yml
-    GOLANG_VER: '1.20.3'
-    GOLANG_XSUM: "979694c2c25c735755bf26f4f45e19e64e4811d661dd07b8c010f7a8e18adfca"
+    #   ~/.kit/ansible/roles/zoidy_apps_et_al/tasks/all-init-go-lang.yml
+    GOLANG_VER: '1.21.6'
+    # SAVVY: Use linux-amd64 checksum, e.g., go1.21.6.linux-amd64.tar.gz
+    GOLANG_XSUM: "3f934f40ac360b9c01f616a9aa1796d227d8b0328bf64cb045c7b8c4ee9caea4"
 
 - ansible.builtin.set_fact:
     GOLANG_DIR: "go{{ GOLANG_VER }}.linux-amd64"
