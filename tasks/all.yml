@@ -41,7 +41,6 @@
     #
     # *** GIMP
     - app-gimp-plugin-export-layers
-    - app-gimp-plugin-wavelet-decompose
     #
     # *** gnucash
     - app-gnucash-build
