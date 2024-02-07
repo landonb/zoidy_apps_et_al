@@ -107,6 +107,13 @@
     apply: { tags: always }
   tags: app-virtualbox-extpack
 
+- name: "Load tasks to patch broken Weather Forecast applet URL"
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-weather-forecast-patch
+    apply: { tags: always }
+  tags: app-weather-forecast-patch
+
 # ************************************************************************
 # *** Clis. ***
 

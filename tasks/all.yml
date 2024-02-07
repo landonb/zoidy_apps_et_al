@@ -78,6 +78,7 @@
     - app-virtualbox-apt
     - app-virtualbox-deb
     - app-virtualbox-extpack
+    - app-weather-forecast-patch
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix

@@ -34,6 +34,7 @@
     - app-virtualbox-apt
     - app-virtualbox-deb
     - app-virtualbox-extpack
+    - app-weather-forecast-patch
     - cli-parT
     - cli-ripgrep
     - dmn-dropbox

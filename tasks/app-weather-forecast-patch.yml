@@ -1,0 +1,44 @@
+---
+
+# REFER/2024-02-05:
+#   https://forums.linuxmint.com/viewtopic.php?t=406091
+#   https://github.com/mate-desktop/libmateweather/pull/79#issuecomment-1765810415
+#   https://forums.linuxmint.com/viewtopic.php?p=2399362#p2399362
+
+# REFER: If you need to remove an old patch, restore previous backup (see below)
+# or run `apt reinstall libmateweather1`.
+
+# ***
+
+# Back up file first.
+
+- name: Resolve libmateweather.so path
+  ansible.builtin.command: readlink -f /usr/lib/x86_64-linux-gnu/libmateweather.so.1
+  register: libmateweather_so_path_raw
+
+- ansible.builtin.set_fact:
+    libmateweather_so_path: "{{ libmateweather_so_path_raw.stdout }}"
+
+- ansible.builtin.set_fact:
+    libmateweather_so_backup_path: "{{ libmateweather_so_path }}-{{ ansible_date_time.iso8601_basic_short }}-zoidy_apps_et_al"
+
+- name: "Backup /etc/updatedb.conf (using ansible_date_time for unique path — {{ libmateweather_so_backup_path }})"
+  become: true
+  ansible.builtin.copy:
+    remote_src: True
+    src: "{{ libmateweather_so_path }}"
+    dest: "{{ libmateweather_so_backup_path }}"
+
+# ***
+
+- name: Patch Weather Forecast application forecast URL
+  become: true
+  ansible.builtin.command: >
+    sudo sed -i \
+    's|https://www.aviationweather.gov/adds/dataserver_current/httpparam|https://aviationweather.gov/cgi-bin/data/dataserver.php\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0|' \
+    "{{ libmateweather_so_path }}"
+
+# ***
+
+- debug: msg="CHORE » Remove Weather Forecast from system tray, or Logon MATE again to realize patch"
+
