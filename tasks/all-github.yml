@@ -21,7 +21,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     - app-gimp-plugin-export-layers
-    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -45,7 +44,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     - app-gimp-plugin-export-layers
-    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
@@ -118,23 +116,6 @@
     tasks_from: golang-delve-debugger
     apply: { tags: always }
   tags: golang-delve-debugger
-
-# ************************************************************************
-# *** Kdocker. ***
-
-- name: Load tasks to Install Kdocker
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-kdocker
-    apply: { tags: always }
-  tags: app-kdocker
-  # ISOFF/2023-04-24: KDocker opt-in; demoing apt version.
-  # - MAYBE/2023-04-24: Remove task if apt version sufficient;
-  #                     otherwise, remove 'when' test.
-  # OPTIN/2023-04-24: To support site.yml tag inheritence (e.g., `--tags
-  # zoidy_apps_et_al`), use obtuse `when` test instead of 'never' tag.
-  # - Use explicit `--tags app-kdocker` to run this task.
-  when: "'app-kdocker' in ansible_run_tags"
 
 # ************************************************************************
 # *** parT. ***

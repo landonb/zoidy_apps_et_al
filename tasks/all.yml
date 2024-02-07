@@ -34,7 +34,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     # *** One-offs
-    - app-kdocker
     - cli-parT
     - golang-delve-debugger
     - vid-ttygif
