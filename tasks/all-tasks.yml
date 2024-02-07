@@ -68,13 +68,6 @@
     apply: { tags: always }
   tags: app-pencil-project-evolus
 
-- name: "Load tasks to Install Spotify"
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: app-spotify
-    apply: { tags: always }
-  tags: app-spotify
-
 - name: "Load tasks to install VirtualBox using apt"
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
