@@ -2,10 +2,10 @@
 
 # *** Verify distro.
 
-# Linux Mint 21-21.1
+# Linux Mint 21-21.3
 - ansible.builtin.set_fact:
     zoidy_distrib_codename_: 'jammy'
-  when: ansible_lsb.codename in ['vanessa', 'vera',]
+  when: ansible_lsb.codename in ['vanessa', 'vera', 'victoria', 'virginia']
 
 # Linux Mint 20-20.3
 - ansible.builtin.set_fact:
