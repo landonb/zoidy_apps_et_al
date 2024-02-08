@@ -33,6 +33,12 @@
 
 # ***
 
+- name: 'Install libevent-dev'
+  become: true
+  ansible.builtin.apt: name=libevent-dev
+
+# ***
+
 - name: "tmux: git clone"
   ansible.builtin.git:
     repo: "git@github.com:tmux/tmux.git"
