@@ -37,6 +37,26 @@
 #   https://www.google.com/chrome/thank-you.html?brand=QMKX&statcb=0&installdataindex=empty&defaultbrowser=0#
 
 # https://www.google.com/linuxrepositories/
+
+# SAVVY/2024-02-06: I installed Chrome on on LM 21.1 (2023-04-23) without
+# adding the signing key, but on fresh LM 21.3, Chrome won't install without it.
+# - Also, neither of these --recv-keys worked, and they seemed to override each other:
+#
+#   - name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Ubuntu Key Server
+#     # ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xE88979FB9B30ACF2"
+#     ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xEB4C1BFD4F042F6DDDCCEC917721F63BD38B4796"
+#     register: google_gpg_import
+#
+# - But piping direct to a trusted GPG key file works.
+# - REFER: https://askubuntu.com/questions/1444478/google-chrome-deprecated-key-on-ubuntu
+- name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Google
+  become: true
+  ansible.builtin.shell: >
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
+      gpg --dearmor |
+      sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
+  register: google_gpg_import
+
 - name: Add Google Chrome proprietary repository
   become: true
   ansible.builtin.apt_repository:
