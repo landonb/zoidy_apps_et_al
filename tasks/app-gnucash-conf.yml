@@ -83,8 +83,10 @@
 # GnuCash on your actual books.
 #
 # - I don't see these:
-#     org.gnucash.dialogs.import.qif
 #     org.gnucash.dialogs.business.invoice
+#     org.gnucash.dialogs.import.qif
+#   - REFER:
+#       gsettings list-recursively org.gnucash.dialogs
 
 - ansible.builtin.debug: msg="FIXME — Audit GnuCash settings"
   loop:

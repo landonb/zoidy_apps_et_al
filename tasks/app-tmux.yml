@@ -12,11 +12,14 @@
 #
 # Otherwise we'll fetch it for you.
 
-# YOUDO/2020-02-06: Keep this updated.
+# USYNC/2020-02-06: Keep this updated.
 # - MAYBE/2023-04-22: Suss version automatically.
+
+# SAVVY/2024-02-07 15:40: LM 21.3 installs tmux 3.2a.
 
 - ansible.builtin.set_fact:
     # CXREF: https://github.com/tmux/tmux/releases
+    # 2024-02-07: Latest release still 2022-06-09.
     TMUX_BRANCH: "3.3a"
 
 # ***

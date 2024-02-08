@@ -2,6 +2,8 @@
 
 # *** Verify distro.
 
+# REFER: https://linuxmint.com/download_all.php
+
 # Linux Mint 21-21.3
 - ansible.builtin.set_fact:
     zoidy_distrib_codename_: 'jammy'

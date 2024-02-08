@@ -27,7 +27,7 @@
   # - Be prepared to wait, there's a lot that gets installed...
   #   though not sure it's all for gnucash! So many dependencies.
   # - Not sure chdir is necessary, as ~/.local/bin is on PATH.
-  # - FIXME/2020-05-03: Test: there's a long, rant-warning about
+  # - NOTED/2020-05-03: Test: there's a long, rant-warning about
   #   incompatibility with the latest Perl versions. But the rant
   #   is from 2015. Not sure if it's still an issue.
   #     *** canary::stability compatibility and support check

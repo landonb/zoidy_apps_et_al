@@ -23,6 +23,7 @@
     tasks_from: all-github
   tags:
     - all-github
+    #
     # If ensuring SSH ready.
     - all-init-ssh-links
     # If ensuring GH SSH present.
@@ -69,12 +70,18 @@
     - app-cinelerra-gg
     - app-darktable
     - app-digikam
+    # - app-gimp-plugin-export-layers
+    # - app-gnucash-build
+    # - app-gnucash-conf
+    # - app-gnucash-docs
     - app-openjump
     - app-opera
     - app-pencil-project-evolus
+    # - app-tmux
     - app-virtualbox-apt
     - app-virtualbox-extpack
     - app-weather-forecast-patch
+    # - cli-parT
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
@@ -85,6 +92,8 @@
     - hardware-arduino
     - node-npm-packages
     - meld-configure
+    # - perl-finance-quote
     - python-sources
+    # - vid-ttygif
     - virt-vagrant
 
