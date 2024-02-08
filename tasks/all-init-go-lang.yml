@@ -50,6 +50,8 @@
     tasks_from: golang-install-go-lang
     apply: { tags: always }
   tags:
+    # When you run the role tag, don't run golang-install-go-lang twice.
+    - never
     # Tasks that rely on Go being available.
     - cli-ripgrep
     - golang-delve-debugger
