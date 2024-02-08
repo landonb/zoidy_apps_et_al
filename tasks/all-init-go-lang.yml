@@ -34,7 +34,7 @@
 
 # ***
 
-- name: Load tasks to Install Go Language (explicit)
+- name: Run task to Install Go Language (explicit)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-install-go-lang
@@ -44,7 +44,7 @@
     #
     - golang-install-go-lang
 
-- name: Load tasks to Install Go Language (implicit)
+- name: Run task to Install Go Language (implicit)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
     tasks_from: golang-install-go-lang

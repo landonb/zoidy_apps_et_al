@@ -31,7 +31,7 @@
   when: GNUCASH_DOCS_DIR == ""
 
 # CXREF: https://github.com/Gnucash/gnucash-docs
-- name: gnucash docs ∷ git clone
+- name: gnucash docs » git clone
   ansible.builtin.git:
     repo: "git@github.com:Gnucash/gnucash-docs.git"
     dest: "{{ GNUCASH_DOCS_DIR }}"
@@ -73,7 +73,7 @@
 #   Additonal Requirements for Generating PDF:
 #   * Apache fop >= 0.95
 
-- name: Run command "apt-get update" (app-gnucash-docs)
+- name: gnucash-docs » Run command "apt-get update"
   become: true
   ansible.builtin.apt:
     update_cache: yes
@@ -85,7 +85,7 @@
 #    become: true
 #    ansible.builtin.shell: apt-get build-dep gnucash-docs
 
-- name: gnucash » install build dependencies (individually)
+- name: gnucash-docs » install build dependencies (individually)
   ansible.builtin.apt: name="{{ item }}" state="present"
   become: true
   loop:
@@ -131,17 +131,17 @@
 # **** BUILD OPT 2: Build w/ `ninja`
 
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
-- name: Prepare gnucash-docs build (using ninja)
+- name: gnucash-docs » Prepare gnucash-docs build (using ninja)
   ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 
-- name: "gnucash ninja: build gnucash-docs"
+- name: gnucash-docs » ninja
   ansible.builtin.shell: ninja
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 
-- name: "gnucash ninja install: install gnucash-docs"
+- name: gnucash-docs » ninja install
   ansible.builtin.shell: ninja install
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"

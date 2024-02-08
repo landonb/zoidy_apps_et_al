@@ -8,7 +8,7 @@
 
 # http://finance-quote.sourceforge.net/
 
-- name: “Installing Finance::Quote” (gnucash)
+- name: perl-finance-quote (gnucash) » Install Finance::Quote
   # - I tried without sudo, e.g.,
   #     ansible.builtin.shell: echo "y" | gnc-fq-update
   #     args:
@@ -40,7 +40,7 @@
   ansible.builtin.shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
   become: true
 
-- name: Test Finance::Quote Perl module (gnucash)
+- name: perl-finance-quote (gnucash) » Test Finance::Quote Perl module
   ansible.builtin.shell: gnc-fq-dump nasdaq amzn
   args:
     chdir: "{{ ansible_env.HOME }}/.local/bin"
