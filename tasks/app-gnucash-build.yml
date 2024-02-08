@@ -210,6 +210,11 @@
     # - Mint 21.1: cmake 3.22.1
     - cmake
     #
+    # *** ninja
+    # - REFER: https://ninja-build.org/
+    # - Mint 21.3: 
+    - ninja-build
+    #
     # *** glib2 2.56.1
     # - Mint 21.1: 2.72.4-0ubuntu1
     - libglib2.0-0
