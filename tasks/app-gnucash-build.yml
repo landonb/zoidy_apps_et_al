@@ -493,9 +493,12 @@
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: Prepare GnuCash build (using ninja)
   ansible.builtin.shell: >
-    if [ -e ~/.local/bin/pyenv ]; then
-      eval "$(~/.local/bin/pyenv init -)";
-      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+      [ -d "${PYENV_ROOT}/bin" ] &&
+        export PATH="${PYENV_ROOT}/bin:${PATH}"; 
+      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv shell {{ PYENV_VERS }};
     fi ;
     \
     cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
@@ -504,9 +507,12 @@
 
 - name: "gnucash ninja: build gnucash and libs"
   ansible.builtin.shell: >
-    if [ -e ~/.local/bin/pyenv ]; then
-      eval "$(~/.local/bin/pyenv init -)";
-      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+      [ -d "${PYENV_ROOT}/bin" ] &&
+        export PATH="${PYENV_ROOT}/bin:${PATH}"; 
+      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv shell {{ PYENV_VERS }};
     fi ;
     \
     ninja
@@ -515,9 +521,12 @@
 
 - name: "gnucash ninja install: install gnucash"
   ansible.builtin.shell: >
-    if [ -e ~/.local/bin/pyenv ]; then
-      eval "$(~/.local/bin/pyenv init -)";
-      ~/.local/bin/pyenv shell {{ PYENV_VERS }};
+    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+      [ -d "${PYENV_ROOT}/bin" ] &&
+        export PATH="${PYENV_ROOT}/bin:${PATH}"; 
+      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv shell {{ PYENV_VERS }};
     fi ;
     \
     ninja install
