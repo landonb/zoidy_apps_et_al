@@ -44,7 +44,11 @@
 
       CHORE » Link your Dropbox account. Run this:
 
-        sensible-open $(dropbox start -i 2> /dev/null | tail -1)"
+        sensible-open "$(dropbox start -i 2> /dev/null | tail -1)"
+
+      And, likely, select:
+
+        ✓ Trust this computer
 
        
     # ↑ This is an em space ( ), necessary to protect trailing newline(s)
