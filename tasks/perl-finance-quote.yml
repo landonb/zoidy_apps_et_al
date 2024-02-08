@@ -48,7 +48,7 @@
   become: true
 
 - name: perl-finance-quote (gnucash) » Test Finance::Quote Perl module
-  ansible.builtin.shell: gnc-fq-dump nasdaq amzn
+  ansible.builtin.shell: "gnc-fq-dump nasdaq amzn"
   args:
     chdir: "{{ ansible_env.HOME }}/.local/bin"
   # (lb): This needs an API key, best stored in pass...
