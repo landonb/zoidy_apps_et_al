@@ -8,6 +8,11 @@
 
 # http://finance-quote.sourceforge.net/
 
+# PFILE/2024-02-08: The next task takes a while...
+# - SAVVY: You might want to run it manually to monitor progress.
+- ansible.builtin.debug:
+    msg: "perl-finance-quote (gnucash) » SAVVY∷ The next task takes a while, ~5 mins..."
+
 - name: perl-finance-quote (gnucash) » Install Finance::Quote
   # - I tried without sudo, e.g.,
   #     ansible.builtin.shell: echo "y" | gnc-fq-update
