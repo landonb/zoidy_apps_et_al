@@ -87,7 +87,11 @@
     - email-gmail-postfix
     - font-hack-classic
     - font-mania
-    - golang-go-install-packages
+    # See previous task that loads 'all-github':
+    # - golang-delve-debugger
+    # See previous task that loads 'all-init-go-lang':
+    # - golang-go-install-packages
+    # - golang-install-go-lang
     - hardware-android-studio
     - hardware-arduino
     - node-npm-packages
