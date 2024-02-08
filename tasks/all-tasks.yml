@@ -195,7 +195,10 @@
     name: zoidy_apps_et_al
     tasks_from: python-sources
     apply: { tags: always }
-  tags: python-sources
+  tags:
+    - python-sources
+    # Let's you skip this task via `--skip-tags skip-optional-tasks`.
+    - skip-optional-tasks
 
 # ************************************************************************
 # *** Virt. ***
