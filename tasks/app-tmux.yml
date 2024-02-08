@@ -51,6 +51,11 @@
     force: "true"
   register: gitclone
 
+- name: "tmux: make clean"
+  ansible.builtin.make:
+    chdir: "{{ TMUX_DIR }}"
+    target: clean
+
 - name: "tmux: sh autogen.sh"
   ansible.builtin.shell: sh autogen.sh
   args:
