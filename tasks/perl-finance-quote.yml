@@ -42,7 +42,9 @@
   #     ...
   #   See:
   #     http://blog.schmorp.de/2015-06-06-a-stable-perl.html
-  ansible.builtin.shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
+  # - NOTED/2024-02-08: On latest LM 21.3, there is no prompt:
+  #     ansible.builtin.shell: echo "y" | {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
+  ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/gnc-fq-update"
   become: true
 
 - name: perl-finance-quote (gnucash) » Test Finance::Quote Perl module
