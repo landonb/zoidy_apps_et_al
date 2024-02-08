@@ -18,8 +18,9 @@
 - ansible.builtin.set_fact:
     # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
     # 2023-04-23: Versions: 3.11 is last 3.x; then 4.0 → 4.14; now 5.0 [2023-03-25].
-    #   GNUCASH_DOCS_BRANCH: "3.10"
-    GNUCASH_DOCS_BRANCH: "5.0"
+    #  GNUCASH_DOCS_BRANCH: "3.10"
+    #  GNUCASH_DOCS_BRANCH: "5.0"
+    GNUCASH_DOCS_BRANCH: "5.5"
 
 # ***
 

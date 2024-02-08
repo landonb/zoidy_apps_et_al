@@ -44,8 +44,11 @@
 #   https://github.com/Gnucash/gnucash/releases
 
 - ansible.builtin.set_fact:
+    # USYNC: Keep current with GNUCASH_DOCS_BRANCH in app-gnucash-docs.yml.
+    # 2023-12-17:
+    GNUCASH_BRANCH: "5.5"
     # 2023-04-23:
-    GNUCASH_BRANCH: "5.0"
+    #  GNUCASH_BRANCH: "5.0"
     # 2021-09-10: The "Edit..." button for Invoice Group does not work...:
     #  GNUCASH_BRANCH: "4.6"
     # 2021-03-13:
