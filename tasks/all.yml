@@ -94,8 +94,8 @@
     # - golang-install-go-lang
     - hardware-android-studio
     - hardware-arduino
-    - node-npm-packages
     - meld-configure
+    - node-npm-packages
     # - perl-finance-quote
     - python-sources
     # - vid-ttygif
