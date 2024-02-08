@@ -45,8 +45,10 @@
 # https://www.cinelerra-gg.org/mint-package/
 
 - ansible.builtin.set_fact:
-    zoidy_cinelerra_gg_version: "20230331"
-    # zoidy_cinelerra_gg_sha256: "???"
+    # zoidy_cinelerra_gg_version: "20230331"
+    zoidy_cinelerra_gg_version: "20240131"
+    # OWELL: Cinelerra doesn't sign their releases. Just gotta trust 'em.
+    #  zoidy_cinelerra_gg_sha256: "???"
 
 - ansible.builtin.set_fact:
     zoidy_cinelerra_gg_uri: "https://cinelerra-gg.org/download/images"
