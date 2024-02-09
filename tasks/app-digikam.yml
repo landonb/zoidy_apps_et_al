@@ -6,9 +6,15 @@
 
 # CXREF: https://www.digikam.org/download/
 #
-#   https://download.kde.org/stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage.mirrorlist
+# - 2024-02-08: 8.2.0: Known hashes:
+#   - REFER:  https://download.kde.org/stable/digikam/8.2.0/digiKam-8.2.0-x86-64.appimage.mirrorlist
+#   - File:   /stable/digikam/8.2.0/digiKam-8.2.0-x86-64.appimage
+#   - MD5     8f89c25c64cd26c877b33e6a733f23d5
+#   - SHA1    08e1373d64438625595aa94c8465affc8e56a292
+#   - SHA256  2176dceedf62697e342f4fa2e06d1afa60d662cf2e57bc8a9ad1d7f5eb60b2a8
 #
-# - 8.0.0: Known hashes:
+# - 2023-04-23: 8.0.0: Known hashes:
+#   - REFER:  https://download.kde.org/stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage.mirrorlist
 #   - File:   /stable/digikam/8.0.0/digiKam-8.0.0-x86-64.appimage
 #   - MD5     e62cf3f2bdc5ecb1f8a52f9cdaf6bc15
 #   - SHA1    b12742bad5ff934cdb17440e8621cd09249f9c73
@@ -17,8 +23,8 @@
 # Version history I've used: 5.90, 6.4.0, 7.8.0, 8.0.0
 
 - ansible.builtin.set_fact:
-    zoidy_digikam_version: "8.0.0"
-    zoidy_digikam_sha256: "d73bc5dcc97d6f7e378b58af44387f213d556510ad496a80898fd69131b87eea"
+    zoidy_digikam_version: "8.2.0"
+    zoidy_digikam_sha256: "2176dceedf62697e342f4fa2e06d1afa60d662cf2e57bc8a9ad1d7f5eb60b2a8"
 
 - ansible.builtin.set_fact:
     zoidy_digikam_uri: "https://mnvoip.mm.fcix.net/kdeftp/stable/digikam/{{ zoidy_digikam_version }}"
