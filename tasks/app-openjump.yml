@@ -8,16 +8,20 @@
 #
 #   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/
 #
-#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.0/
+#   https://sourceforge.net/projects/jump-pilot/files/OpenJUMP/2.2.1/
 
 - ansible.builtin.set_fact:
+    # 2024-02-08 (2023-05-07):
+    OPENJUMP_VER: '2.2.1'
+    OPENJUMP_BLD: 'r5222[94156e5]'
+    OPENJUMP_BLD_ENC: 'r5222%5B94156e5%5D'
+    # 2023-04-25 (2022-12-04):
+    #  OPENJUMP_VER: '2.2.0'
+    #  OPENJUMP_BLD: 'r5193[9e7ba88]'
+    #  OPENJUMP_BLD_ENC: 'r5193%5B9e7ba88%5D'
     # 2019-01-03:
     #  OPENJUMP_VER: '1.14'
     #  OPENJUMP_BLD: 'r6065'
-    # 2023-04-25:
-    OPENJUMP_VER: '2.2.0'
-    OPENJUMP_BLD: 'r5193[9e7ba88]'
-    OPENJUMP_BLD_ENC: 'r5193%5B9e7ba88%5D'
 
 - ansible.builtin.set_fact:
     OPENJUMP_BASE_URI: 'https://downloads.sourceforge.net/project/jump-pilot/OpenJUMP/{{ OPENJUMP_VER }}'
