@@ -7,31 +7,55 @@
 # CXREF: http://www.arduino.cc/
 #
 #   https://www.arduino.cc/en/software
+#
+#   https://docs.arduino.cc/software/ide-v2/tutorials/getting-started/ide-v2-downloading-and-installing/
 
 # MAYBE/2023-04-25: Convert to AppImage install, e.g.:
 #
-#   https://downloads.arduino.cc/arduino-ide/arduino-ide_2.1.0_Linux_64bit.AppImage
+#   https://downloads.arduino.cc/arduino-ide/arduino-ide_2.3.0_Linux_64bit.AppImage
 #
 # - Except this task already writ, and fairly simple, so... why bother.
+#
+# - MAYBE/2024-02-08: AppImage might also require 2 additional steps
+#   (and maybe downloading the archive, too, but I haven't run Arduino
+#   in a few years; haven't tinkered much with hardware lately).
+#
+#   From doc referenced above:
+#
+#   - "In case you cannot run the AppImage file, make sure that FUSE
+#      is installed on your system":
+#
+#     sudo add-apt-repository universe
+#     sudo apt install libfuse2
+#
+#   - "To enable the Arduino IDE to access the serial port and upload code to your
+#      board, the following rule can be added to /etc/udev/rules.d/99-arduino.rules":
+#
+#     SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", GROUP="plugdev", MODE="0666"
 
 - ansible.builtin.set_fact:
+    # 2024-02-08:
+    ARDUINO_VER: "2.3.0"
+    # 2023-04-25:
+    #  ARDUINO_VER: "2.1.0"
     # 2019-01-04:
     #  ARDUINO_VER: "1.8.8"
-    # 2023-04-25:
-    ARDUINO_VER: "2.1.0"
 
 - ansible.builtin.set_fact:
-    # 2019-01-04:
-    #  ARDUINO_ARC: "arduino-{{ ARDUINO_VER }}-linux64.tar.xz"
     # 2023-04-25:
     ARDUINO_ARC: "arduino-ide_{{ ARDUINO_VER }}_Linux_64bit.zip"
+    # 2019-01-04:
+    #  ARDUINO_ARC: "arduino-{{ ARDUINO_VER }}-linux64.tar.xz"
 
 - ansible.builtin.set_fact:
-    # 2019-01-04:
-    #  ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_ARC }}"
+    ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}/arduino-ide_{{ ARDUINO_VER }}_Linux_64bit"
+
+- ansible.builtin.set_fact:
     # 2023-04-25:
     # - E.g., https://downloads.arduino.cc/arduino-ide/arduino-ide_2.1.0_Linux_64bit.zip
     ARDUINO_URL: "https://downloads.arduino.cc/arduino-ide/{{ ARDUINO_ARC }}"
+    # 2019-01-04:
+    #  ARDUINO_URL: "http://www.arduino.cc/download.php?f=/{{ ARDUINO_ARC }}"
 
 # ***
 
@@ -40,9 +64,6 @@
     # The package is a simple script to download the latest actual Dropbox code.
     url: "{{ ARDUINO_URL }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_ARC }}"
-
-- ansible.builtin.set_fact:
-    ARDUINO_DIR: "arduino-{{ ARDUINO_VER }}"
 
 # 2023-04-26: Arduino 2.1.0 does not unpack to top-level dir like 1.8.8,
 # so specify that top-level unpack path.
