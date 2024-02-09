@@ -1,34 +1,41 @@
 ---
 
-# USAGE: Task downloads and installs Opera browser from deb package.
+# USAGE: Install Opera browser apt package.
 
 # ***
 
-# CXREF: https://www.opera.com/download/
-#
-#  https://www.opera.com/computer/thanks?partner=www&par=id%3D61294%26location%3D424&gaprod=opera
-#
-# - opera-stable_98.0.4759.6_amd64.deb
-#
-#     https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes
+# REFER: Install apt package from Opera sources, as documented by:
+#   https://www.linuxcapable.com/install-opera-browser-on-ubuntu-linux/
 
-- ansible.builtin.set_fact:
-    # 2023-04-24: The obscured direct-download link, and
-    #             the archive name you see once download starts.
-    OPERA_URL: "https://download.opera.com/download/get/?id=61294&location=424&nothanks=yes&sub=marine&utm_tryagain=yes"
-    OPERA_DEB: "opera-stable_98.0.4759.6_amd64.deb"
-    # - 2019-01-04:
-    #   OPERA_URL: "https://www.opera.com/download/get/?id=44732&amp;location=415&amp;nothanks=yes&amp;sub=marine&utm_tryagain=yes"
-    #   OPERA_DEB: "opera-stable_57.0.3098.110_amd64.deb"
+# REFER: For .deb package, see:
+#   https://www.opera.com/download/
+#   https://www.opera.com/computer/thanks?partner=www&par=id%3D61294%26location%3D424&gaprod=opera
 
-- name: Fetch Opera Debian package
-  ansible.builtin.get_url:
-    url: "{{ OPERA_URL }}"
-    dest: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
-    # checksum: "sha256:{{ <sha> }}"
+# SAVVY: Creates /usr/share/keyrings/opera.gpg
+# - 2024-02-08: You might also see two other keys, but might also be
+#   artifacts from a manual .deb install:
+#     /etc/apt/trusted.gpg.d/opera.archive.key.2019.gpg
+#     /etc/apt/trusted.gpg.d/opera.archive.key.2021.gpg
+- name: Import Opera Public Key
+  become: true
+  ansible.builtin.shell: >
+    curl -fsSL https://deb.opera.com/archive.key |
+      gpg --dearmor |
+      sudo tee /usr/share/keyrings/opera.gpg \
+      > /dev/null
 
-- name: Install Opera Debian package
-  become: yes
-  ansible.builtin.apt:
-    deb: "{{ zoidy_homefries_downloads_dir }}/{{ OPERA_DEB }}"
+- name: Import Opera Public Key
+  become: true
+  ansible.builtin.shell: >
+    echo deb [arch=amd64 signed-by=/usr/share/keyrings/opera.gpg] \
+      https://deb.opera.com/opera-stable/ stable non-free |
+      sudo tee /etc/apt/sources.list.d/opera-stable.list
+
+- name: Run command "apt-get update"
+  become: true
+  ansible.builtin.apt: update_cache=yes
+
+- name: Install opera-stable
+  become: true
+  ansible.builtin.apt: name=opera-stable
 
