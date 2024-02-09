@@ -4,11 +4,11 @@
 
 # ***
 
-- name: Setup Preferred GnuCash Preferences
+- name: Setup Preferred GnuCash Preferences (5.5)
   # You can write dconf or gsettings.
   # - Note that GnuCash populates gsettings defaults but not dconf.
   # - If you write to either place, it'll be reflected in the other
-  #   place, but dconf only lists key you've changed. So gsettings
+  #   place, but dconf only lists keys you've changed. So gsettings
   #   shows you all possible settings, and dconf only shows what
   #   you've changed.
   #
@@ -20,87 +20,125 @@
 
   loop:
 
+    # ***
+
+    # REFER:
+    #   gsettings list-recursively org.gnucash.general.register
+    #   dconf dump /org/gnucash/GnuCash/general/register
+
     # Edit > Preferences > Register Defaults > Default Style
     # - One of: Basic ledger / Auto-split ledger / Transaction Journal
     # - Set one of these 'true' and the other two 'false'.
     #
-    - schema: "org.gnucash.general.register"
+    # BWARE: These only apply to accounts you haven't opened yet!
+    # - Once you open an Account, GnuCash remembers the style you
+    #   chose from the View menu.
+    # - Just be aware that changing the style settings in gsettings/dconf
+    #   won't apply to accounts you've opened.
+    #   - I also have no idea where the settings are stored, because
+    #     doesn't appear in files under ~/.local/share/gnucash/books/
+    #     and doesn't appear in dconf or gsettings.
+    - schema: "org.gnucash.GnuCash.general.register"
       key: "default-style-ledger"
       val: "false"
     # So that you don't have to click the Split button all the time.
     # - Useful if you normally click transactions to edit their splits.
-    - schema: "org.gnucash.general.register"
+    - schema: "org.gnucash.GnuCash.general.register"
       key: "default-style-autoledger"
       val: "true"
     # Sometimes I like it when all splits are expanded (Transaction Journal
     # style), 2021-03-14 19:25: but currently I think I still like auto-split
     # behavior for most accounts.
+    - schema: "org.gnucash.GnuCash.general.register"
+      key: "default-style-journal"
+      val: "false"
+
+    # The old keys are still visible, but they're ignored:
+    - schema: "org.gnucash.general.register"
+      key: "default-style-ledger"
+      val: "false"
+    - schema: "org.gnucash.general.register"
+      key: "default-style-autoledger"
+      val: "true"
     - schema: "org.gnucash.general.register"
       key: "default-style-journal"
       val: "false"
 
-    # Edit > Preferences > Register Defaults > ✓ Only display leaf account names
-    # - 2021-01-09 23:49: Trying this now. Not sure why I didn't do sooner,
-    #   my long account names makes 'em hard to read quickly.
+    # ***
+
+    # REFER:
+    #   gsettings list-recursively org.gnucash.GnuCash.general.register
+
+    # Edit > Preferences > Register Defaults > Other Defaults > ✓ Only display leaf account names
+    # - I feel like long account names makes 'em hard to read quickly.
+    # - I originally tried using a different separator (defaults 'colon'):
+    #     Edit > Preferences > Accounts > Separator Character > Character: »
+    #   which helped a little, but the short name works better, I think.
+    #     - schema: "org.gnucash.GnuCash.general"
+    #       key: "account-separator"
+    #       val: "'»'"
+    #       # Default:
+    #       #   val: "'colon'"
+    - schema: "org.gnucash.GnuCash.general.register"
+      key: "show-leaf-account-names"
+      val: "true"
+    # 2024-02-09: The old setting, still visible, but ignored:
     - schema: "org.gnucash.general.register"
       key: "show-leaf-account-names"
       val: "true"
-    # - I first set
-    #     Edit > Preferences > Accounts > Separator Character > Character: »
-    #   which helped a little, and the short name works better, I think.
-    # 2021-03-13: The sep. on my machine is back to ':', did I do that?
-    #             - Probably for Birds Eye.
-    #  - key: "general/account-separator"
-    #    val: "»"
 
-    # 2023-04-24: use-gnucash-color-theme defaults true.
-    #
-    #  # Edit > Preferences > Register > ✓ Use GnuCash built-in color theme
-    #  # - Enable this option to use a light green background on transaction
-    #  #   rows, and beige on split backgrounds. When off, they're all white.
-    #  - schema: "org.gnucash.general.register"
-    #    key: "use-gnucash-color-theme"
-    #    val: "true"
+    # ***
 
-    # 2023-04-24: date-format defaults "4", which GUI shows as ISO YYYY-MM-DD.
-    #
-    #  # Edit > Preferences > Numbers, Date, Time > Date Format: *ISO    2013-07-31*
-    #  # 2021-03-13: How'd I miss this setting until now.
-    #  - schema: "org.gnucash.general"
-    #    key: "date-format"
-    #    val: "4"
+    # REFER:
+    #   gsettings list-recursively org.gnucash.GnuCash.general
 
     # Edit > Preferences > General > Retain log/backup files > ✓ Never
-    # 2021-03-13: I mostly import data, and don't make a lot of edits or
-    # new transactions in the application. So I'm diligent about saving
-    # (and committing to a repo) so I don't feel the need for this file
-    # noise (I've never needed/used a GNC log file).
+    # 
+    # - 2021-03-13: I mostly import data, and don't make a lot of edits or
+    #   new transactions in the application. So I'm diligent about saving
+    #   (and committing to a repo) so I don't feel the need for this file
+    #   noise (I've never needed/used a GNC log file).
+    - schema: "org.gnucash.GnuCash.general"
+      key: "retain-type-days"
+      val: "false"
+    - schema: "org.gnucash.GnuCash.general"
+      key: "retain-type-forever"
+      val: "false"
+    - schema: "org.gnucash.GnuCash.general"
+      key: "retain-type-never"
+      val: "true"
+    # 2024-02-09: These settings still exist, but they're ignored:
+    - schema: "org.gnucash.general"
+      key: "retain-type-days"
+      val: "false"
+    - schema: "org.gnucash.general"
+      key: "retain-type-forever"
+      val: "false"
     - schema: "org.gnucash.general"
       key: "retain-type-never"
       val: "true"
 
-# FIXME/2023-04-24: Revisit this after setting up new OS and opening
-# GnuCash on your actual books.
-#
-# - I don't see these:
-#     org.gnucash.dialogs.business.invoice
-#     org.gnucash.dialogs.import.qif
-#   - REFER:
-#       gsettings list-recursively org.gnucash.dialogs
+    # ***
 
-- ansible.builtin.debug: msg="FIXME — Audit GnuCash settings"
-  loop:
+    # REFER:
+    #   gsettings list-recursively org.gnucash.GnuCash.general
 
-    # 2023-04-24: "Show doc"s defaults off in GUI, and no gsettings key.
-    # - FIXME: The GUI setting does not stick... and I don't see any
-    #   settings changes. I also didn't load a book, just opened the
-    #   app...
+    # Edit > Preferences > Numbers, Date, Time > Date Format: *Locale  07/31/2013*
+    # - 2024-02-09: date-format defaults "4", shown in Preferences as
+    #   *Locale  07/31/2013*
     #
-    # Edit > Preferences > Import > QIF Import > ✗ Show documentation
-    # SPIKE/2021-03-13: Will this cut down on Wizard screens?
-    - schema: "org.gnucash.dialogs.import.qif"
-      key: "show-doc"
-      val: "false"
+    - schema: "org.gnucash.GnuCash.general"
+      key: "date-format"
+      val: "3"
+    # 2024-02-09: The old setting, still visible, but ignored:
+    - schema: "org.gnucash.general"
+      key: "date-format"
+      val: "3"
+
+    # ***
+
+    # REFER:
+    #   gsettings list-recursively org.gnucash.GnuCash.dialogs.business
 
     # Edit > Preferences > Business > Invoices > Notify when due > Days in advance
     # 2021-03-22: Defaults to 7, lowest is 1.
@@ -112,44 +150,104 @@
     #   date. So the GnuCash alert -- to me -- only serves to remind me to
     #   update my books (import recent bank transactions into GnuCash, and
     #   assign payments to invoices).
+    - schema: "org.gnucash.GnuCash.dialogs.business.invoice"
+      key: "days-in-advance"
+      val: "1.0"
+    # 2024-02-09: This setting still exists but appears to be ignored.
     - schema: "org.gnucash.dialogs.business.invoice"
       key: "days-in-advance"
       val: "1.0"
 
-    # MANUAL/2021-03-13 20:12: See also: View: ✗ Summary Bar
-    # to hide the Summary bar (though I don't see a dconf setting for it).
-    # - At least for my business books the Summary bar has useless or
-    #   incorrect data in it... but that's probably because I've got my
-    #   accounts set up unconventionally (because I'm not an accountant!).
+    # ***
 
-  # 2021-03-13: All settings I see on dump.
-  #
-  #   [/]
-  #   summarybar-position-top=false
-  #   retain-type-never=true
-  #   show-account-color=true
-  #   date-completion-thisyear=false
-  #   migrate-prefs-done=true
-  #   show-account-color-tabs=true
-  #   account-separator=':'
-  #   reversed-accounts-none=false
-  #   autosave-interval-minutes=0.0
-  #   grid-lines-horizontal=false
-  #   date-format=3
-  #   retain-type-days=false
-  #   use-accounting-labels=false
-  #   autosave-show-explanation=false
-  #   prefs-version=402
-  #
-  #   [finance-quote]
-  #   alphavantage-api-key='...'
-  #
-  #   [register]
-  #   use-gnucash-color-theme=true
-  #   show-leaf-account-names=true
-  #   default-style-autoledger=true
-  #   default-style-ledger=false
-  #
-  #   [report]
-  #   currency-choice-other=false
+    # REFER:
+    #   gsettings list-recursively org.gnucash.GnuCash.dialogs.import
+
+    # Edit > Preferences > Import > QIF Import > ✗ Show documentation
+    # SPIKE/2021-03-13: Will this cut down on Wizard screens?
+    - schema: "org.gnucash.GnuCash.dialogs.import.qif"
+      key: "show-doc"
+      val: "false"
+    # 2024-02-09: This setting still exists but appears to be ignored.
+    - schema: "org.gnucash.dialogs.import.qif"
+      key: "show-doc"
+      val: "false"
+
+    # ***
+
+    # 2023-04-24: use-gnucash-color-theme (now?) defaults true (looks best).
+    #
+    #  # Edit > Preferences > Register > ✓ Use GnuCash built-in color theme
+    #  # - Enable (the default) to use a light green background on transaction
+    #  #   rows, and beige on split backgrounds. When off, they're all gray.
+    #  - schema: "org.gnucash.GnuCash.general.register"
+    #    key: "use-gnucash-color-theme"
+    #    val: "true"
+    #  - schema: "org.gnucash.general.register"
+    #    key: "use-gnucash-color-theme"
+    #    val: "true"
+
+# ***
+
+# SETUP/2024-02-09: If you want to use this step, add the var
+#   zoidy_homefries_gnucash_alpha_vantage_api_key: "XXXX"
+# to your private `group_vars` file.
+
+- name: Setup GnuCash Alpha Vantage API key (5.5) (Optional)
+  ansible.builtin.shell:
+    gsettings set \
+      org.gnucash.GnuCash.general.finance-quote \
+      alphavantage-api-key \
+      '{{ zoidy_homefries_gnucash_alpha_vantage_api_key }}'
+  when: >
+    zoidy_homefries_gnucash_alpha_vantage_api_key is defined
+    and zoidy_homefries_gnucash_alpha_vantage_api_key
+
+# ***
+
+# ONBRD/2021-03-13 20:12: Hide the Summary bar:
+# - View: ✗ Summary Bar
+# - There's no dconf/gsettings value for this.
+# - The change is saved to the ~/.local/share/gnucash/books file
+#   (after you close the books file):
+#     ...
+#     [Window 1]
+#     ...
+#     SummarybarVisible=false
+# - At least for my business books the Summary bar has useless or
+#   incorrect data in it... but that's probably because I've got my
+#   accounts set up unconventionally (because I'm not an accountant!).
+
+# ***
+
+# REFER/2021-03-13: All settings I see on dump.
+#
+#   [/]
+#   summarybar-position-top=false
+#   retain-type-never=true
+#   show-account-color=true
+#   date-completion-thisyear=false
+#   migrate-prefs-done=true
+#   show-account-color-tabs=true
+#   account-separator=':'
+#   reversed-accounts-none=false
+#   autosave-interval-minutes=0.0
+#   grid-lines-horizontal=false
+#   date-format=3
+#   retain-type-days=false
+#   use-accounting-labels=false
+#   autosave-show-explanation=false
+#   prefs-version=402
+#
+#   [finance-quote]
+#   alphavantage-api-key='...'
+#
+#   [register]
+#   use-gnucash-color-theme=true
+#   show-leaf-account-names=true
+#   default-style-autoledger=true
+#   default-style-ledger=false
+#
+#   [report]
+#   currency-choice-other=false
 
