@@ -6,25 +6,25 @@
 
 # CXREF: https://pencil.evolus.vn/
 #
-#    https://pencil.evolus.vn/Downloads.html
+#   https://pencil.evolus.vn/Downloads.html
+#
+# - Find the Pencil_3.1.1.ga_amd64.deb checksum:
+#
+#   https://pencil.evolus.vn/dl/V3.1.1.ga/CHECKSUM
 #
 # - See also source under:
 #
 #   https://linux.dropbox.com/packages/
 
 - ansible.builtin.set_fact:
-    # 2019-01-03:
-    #  PENCIL_VER: '3.0.4'
-    # 2023-04-24:
-    PENCIL_VER: '3.1.1.ga'
-
-- ansible.builtin.set_fact:
-    # 2019-01-03: PENCIL_VER: '3.0.4':
-    #   https://pencil.evolus.vn/dl/V3.0.4/CHECKSUM
-    #  PENCIL_XSM: "13baebb94d552789338eaa6cec260d0d39afa059"
-    # 2023-04-24: PENCIL_VER: '3.1.1.ga':
+    # 2023-04-24: PENCIL_VER: '3.1.1.ga' (released 2023-01-01):
     #   https://pencil.evolus.vn/dl/V3.1.1.ga/CHECKSUM
+    PENCIL_VER: '3.1.1.ga'
     PENCIL_XSM: "7faa077207ac33bcaa90294c8cc8b4abec8f687e"
+    # 2019-01-03: PENCIL_VER: '3.0.4' (released 2023-06-27):
+    #   https://pencil.evolus.vn/dl/V3.0.4/CHECKSUM
+    #  PENCIL_VER: '3.0.4'
+    #  PENCIL_XSM: "13baebb94d552789338eaa6cec260d0d39afa059"
 
 - ansible.builtin.set_fact:
     PENCIL_DEB: "Pencil_{{ PENCIL_VER }}_amd64.deb"
