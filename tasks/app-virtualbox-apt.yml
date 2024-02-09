@@ -129,5 +129,7 @@
     groups: vboxusers
     append: yes
 
-- ansible.builtin.debug: msg="CHORE: ALERT: You must logoff and log back on to realize the 'vboxusers' group association"
+- ansible.builtin.debug:
+    msg: >
+      CHORE » ALERT » You must logoff and log back on to realize the 'vboxusers' group association
 
