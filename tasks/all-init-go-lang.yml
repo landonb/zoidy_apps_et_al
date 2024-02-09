@@ -50,11 +50,23 @@
     tasks_from: golang-install-go-lang
     apply: { tags: always }
   tags:
-    # When you run the role tag, don't run golang-install-go-lang twice.
-    - never
     # Tasks that rely on Go being available.
     - cli-ripgrep
     - golang-delve-debugger
     - golang-go-install-packages
-  when: go_exists.rc != 0 or go_versioned.rc != 0
+    # When you run the role tag, don't run golang-install-go-lang twice.
+    # - Note the using the 'never' tag won't work if your site.yml
+    #   applies the role tagging when it loads the role.
+    #   - I.e., this won't work:
+    #       - never
+    # - Instead, use the when conditional to check for an explicit
+    #   task tag.
+  when: >
+    true
+    and (go_exists.rc != 0 or go_versioned.rc != 0)
+    and (false
+      or 'cli-ripgrep' in ansible_run_tags
+      or 'golang-delve-debugger' in ansible_run_tags
+      or 'golang-go-install-packages' in ansible_run_tags
+    )
 
