@@ -57,14 +57,18 @@
       sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
   register: google_gpg_import
 
+# SAVVY: Creates /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
+# - Though in past I've seen two files therein, including
+#     /etc/apt/sources.list.d/google-chrome.list
+#   But if you remove both .list files and re-run this task, only the former
+#   file is created.
+# - See also:
+#     $ apt show google-chrome-stable
+#     ...
+#     APT-Sources: https://dl.google.com/linux/chrome/deb stable/main amd64 Packages
 - name: Add Google Chrome proprietary repository
   become: true
   ansible.builtin.apt_repository:
-    # $ apt show google-chrome-stable
-    # ...
-    # APT-Sources: https://dl.google.com/linux/chrome/deb stable/main amd64 Packages
-    #
-    # CXREF: /etc/apt/sources.list.d/google-chrome.list
     repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb stable main
     state: present
 
