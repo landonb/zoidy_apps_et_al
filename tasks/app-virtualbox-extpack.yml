@@ -14,10 +14,10 @@
 - name: Fetch latest VirtualBox version file
   ansible.builtin.get_url:
     url: "http://download.virtualbox.org/virtualbox/LATEST.TXT"
-    dest: "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+    dest: "{{ zoidy_homefries_downloads_dir }}/virtualbox-LATEST.TXT"
 
 - name: Read VirtualBox latest version file
-  ansible.builtin.command: cat "{{ zoidy_virtualbox_downloads_dir }}/virtualbox-LATEST.TXT"
+  ansible.builtin.command: cat "{{ zoidy_homefries_downloads_dir }}/virtualbox-LATEST.TXT"
   register: virtualbox_latest_version_raw
 
 - ansible.builtin.set_fact:
@@ -39,7 +39,7 @@
     # E.g.,
     #   https://download.virtualbox.org/virtualbox/6.0.0/Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack
     url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/{{ virtualbox_extpack_name }}"
-    dest: "{{ zoidy_virtualbox_downloads_dir }}/"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
     checksum: "sha256:http://download.virtualbox.org/virtualbox/{{ virtualbox_latest_version }}/SHA256SUMS"
 
 # ***
@@ -71,7 +71,8 @@
 
           - Run installer as normal user from terminal and capture UUID, e.g.,:
 
-            $ VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.8.vbox-extpack
+            $ cd "{{ zoidy_homefries_downloads_dir }}"
+            $ VBoxManage extpack install {{ virtualbox_extpack_name }}
             VirtualBox Extension Pack Personal Use and Evaluation License (PUEL)
             ...
             Do you agree to these license terms and conditions (y/n)? y
@@ -79,6 +80,8 @@
             License accepted. For batch installation add
             --accept-license=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             to the VBoxManage command line.
+
+        - You can cancel the Authenticate dialog.
 
         - Copy the UUID it prints (the XXX's above) and paste to your
           group_vars/ variables file, e.g.,
@@ -106,7 +109,7 @@
       --accept-license={{ zoidy_homefries_virtualbox_license_uuid }} \
       "{{ virtualbox_extpack_name }}"
   args:
-    chdir: "{{ zoidy_virtualbox_downloads_dir }}"
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
   register: zoidy_vbox_extpack_install
   # BWARE/2023-04-27: Fails if already installed (tells you to uninstall first).
   # - MAYBE/2023-04-27: Perhaps we should ignore the error?
@@ -127,7 +130,7 @@
       | xargs /bin/rm &> /dev/null
       #| xargs echo
   args:
-    chdir: "{{ zoidy_virtualbox_downloads_dir }}"
+    chdir: "{{ zoidy_homefries_downloads_dir }}"
   register: zoidy_rm_vbox_extpacks
 
 - ansible.builtin.debug: msg="zoidy_rm_vbox_extpacks » {{ zoidy_rm_vbox_extpacks.stdout }}"
