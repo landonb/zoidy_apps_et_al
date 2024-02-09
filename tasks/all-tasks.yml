@@ -137,7 +137,15 @@
     name: zoidy_apps_et_al
     tasks_from: hardware-arduino
     apply: { tags: always }
-  tags: hardware-arduino
+  tags:
+    - hardware-arduino
+    # ISOFF/2024-02-08: I haven't run Arduino (nor played with the one
+    # device I own) in years, so making this an optional step, e.g., if
+    # you ran the role tag, you'd skip optional tasks like this:
+    #   ansible-playbook /path/to/site.yml -l $(hostname) \
+    #     --tags zoidy_apps_et_al \
+    #     --skip-tags skip-optional-tasks
+    - skip-optional-tasks
 
 # ************************************************************************
 # *** Font 'ackch. ***
