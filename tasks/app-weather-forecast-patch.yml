@@ -19,6 +19,11 @@
 - ansible.builtin.set_fact:
     libmateweather_so_path: "{{ libmateweather_so_path_raw.stdout }}"
 
+- name: Determine if libmateweather.so previously backed up
+  ansible.builtin.command: echo "{{ libmateweather_so_path }}" | grep -q "zoidy_apps_et_al"
+  register: grep_backup_exists_cmd
+  ignore_errors: true
+
 - ansible.builtin.set_fact:
     libmateweather_so_backup_path: "{{ libmateweather_so_path }}-{{ ansible_date_time.iso8601_basic_short }}-zoidy_apps_et_al"
 
@@ -28,6 +33,7 @@
     remote_src: True
     src: "{{ libmateweather_so_path }}"
     dest: "{{ libmateweather_so_backup_path }}"
+  when: grep_backup_exists_cmd.rc != 0
 
 # ***
 
