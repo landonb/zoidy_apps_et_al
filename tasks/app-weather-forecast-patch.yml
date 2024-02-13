@@ -5,46 +5,67 @@
 #   https://github.com/mate-desktop/libmateweather/pull/79#issuecomment-1765810415
 #   https://forums.linuxmint.com/viewtopic.php?p=2399362#p2399362
 
-# REFER: If you need to remove an old patch, restore previous backup (see below)
-# or run `apt reinstall libmateweather1`.
+# REFER: If you patched the system file itself rather than just changing the
+# symlink, you can run `apt reinstall libmateweather1` to recover the original.
 
 # ***
 
-# Back up file first.
+- ansible.builtin.set_fact:
+    libmateweather_so_link: "/usr/lib/x86_64-linux-gnu/libmateweather.so.1"
 
-- name: Resolve libmateweather.so path
-  ansible.builtin.command: readlink -f /usr/lib/x86_64-linux-gnu/libmateweather.so.1
-  register: libmateweather_so_path_raw
+- name: Resolve libmateweather.so symlink path
+  ansible.builtin.command: readlink -f {{ libmateweather_so_link }}
+  register: readlink_lib_path_cmd
 
 - ansible.builtin.set_fact:
-    libmateweather_so_path: "{{ libmateweather_so_path_raw.stdout }}"
+    libmateweather_so_path: "{{ readlink_lib_path_cmd.stdout }}"
 
-- name: Determine if libmateweather.so previously backed up
-  ansible.builtin.command: echo "{{ libmateweather_so_path }}" | grep -q "zoidy_apps_et_al"
-  register: grep_backup_exists_cmd
+# ***
+
+# SAVVY: If we wanted to make a backup instead, we could use the datetime to
+# ensure a unique file name, e.g., {{ ansible_date_time.iso8601_basic_short }}.
+# - But rather than editing the system file and leaving the symlink alone,
+#   create a separate patched file, and symlink to that instead.
+
+- name: Format libmateweather.so patch path
+  ansible.builtin.set_fact:
+    libmateweather_so_patch_path: "{{ libmateweather_so_path }}--zoidy_apps_et_al"
+
+- name: Check if libmateweather.so patch already exists
+  # SAVVY: Must use shell, not command, for pipe to work (else echo echoes all).
+  ansible.builtin.shell: echo "{{ libmateweather_so_path }}" | grep -q "zoidy_apps_et_al"
+  register: grep_patch_exists_cmd
   ignore_errors: true
 
-- ansible.builtin.set_fact:
-    libmateweather_so_backup_path: "{{ libmateweather_so_path }}-{{ ansible_date_time.iso8601_basic_short }}-zoidy_apps_et_al"
+# ***
 
-- name: "Backup /etc/updatedb.conf (using ansible_date_time for unique path — {{ libmateweather_so_backup_path }})"
+- name: Copy libmateweather.so for patching — {{ libmateweather_so_patch_path }}
   become: true
   ansible.builtin.copy:
     remote_src: True
     src: "{{ libmateweather_so_path }}"
-    dest: "{{ libmateweather_so_backup_path }}"
-  when: grep_backup_exists_cmd.rc != 0
+    dest: "{{ libmateweather_so_patch_path }}"
+  when: grep_patch_exists_cmd.rc != 0
 
-# ***
-
-- name: Patch Weather Forecast application forecast URL
+- name: Patch libmateweather.so copy (update application forecast URL)
   become: true
   ansible.builtin.command: >
     sudo sed -i \
     's|https://www.aviationweather.gov/adds/dataserver_current/httpparam|https://aviationweather.gov/cgi-bin/data/dataserver.php\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0|' \
-    "{{ libmateweather_so_path }}"
+    "{{ libmateweather_so_patch_path }}"
+  when: grep_patch_exists_cmd.rc != 0
 
 # ***
 
+- name: Relink libmateweather.so to use patched copy
+  become: true
+  ansible.builtin.file:
+    src: "{{ libmateweather_so_patch_path }}"
+    dest: "{{ libmateweather_so_link }}"
+    state: link
+
+# ***
+
+# SAVVY: You can also run the zoidy_panelsweet role to clear out and repopulate panels.
 - debug: msg="CHORE » Remove Weather Forecast from system tray, or Logon MATE again to realize patch"
 
