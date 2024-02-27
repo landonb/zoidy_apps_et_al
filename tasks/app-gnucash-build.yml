@@ -70,8 +70,8 @@
 - ansible.builtin.set_fact:
     # USYNC/2024-02-26: Keep current with DepoXy's DEPOXY_PYENV_PYVERS
     #   https://github.com/DepoXy/depoxy-archetype/blob/release/home/.config/depoxy/depoxyrc.EVAL.sh
-    # PYENV_VERS: "3.10"
-    PYENV_VERS: "3.12"
+    # PYENV_VERS: "3.10.13"
+    PYENV_VERS: "3.12.1"
 
 # ***
 
@@ -501,6 +501,7 @@
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
       eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;
     \
@@ -515,6 +516,7 @@
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
       eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;
     \
@@ -529,6 +531,7 @@
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
       eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;
     \
