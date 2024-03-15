@@ -103,6 +103,8 @@
 
 # ***
 
+# SAVVY: On stock LM 21.3, /etc/postfix/sasl/ is empty directory.
+
 - name: "Configure the Postfix sasl_passwd » Set Gmail TLS credentials"
   become: true
   ansible.builtin.lineinfile:
