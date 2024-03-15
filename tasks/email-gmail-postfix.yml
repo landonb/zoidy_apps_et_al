@@ -96,7 +96,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^myhostname = "
+    regexp: "^myhostname\\s*="
     line: "myhostname = {{ zoidy_homefries_postfix_fqdn }}"
     state: present
   notify: Restart Postfix
@@ -146,7 +146,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^relayhost = "
+    regexp: "^relayhost\\s*="
     line: "relayhost = [smtp.gmail.com]:587"
     state: present
   notify: Restart Postfix
@@ -157,7 +157,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_sasl_auth_enable = "
+    regexp: "^smtp_sasl_auth_enable\\s*="
     line: "smtp_sasl_auth_enable = yes"
     state: present
   notify: Restart Postfix
@@ -166,7 +166,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_sasl_security_options = "
+    regexp: "^smtp_sasl_security_options\\s*="
     line: "smtp_sasl_security_options = noanonymous"
     state: present
   notify: Restart Postfix
@@ -175,7 +175,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_sasl_password_maps = "
+    regexp: "^smtp_sasl_password_maps\\s*="
     line: "smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd"
     state: present
   notify: Restart Postfix
@@ -184,7 +184,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_tls_security_level = "
+    regexp: "^smtp_tls_security_level\\s*="
     line: "smtp_tls_security_level = encrypt"
     state: present
   notify: Restart Postfix
@@ -193,7 +193,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_tls_CAfile = "
+    regexp: "^smtp_tls_CAfile\\s*="
     line: "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
     state: present
   notify: Restart Postfix
@@ -202,7 +202,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^smtp_use_tls = "
+    regexp: "^smtp_use_tls\\s*="
     line: "smtp_use_tls = yes"
     state: present
   notify: Restart Postfix
@@ -214,7 +214,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^message_size_limit = "
+    regexp: "^message_size_limit\\s*="
     line: "message_size_limit = 0"
     state: present
   notify: Restart Postfix
@@ -225,7 +225,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^debug_peer_list = "
+    regexp: "^debug_peer_list\\s*="
     line: "debug_peer_list = smtp.gmail.com"
     state: present
   notify: Restart Postfix
@@ -235,7 +235,7 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
-    regexp: "^debug_peer_level = "
+    regexp: "^debug_peer_level\\s*="
     line: "debug_peer_level = 3"
     state: present
   notify: Restart Postfix
