@@ -59,6 +59,35 @@
 
 # ***
 
+# Comment settings we'll set ourselves, so user can see original values
+# in same file as new values.
+
+- name: "Configure the Postfix main.cf » Disable old ‘myhostname’"
+  become: true
+  ansible.builtin.lineinfile:
+    dest: /etc/postfix/main.cf
+    regexp: "^({{ item }}\\s*=.*)$"
+    line: "#  \\1"
+    backrefs: yes
+    state: present
+  # In LM 21.3, only myhostname, relayhost, and smtpd_tls_security_level
+  # present in default file.
+  loop:
+    - myhostname
+    - relayhost
+    - smtp_sasl_auth_enable
+    - smtp_sasl_security_options
+    - smtp_sasl_password_maps
+    - smtp_tls_security_level
+    - smtp_tls_CAfile
+    - smtp_use_tls
+    - message_size_limit
+    - debug_peer_list
+    - debug_peer_level
+  notify: Restart Postfix
+
+# ***
+
 # - Update myhostname, e.g., changes:
 #     myhostname = {{ ansible_hostname }}.lan
 # - to:
