@@ -137,20 +137,75 @@
 #         drwxrwxr-x 6 user user 4.0K Mar 18 17:54 dropbox-lnx.x86_64-195.4.4995/
 #         -rw-rw-r-- 1 user user   10 Mar  2 17:27 VERSION
 #
-#       And if you run `dropbox update` again, same deal, it prompts
-#       and then downloads the older version (194.4.6267).
+#       - I then ran `dropbox update` again, and same deal, it prompts
+#         and then downloads and overwrites the same version (194.4.6267).
 #
-#       - LATER: I've made a note to check on this later. The version this
-#         task installs (195.4.4995) was released yesterday, whereas the
-#         one that `dropbox update` downloaded (194.4.6267) was released
-#         2 weeks ago. So maybe `dropbox update` doesn't live on the edge
-#         like I do.
+#     - So next I downgraded to 194.4.6267, and `dropbox update` behaves
+#       the same: It prompts you to download the "proprietary daemon",
+#       and then it downloads the same version, overwriting
+#       ~/.dropbox-dist/dropbox-lnx.x86_64-195.4.4995.
+#
+#     - Finally, I downgraded to 193.3.5459, then ran `dropbox update`,
+#       and this time it killed the old daemon after downloading
+#       194.4.6267.
+#
+#       It also popped up an error dialog:
+#
+#         Could not start the Dropbox daemon. Make sure your computer
+#         meets the minimum requirements:
+#
+#         https://www.dropbox.com/help/desktop-web/system-requirements#desktop
+#
+#       but it also successfully restarted the daemon, and
+#       `dropbox version` correctly reports 194.4.6267.
+#
+#       - At least I verified that `dropbox update` (kinda) works, even
+#         if it doesn't download the most recent release (195.4.4995)
+#         (and even if it reports failure even though it succeeds).
+#
+#         - Perhaps Dropbox doesn't deploy the latest builds immediately,
+#           or perhaps 195.4.4995 is an intermediate build (like a beta,
+#           even though it's marked "stable").
+#
+#           - Given that, this task won't install 195.4.4995, but we'll
+#             stick with what `dropbox update` installs, 194.4.6267.
+#
+#     - So `dropbox update` kinda works, it just doesn't
+#       seem to know that it worked.
+#
+#       - This sorta matches a weird `dropbox start` message, too.
+#         The start command also seems to think it fails, outputting
+#         "Dropbox isn't running!" before outputting "Done!",
+#         even though the daemon ends up running. Such confusion!
+#
+#       - I wonder if it's because this task installs Dropbox
+#         to user space (or that it symlinks ~/.dropbox-dist
+#         to the archive that's downloaded and unpacked under
+#         ~/.downloads). Whatever, I can live with this....
+#
+#     - It's also difficult to say if the "proprietary daemon"
+#       popup is how `dropbox update` always works (like, if you
+#       ran `dropbox update` on the CLI from the deb package).
+#
+#       - Though I bet the "Could not start the Dropbox daemon"
+#         and the "Dropbox isn't running!" messages are because
+#         of the headless install (or something funky about how
+#         this task sets things up, though I wouldn't think it's
+#         a PATH issue, because `dropbox update` kills the deamon
+#         and successfully starts the new one, even if it doesn't
+#         think is was successful).
+#
+#     - LATER: I've made a note to check on this later:
+#
+#       - Will `dropbox update` eventually pickup 195.4.4995?
+#
+#       - Will the dropbox daemon automatically keep itself updated?
 #
 #   - GRIPE: I will say all this is quite annoying. But at least it's
 #     working again. Kinda sucks their offical install page is helplessly
 #     incorrect/misleading, and that the headless install notes don't
 #     mention that `dropbox.py` is what the deb package installs as
-#     `/usr/bin/dropbox` (and not the same as the `dropbox` binary
+#     `/usr/bin/dropbox` (and is not the same as the `dropbox` binary
 #     from the client build archive). Also that, in the forums, they
 #     say they don't support Linux Mint, even though they support
 #     Ubuntu — and because Mint is a Ubuntu derivative, it should
@@ -159,8 +214,19 @@
 #     Ubuntu aren't also suffering problems with the deb package).
 
 - set_fact:
-    # 2024-03-20:
-    DROPBOX_BUILD_VER: '195.4.4995'
+    # 2024-03-20: See notes above: `dropbox update` installs
+    # 194.4.6267, even though 195.4.4995 is the latest release.
+    # So we'll install what `dropbox update` thinks is the latest
+    # release (let's not risk installing a possibly unvetted build
+    # (even though it's marked "stable"); let's find out later if
+    # `dropbox update` will eventually install the latest build
+    # (195.4.4995); and let's see if the daemon itself will auto-
+    # update (so we don't have to plumb a `dropbox update` cronjob,
+    # or something)).
+    #
+    #  DROPBOX_BUILD_VER: '193.3.5459'
+    DROPBOX_BUILD_VER: '194.4.6267'
+    #  DROPBOX_BUILD_VER: '195.4.4995'
 
 - set_fact:
     DROPBOX_ARCHIVE: "dropbox-lnx.x86_64-{{ DROPBOX_BUILD_VER }}.tar.gz"
