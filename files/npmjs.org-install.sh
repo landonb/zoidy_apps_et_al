@@ -27,13 +27,13 @@ if [ "x$0" = "xsh" ]; then
   if [ $ret -eq 0 ]; then
     (exit 0)
   else
-    rm npm-install-$$.sh
+    command rm npm-install-$$.sh
     echo "Failed to download script" >&2
     exit $ret
   fi
-  sh npm-install-$$.sh
+  command sh npm-install-$$.sh
   ret=$?
-  rm npm-install-$$.sh
+  command rm npm-install-$$.sh
   exit $ret
 fi
 
@@ -235,7 +235,7 @@ cd "$TMP" \
         "$node" bin/npm-cli.js install -gf $("$node" bin/npm-cli.js pack | tail -1)
       fi) \
   && cd "$BACK" \
-  && rm -rf "$TMP" \
+  && command rm -rf "$TMP" \
   && echo "It worked"
 
 ret=$?

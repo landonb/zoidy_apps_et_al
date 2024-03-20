@@ -14,7 +14,7 @@
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}/parT"
 
-#  sudo /bin/cp -af parT /usr/bin
+#  sudo /usr/bin/env cp -af -- parT /usr/bin
 #  sudo chown root:root /usr/bin/parT
 
 - name: Symlink parT from user bin/
