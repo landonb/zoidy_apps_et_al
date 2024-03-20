@@ -1,38 +1,282 @@
 ---
 
-# USAGE: Task installs Dropbox from apt, and then downloads the daemon.
+# USAGE: Task downloads and installs Dropbox from desktop client build archive.
 
 # ***
 
-# CXREF: https://linux.dropbox.com/packages/ubuntu/
+# SAVVY/2024-03-20: Dropbox makes a mess of the Linux install.
 #
-#   https://www.dropbox.com/install?os=lnx
+# - This task used to install an old deb package (2020.03.04),
+#   because that's what their employees suggest that you do
+#   (per the Dropbox forum posts I found and read).
 #
-# - Source archives:
+#   - But that package griefs me on Linux Mint 21.3 — it installs,
+#     but `dropbox status` emits a complaint, and (I could swear,
+#     but now I doubt myself) it doesn't keep my ~/Dropbox synced.
 #
-#   https://linux.dropbox.com/packages/
-
-# DUNNO/2023-04-25: I was unable to install the Debian package from their
-# website, complains:
-#   Dependency is not satisfiable: libgtk-4-1 (>= 4.8.0)
-# even though I apt-installed libgtk-4-1 (and libgtk-4-dev).
-# - Fortunately, you can find packages in the distro repo.
-
-- name: Install Dropbox apt pkgs
-  become: true
-  ansible.builtin.apt: name={{ item }}
-  loop:
-    - dropbox
-    - caja-dropbox
-
-# - name: Check if Dropbox is running
-#   ansible.builtin.command: dropbox status
-#   register: dropbox_status
+# - I also tried the latest deb package from the official Dropbox
+#   install page, but that fails to install, seemingly telling you
+#   to install the 'libgtk-4-1' dependency.
 #
-# - ansible.builtin.debug: msg={{ dropbox_status.stdout }}
+#   - But it fails just the same after installing said dependency.
+#
+# - Fortunately, I found a link to the Dropbox desktop client builds
+#   (from a buried forum response), which works.
+#
+#   - Albeit with a caveat: the `dropbox` command doesn't work
+#     like it used to: `dropbox status` doesn't print the status,
+#     it just runs the app (or complains if it's already running).
+#
+#   - But at least the notification widget works, and it keeps
+#     my ~/Dropbox directory synced!
 
-- name: Download Dropbox daemon (answer yes to download prompt)
-  ansible.builtin.shell: echo y | DISPLAY='' dropbox start -i
+# CXREF/2024-03-20: This task installs a desktop client build:
+#
+# - *Dropbox desktop client builds*
+#
+#   — These archives contain pre-built dropbox binaries and libraries.
+#
+#   - The archives include the same files that the deb package installs
+#     to ~/.dropbox-dist (the deb packages themselves don't contain
+#     Dropbox, they just download the latest version, which is probably
+#     why the old 2020.03.04 deb package is supposed to work).
+#
+#   https://www.dropboxforum.com/t5/Dropbox-desktop-client-builds/bd-p/101003016
+#
+#   - 2024-03-20: Here's the latest build:
+#
+#     https://www.dropboxforum.com/t5/Dropbox-desktop-client-builds/Stable-Build-195-4-4995/td-p/758452
+#
+#     https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.x86_64-195.4.4995.tar.gz
+
+# CXREF/2024-03-20: Here are links to the problematic deb packages:
+#
+# - Dropbox install webpage (these all look the same):
+#     https://www.dropbox.com/install
+#     https://www.dropbox.com/install?os=lnx
+#     https://www.dropbox.com/install-linux
+#
+#   - Latest package:
+#       https://linux.dropbox.com/packages/ubuntu/dropbox_2024.01.22_amd64.deb
+#
+# - Dropbox deb archives:
+#     https://linux.dropbox.com/packages/ubuntu/
+#
+#   - Latest package (same as the one from the install page):
+#       https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2024.01.22_amd64.deb
+#
+# SAVVY: Trying the deb packages don't work.
+#
+# - Installing the latest deb package throws the error:
+#
+#     $ sudo dpkg -i dropbox_2024.01.22_amd64.deb
+#     Dependency is not satisfiable: libgtk-4-1 (>= 4.8.0)\n"}
+#
+#   But installing said dependency (`apt install libgtk-4-1`)
+#   doesn't change the behavior.
+#
+# - On the Dropbox forums, per employees, and other Q/A sites, people
+#   suggest installing an old version, 2020.03.04, which worked for me
+#   on Linux Mint 19.3, but not on 21.3.
+#
+#   On LM 21.3, I see errors when using the old 2020.03.04 package:
+#
+#     $ dropbox status
+#       /usr/bin/dropbox:614: DeprecationWarning: isSet() is deprecated, use is_set() instead
+#         if self.stop_event.isSet(): break
+#       Up to date
+#
+#   And while it seems to be running, my files are not updated.
+#
+#   - Or at least I don't think they were. Though it appears Dropbox
+#     was keeping ~/.dropbox-dist/ updated, because I saw thereunder:
+#
+#       $ ll ~/.dropbox-dist/
+#       -rwxr-xr-x  1 user user  103 Mar 18 17:54 dropboxd*
+#       drwxrwxr-x  6 user user 4.0K Mar 18 17:54 dropbox-lnx.x86_64-195.4.4995/
+#       -rw-rw-r--  1 user user   10 Mar 18 17:54 VERSION
+#
+#     - Indeed, when I compare the binary that the deb package installed
+#       against the binary I got from the client build, they're the same:
+#
+#         $ diff \
+#             ~/.dropbox-dist/dropbox-lnx.x86_64-195.4.4995/dropbox \
+#             ~/.downloads/Dropbox/.dropbox-dist/dropbox-lnx.x86_64-195.4.4995/dropbox
+#         # No diff.
+#
+# - After installing the binaries from the desktop client build (what this
+#   Ansible task does), Dropbox now works (no complaints from the command
+#   line, and my ~/Dropbox is synced), but the `dropbox` command itself
+#   behaves differently.
+#
+#   - Specifically, `dropbox status` used to work, as well as the two
+#     commands, `dropbox start` and `dropbox stop`.
+#
+#     But now those commands just run the daemon, e.g.,
+#
+#       $ dropbox status
+#       dropbox: load fq extension '/home/user/.downloads/Dropbox/.dropbox-dist/
+#           dropbox-lnx.x86_64-195.4.4995/cryptography.hazmat.bindings._openssl.abi3.so'
+#       dropbox: load fq extension '.../cryptography.hazmat.bindings._padding.abi3.so'
+#       dropbox: load fq extension '.../apex._apex.abi3.so'
+#       dropbox: load fq extension '.../psutil._psutil_linux.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../psutil._psutil_posix.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../tornado.speedups.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../wrapt._wrappers.cpython-38-x86_64-linux-gnu.so'
+#
+#       # And then you'll see the Dropbox widget appear in the Notification area.
+#
+#     Or, if you run `dropbox status` when Dropbox is already running, you'll see:
+#
+#       $ dropbox status
+#       dropbox: load fq extension ...
+#       ...
+#       Another instance of Dropbox (142076) is running!
+#
+#     Oddly, asking for --help doesn't work as you'd expect from a CLI app:
+#
+#       $ dropbox --help
+#       dropbox: load fq extension '.../cryptography.hazmat.bindings._openssl.abi3.so'
+#       dropbox: load fq extension '.../cryptography.hazmat.bindings._padding.abi3.so'
+#       dropbox: load fq extension '.../apex._apex.abi3.so'
+#       dropbox: load fq extension '.../psutil._psutil_linux.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../psutil._psutil_posix.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../tornado.speedups.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../wrapt._wrappers.cpython-38-x86_64-linux-gnu.so'
+#       dropbox: load fq extension '.../PyQt5.QtCore.so'
+#       dropbox: load fq extension '.../PyQt5.sip.so'
+#       dropbox: load fq extension '.../PyQt5.QtGui.so'
+#       dropbox: load fq extension '.../PyQt5.QtWidgets.so'
+#       # Then a GUI dialog pops up:
+#       #   Dropbox Error
+#       #
+#       #     **Couldn't start Dropbox.**
+#       #
+#       #     This may be a temporary error. Please restart Dropbox. 
+#       #
+#       #     Get more help at https://www.dropbox.com/c/help/permissions_error
+#       #
+#       #     If the issue persists, please contact Dropbox support with the
+#       #     following info for help: /tmp/dropbox_error5go2t0t7.txt
+#
+#     Which is the same response you'll get from any double-dash argument, e.g.,
+#
+#       $ dropbox --foo
+#       dropbox: load fq extension ...
+#       ...
+#       # Then a GUI dialog pops up:
+#       #   Dropbox Error
+#       #   ...
+#
+#     And a single-dash argument behaves like `dropbox status`, e.g.,
+#
+#       $ dropbox -foo
+#       dropbox: load fq extension ...
+#       ...
+#       Another instance of Dropbox (142076) is running!
+#
+#   - In summary:
+#
+#     - `dropbox status` now *runs* the daemon. It doesn't give
+#       you a status, like it did in previous versions.
+#
+#     - `dropbox <arg>` or `dropbox -<arg>` similarly runs the daemon,
+#       e.g., `dropbox help`, `dropbox -h`, `dropbox --foo`, etc., all
+#       just run the daemon.
+#
+#     - `dropbox --<arg>` pops up an error dialog, e.g., `dropbox --help`.
+#
+#   - I wonder if the deb package installed a different `dropbox` binary.
+#
+#     - If you look at `dropboxd`, it's just a small wrapper that calls
+#       `dropbox`. So maybe the deb package `dropbox` is a CLI wrapper
+#       (and it's too late for me to check, and I'm not gonna bother
+#       installing the old deb package again to find out).
+#
+#     - This article suggests dropbox should take commands:
+#
+#         https://www.dropboxforum.com/t5/Apps-and-Installations/Dropbox-use-from-CLI-on-Linux/td-p/691464
+#
+#       Including `dropbox status|start|stop`.
+#
+#       Which sorta makes me think that the deb package `dropbox` *is*
+#       a wrapper script that's different from the `dropbox` binary that
+#       ships in the desktop client build archive.
+#
+#   - Whatever. Dropbox works for me now on LM 21.3. That's all I care
+#     about. I don't need `dropbox status`. I'm just a little annoyed
+#     that it took so much effort to get Dropbox working, and that
+#     their offical install page is helplessly incorrect/misleading.
+#     Also that I only found the desktop client builds from a buried link.
+#     /gripe
+
+- set_fact:
+    # 2024-03-20:
+    DROPBOX_BUILD_VER: '195.4.4995'
+
+- set_fact:
+    DROPBOX_ARCHIVE: "dropbox-lnx.x86_64-{{ DROPBOX_BUILD_VER }}.tar.gz"
+
+- ansible.builtin.set_fact:
+    DROPBOX_UNARCHIVE: "{{ zoidy_homefries_downloads_dir }}/Dropbox"
+
+# 2024-03-20:
+# https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.x86_64-195.4.4995.tar.gz
+- name: Fetch Dropbox Linux x86_64 Offline Installer
+  get_url:
+    url: "https://clientupdates.dropboxstatic.com/dbx-releng/client/{{ DROPBOX_ARCHIVE }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    # Just a reminder that Dropbox doesn't provide a checksum:
+    #  checksum: "sha256:{{ <sha> }}"
+
+# ***
+
+- name: Recursively remove unarchive directory
+  ansible.builtin.file:
+    path: "{{ DROPBOX_UNARCHIVE }}"
+    state: absent
+
+- name: Ensure unarchive directory exists
+  ansible.builtin.file:
+    path: "{{ DROPBOX_UNARCHIVE }}"
+    state: directory
+
+- name: Unarchive Dropbox Linux x86_64 Offline Installer
+  ansible.builtin.unarchive:
+    src: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_ARCHIVE }}"
+    dest: "{{ DROPBOX_UNARCHIVE }}/"
+    # The archive is on the remote system, not the host controller.
+    remote_src: yes
+
+# ***
+
+# ISOFF/2024-03-20: As noted above, `dropbox status|start|stop` don't
+# work like they used to. Now they just run the daemon. So we'll just
+# symlink `dropboxd`.
+#
+#  - name: Symlink dropbox from user bin
+#    ansible.builtin.file:
+#      src: "{{ DROPBOX_UNARCHIVE }}/.dropbox-dist/dropbox-lnx.x86_64-{{DROPBOX_BUILD_VER}}/dropbox"
+#      dest: "{{ ansible_env.HOME }}/.local/bin/dropbox"
+#      state: link
+
+- name: Symlink dropboxd from user bin
+  ansible.builtin.file:
+    src: "{{ DROPBOX_UNARCHIVE }}/.dropbox-dist/dropbox-lnx.x86_64-{{DROPBOX_BUILD_VER}}/dropboxd"
+    dest: "{{ ansible_env.HOME }}/.local/bin/dropboxd"
+    state: link
+
+# ***
+
+# 2024-03-20: This hangs Ansible.
+#
+#  - name: Run Dropbox
+#    command: "{{ ansible_env.HOME }}/.local/bin/dropbox &"
+
+# 2024-03-20: Runs it (you'll see in `ps`) but doesn't spawn notification widget.
+#
+#  - name: Run Dropbox in background
+#    shell: "nohup {{ ansible_env.HOME }}/.local/bin/dropboxd </dev/null >/dev/null 2>&1 &"
 
 # ***
 
@@ -42,13 +286,38 @@
     prompt: |
        
 
-      CHORE » Link your Dropbox account. Run this:
+      CHORE » Setup Dropbox
 
-        sensible-open "$(dropbox start -i 2> /dev/null | tail -1)"
+      - If you had a previous version installed, you might want
+        to blow it away first:
 
-      And, likely, select:
+          /bin/rm -rf ~/.dropbox/ ~/.dropbox-dist/
 
-        ✓ Trust this computer
+      - The first time you run Dropbox, it opens a browser window
+        so you can logon and wire your account.
+
+        - Start the daemon:
+
+            dropboxd &
+
+        - In the new browser window:
+
+          - Enter your email and password.
+
+          - Select *✓ Trust this computer*
+            and enter your 2fa credentials.
+
+      - Configure Dropbox.
+
+        - Right-click the notification widget, choose Preferences...
+
+          - General [tab] > System
+
+            ✓ Start Dropbox on system startup
+
+          - Sync [tab] > Dropbox folder location
+
+            Verify set to `/home/<user>/Dropbox` (or wherever you like it).
 
        
     # ↑ This is an em space ( ), necessary to protect trailing newline(s)
