@@ -170,6 +170,14 @@
 #           - Given that, this task won't install 195.4.4995, but we'll
 #             stick with what `dropbox update` installs, 194.4.6267.
 #
+#       - OYEAH/2024-03-20: Confirmed: Dropbox downloaded the latest
+#         release on its own. The version is now '195.4.4995'.
+#
+#         - It also moved the ~/.dropbox-dist symlink to
+#           ~/.dropbox-dist-old-w4luy7ep, and it created
+#           a new directory at ~/.dropbox-dist. So let's
+#           not use a symlink for that directory.
+#
 #     - So `dropbox update` kinda works, it just doesn't
 #       seem to know that it worked.
 #
@@ -195,11 +203,9 @@
 #         and successfully starts the new one, even if it doesn't
 #         think is was successful).
 #
-#     - LATER: I've made a note to check on this later:
-#
-#       - Will `dropbox update` eventually pickup 195.4.4995?
-#
-#       - Will the dropbox daemon automatically keep itself updated?
+#     - SAVVY: Regardless of `dropbox update`, I've confirmed
+#       that the daemon installed by this task will automatically
+#       update itself.
 #
 #   - GRIPE: I will say all this is quite annoying. But at least it's
 #     working again. Kinda sucks their offical install page is helplessly
@@ -262,11 +268,19 @@
     # The archive is on the remote system, not the host controller.
     remote_src: yes
 
-- name: Symlink ~/.dropbox-dist
-  ansible.builtin.file:
+- name: Copy dist files to ~/.dropbox-dist
+  ansible.builtin.copy:
     src: "{{ DROPBOX_UNARCHIVE }}/.dropbox-dist"
-    dest: "{{ ansible_env.HOME }}/.dropbox-dist"
-    state: link
+    dest: "{{ ansible_env.HOME }}/.dropbox-dist/"
+    # The default:
+    force: true
+    # Copy of managed mode:
+    remote_src: true
+
+- name: Remove unarchive dist files
+  file:
+    path: "{{ DROPBOX_UNARCHIVE }}/.dropbox-dist"
+    state: absent
 
 # ***
 
