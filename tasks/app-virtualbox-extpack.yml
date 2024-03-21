@@ -127,7 +127,7 @@
       -name "Oracle_VM_VirtualBox_Extension_Pack-[0-9]*\\.[0-9]*\\.[0-9]\\.vbox-extpack" \
       -exec echo {} + \
       | sed s/\\.\\/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_latest_version }}\\.vbox-extpack// \
-      | xargs /bin/rm &> /dev/null
+      | xargs rm &> /dev/null
       #| xargs echo
   args:
     chdir: "{{ zoidy_homefries_downloads_dir }}"

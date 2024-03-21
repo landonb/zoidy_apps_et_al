@@ -10,7 +10,7 @@
 # RMLINKS: ~/.ssh/*
 
 - name: Remove symlinks from ~/.ssh/
-  ansible.builtin.command: 'find . -maxdepth 1 -type l -name "id_*" -o -name "config" -exec /bin/rm {} +'
+  ansible.builtin.command: 'find . -maxdepth 1 -type l -name "id_*" -o -name "config" -exec rm -- {} +'
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh/"
 
@@ -19,7 +19,7 @@
 - name: Replace with symlinks from private repo .ssh/
   ansible.builtin.shell: >
     find {{ zoidy_homefries_ssh_root_dir }}/.ssh/ -maxdepth 1 -type f \
-      -iname "id_*" -exec /bin/ln -s {} \;
+      -iname "id_*" -exec ln -s {} \;
   ignore_errors: yes
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh/"

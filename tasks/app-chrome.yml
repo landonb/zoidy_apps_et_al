@@ -22,7 +22,7 @@
 #
 # WRONG/FIXMe: So now I do think this was installed by Mint 21.1, and I can retire this task.
 #
-#   sudo /bin/rm /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
+#   sudo /usr/bin/env rm /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
 #
 # - WRONG/2024-02-06 21:03: I'm not seeing it. This appears to be how it was installed.
 #

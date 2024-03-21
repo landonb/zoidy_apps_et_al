@@ -304,7 +304,7 @@
       - If you had a previous version installed, you might want
         to blow it away first:
 
-          /bin/rm -rf ~/.dropbox/ ~/.dropbox-dist/
+          command rm -rf ~/.dropbox/ ~/.dropbox-dist/
 
       - The first time you run Dropbox, it opens a browser window
         so you can logon and wire your account.
