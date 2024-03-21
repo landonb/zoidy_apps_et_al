@@ -301,8 +301,8 @@
     state: link
 
 - name: Install Dropbox Desktop file
-  ansible.builtin.template:
-    src: ../templates/dropbox.desktop
+  ansible.builtin.copy:
+    src: dropbox.desktop
     dest: "{{ ansible_env.HOME }}/.config/autostart/dropbox.desktop"
 
 # ***
