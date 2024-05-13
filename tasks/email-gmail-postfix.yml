@@ -66,6 +66,8 @@
   become: true
   ansible.builtin.lineinfile:
     dest: /etc/postfix/main.cf
+    # "For state=present, the pattern to replace if found.
+    #  Only the last line found will be replaced."
     regexp: "^({{ item }}\\s*=.*)$"
     line: "#  \\1"
     backrefs: yes
