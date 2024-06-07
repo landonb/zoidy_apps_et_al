@@ -69,7 +69,8 @@
 
 - ansible.builtin.set_fact:
     # USYNC/2024-02-26: Keep current with DepoXy's DEPOXY_PYENV_PYVERS
-    #   https://github.com/DepoXy/depoxy-archetype/blob/release/home/.config/depoxy/depoxyrc.EVAL.sh
+    #   https://github.com/DepoXy/depoxy-archetype/blob/release/home/.config/depoxy/depoxyrc.EVAL
+    #     ~/.depoxy/ambers/archetype/home/.config/depoxy/depoxyrc.EVAL
     # PYENV_VERS: "3.10.13"
     PYENV_VERS: "3.12.1"
 
