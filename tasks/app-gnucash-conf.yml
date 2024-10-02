@@ -2,6 +2,12 @@
 
 # USAGE: Task configures GnuCash gsettings/dconf settings.
 
+# USYNC: macOS `gnucash_customize` et al:
+#
+#   https://github.com/DepoXy/macOS-onboarder#🏂
+#
+#     ~/.kit/mOS/macOS-onboarder/bin/slather-defaults.sh
+
 # ***
 
 - name: Setup Preferred GnuCash Preferences (5.5)
@@ -94,10 +100,11 @@
 
     # Edit > Preferences > General > Retain log/backup files > ✓ Never
     # 
-    # - 2021-03-13: I mostly import data, and don't make a lot of edits or
-    #   new transactions in the application. So I'm diligent about saving
-    #   (and committing to a repo) so I don't feel the need for this file
-    #   noise (I've never needed/used a GNC log file).
+    # - OPINE/2021-03-13: I mostly import data, and don't make too many
+    #   edits or new transactions in the application. But mostly I'm
+    #   diligent about saving (and committing to a repo), so I don't feel
+    #   the need for this file noise. Also GnuCash has never failed on me,
+    #   so I've never needed a log/backup file to recover.
     - schema: "org.gnucash.GnuCash.general"
       key: "retain-type-days"
       val: "false"
@@ -123,10 +130,9 @@
     # REFER:
     #   gsettings list-recursively org.gnucash.GnuCash.general
 
-    # Edit > Preferences > Numbers, Date, Time > Date Format: *Locale  07/31/2013*
+    # Edit > Preferences > Numbers, Date, Time > Date Format: *ISO 2013-07-31*
     # - 2024-02-09: date-format defaults "4", shown in Preferences as
-    #   *Locale  07/31/2013*
-    #
+    #   *Locale 07/31/2013*
     - schema: "org.gnucash.GnuCash.general"
       key: "date-format"
       val: "3"
