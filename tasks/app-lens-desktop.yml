@@ -1,0 +1,56 @@
+---
+
+# Install Lens Desktop apt package.
+#
+# USAGE: After installing:
+#
+#   lens-desktop
+#
+# ALTLY: Install via Snap:
+#
+#   sudo snap install kontena-lens --classic
+#
+# ALTLY: Install via AppImage:
+#
+#   https://api.k8slens.dev/binaries/latest.x86_64.AppImage
+#
+# - NTHEN:
+#
+#   chmod +x <FILE-NAME.AppImage>
+#   ./<FILE-NAME.AppImage>
+#
+# - Via AppImage you'll also need to enable (lens://) Protocol Handling:
+#
+#   https://docs.k8slens.dev/getting-started/install-lens/#configure-protocol-handling
+#
+# MAYBE: Capture Lens configuration. See:
+#
+#   ${XDG_CONFIG_HOME:-${HOME}/.config}/Lens
+#
+# REFER/2024-11-15: See docs for all the installation options:
+#
+#   https://docs.k8slens.dev/getting-started/install-lens/#install-lens-desktop-from-the-apt-repository
+
+- name: Download Lens Desktop public security key and add it to keyring
+  become: true
+  ansible.builtin.shell: >
+    curl -fsSL https://downloads.k8slens.dev/keys/gpg |
+      gpg --dearmor |
+      sudo tee /usr/share/keyrings/lens-archive-keyring.gpg \
+      > /dev/null
+
+- name: Add Lens Desktop repo to /etc/apt/sources.list.d directory
+  become: true
+  ansible.builtin.shell: >
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg]" \
+      "https://downloads.k8slens.dev/apt/debian stable main" |
+      sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
+
+- name: Run command "apt-get update"
+  become: true
+  ansible.builtin.apt: update_cache=yes
+
+- name: Install or Update Lens Desktop
+  become: true
+  ansible.builtin.apt: name=lens
+

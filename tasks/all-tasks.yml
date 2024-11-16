@@ -47,6 +47,13 @@
     apply: { tags: always }
   tags: app-digikam
 
+- name: Load tasks to Install Lens Desktop
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-lens-desktop
+    apply: { tags: always }
+  tags: app-lens-desktop
+
 - name: Load tasks to Install OpenJUMP
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
