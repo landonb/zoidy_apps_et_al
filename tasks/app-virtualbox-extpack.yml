@@ -52,7 +52,7 @@
     prompt: |
        
 
-      {{ lookup('pipe', '
+      {{ lookup('ansible.builtin.pipe', '
         fg_red () { printf "\033[31m"; }
         attr_bold () { printf "\033[1m"; }
         attr_reset () { printf "\033[0m"; }
