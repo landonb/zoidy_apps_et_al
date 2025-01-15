@@ -10,7 +10,7 @@
 #
 # ALTLY: See pyenv versions installed:
 #
-#   ll ~/.kit/py/pyenv/versions/
+#   ll ~/.pyenv/versions/
 
 - name: List Python Sources to Download
   ansible.builtin.set_fact:
