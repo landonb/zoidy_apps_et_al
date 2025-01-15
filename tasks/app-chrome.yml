@@ -49,13 +49,29 @@
 #
 # - But piping direct to a trusted GPG key file works.
 # - REFER: https://askubuntu.com/questions/1444478/google-chrome-deprecated-key-on-ubuntu
+#
+# DUNNO/2025-01-13: The task didn't work on latest onboarding (Debian 12):
+#   - name: Import Google Public Key
+#     become: true
+#     ansible.builtin.shell: >
+#       wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
+#         gpg --dearmor |
+#         sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
+#     register: google_gpg_import
+# - Fails on:
+#   NO_PUBKEY E88979FB9B30ACF2
+# - This alt. approach worked instead:
+#   - name: Import Google Public Key
+#     become: true
+#     ansible.builtin.shell: |
+#       sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E88979FB9B30ACF2
+# - Though really we should use the apt_key builtin.
 - name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Google
   become: true
-  ansible.builtin.shell: >
-    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
-      gpg --dearmor |
-      sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
-  register: google_gpg_import
+  ansible.builtin.apt_key:
+    id: E88979FB9B30ACF2
+    keyserver: hkp://keyserver.ubuntu.com:80
+    state: present
 
 # SAVVY: Creates /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
 # - Though in past I've seen two files therein, including
