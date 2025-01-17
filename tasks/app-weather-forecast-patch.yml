@@ -13,6 +13,13 @@
 - ansible.builtin.set_fact:
     libmateweather_so_link: "/usr/lib/x86_64-linux-gnu/libmateweather.so.1"
 
+- name: Verify library file∷ libmateweather.so.1
+  stat: path="{{ libmateweather_so_link }}"
+  register: stat_libmateweather
+
+- ansible.builtin.fail: msg="ERROR∷ Nothing to patch∷ Library absent∷ {{ libmateweather_so_link }}"
+  when: not stat_libmateweather.stat.exists
+
 - name: Resolve libmateweather.so symlink path
   ansible.builtin.command: readlink -f {{ libmateweather_so_link }}
   register: readlink_lib_path_cmd
