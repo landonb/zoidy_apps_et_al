@@ -334,7 +334,7 @@
     - libsecret-1-dev
     #
     # *** makeinfo (Not needed, builds mostly obsolete design documentation
-    #               superceded for the most part in Doxygen docs)
+    #               superseded for the most part in Doxygen docs)
     # 2023-04-23: texinfo installs /usr/bin/makeinfo
     - texinfo
     #
