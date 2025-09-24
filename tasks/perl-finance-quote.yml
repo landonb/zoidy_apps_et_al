@@ -8,6 +8,26 @@
 
 # http://finance-quote.sourceforge.net/
 
+# ISOFF/2025-09-23: The Finance::Quote CPAN install takes ~30 mins.,
+# and it's interactive at times, e.g.,:
+#
+#  $ sudo ~/.local/bin/gnc-fq-update
+#  ...
+#  Would you like to configure as much as possible automatically? [yes]
+#
+# - Then 10 minutes later:
+#
+#   Check for a new version of the Public Suffix List? [N ]
+#
+# - Etc.
+#
+# It's a better experience if user calls the installer directly.
+- ansible.builtin.fail:
+    msg: >
+      ALERT: Please run the script manually:
+
+        {{ ansible_env.HOME }}/.local/bin/gnc-fq-update
+
 # PFILE/2024-02-08: The next task takes a while...
 # - SAVVY: You might want to run it manually to monitor progress.
 - ansible.builtin.debug:
