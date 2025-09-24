@@ -10,7 +10,7 @@
 
 # ***
 
-- name: Setup Preferred GnuCash Preferences (5.5)
+- name: Setup Preferred GnuCash Preferences (5.12)
   # You can write dconf or gsettings.
   # - Note that GnuCash populates gsettings defaults but not dconf.
   # - If you write to either place, it'll be reflected in the other
@@ -199,7 +199,7 @@
 #   zoidy_homefries_gnucash_alpha_vantage_api_key: "XXXX"
 # to your private `group_vars` file.
 
-- name: Setup GnuCash Alpha Vantage API key (5.5) (Optional)
+- name: Setup GnuCash Alpha Vantage API key (5.12) (Optional)
   ansible.builtin.shell:
     gsettings set \
       org.gnucash.GnuCash.general.finance-quote \

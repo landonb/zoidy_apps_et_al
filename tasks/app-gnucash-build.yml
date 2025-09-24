@@ -4,6 +4,8 @@
 
 # ***
 
+# VERSN/2025-09-23: Using Debian 13 apt packages.
+
 # VERSN/2023-04-24:
 #
 # - This task builds v5.0:
@@ -45,8 +47,10 @@
 
 - ansible.builtin.set_fact:
     # USYNC: Keep current with GNUCASH_DOCS_BRANCH in app-gnucash-docs.yml.
+    # 2025-09-23: v5.12 2025-06-28:
+    GNUCASH_BRANCH: "5.12"
     # 2023-12-17:
-    GNUCASH_BRANCH: "5.5"
+    #  GNUCASH_BRANCH: "5.5"
     # 2023-04-23:
     #  GNUCASH_BRANCH: "5.0"
     # 2021-09-10: The "Edit..." button for Invoice Group does not work...:
@@ -72,7 +76,7 @@
     #   https://github.com/DepoXy/depoxy-archetype/blob/release/home/.config/depoxy/depoxyrc.EVAL
     #     ~/.depoxy/ambers/archetype/home/.config/depoxy/depoxyrc.EVAL
     # PYENV_VERS: "3.10.13"
-    PYENV_VERS: "3.12.1"
+    PYENV_VERS: "3.12.8"
 
 # ***
 
@@ -263,18 +267,25 @@
     - icu-devtools
     - libicu-dev
     #
-    # *** boost 1.67.0
+    # *** boost
     - libboost-all-dev
-    - libboost1.74-dev
+    # - Mint 21.3: libboost1.74-dev
+    - libboost1.83-dev
     #
-    # *** swig 3.0.12 (Makes Guile and Python Bindings)
-    - swig3.0
-    # - swig4.0
+    # *** swig
+    # - Mint 21.3: 3.0.12 (Makes Guile and Python Bindings)
+    #   - swig3.0
+    #   # - swig4.0
+    # - Debian 13: swig/stable 4.3.0-1 amd64
+    - swig
     #
-    # *** webkit 2.14.1
-    - libwebkit2gtk-4.0-37
-    - libwebkit2gtk-4.0-dev
-    # 2023-04-23: What about 4.1?:
+    # - Mint 21.3:
+    #   # *** webkit 2.14.1
+    #   - libwebkit2gtk-4.0-37
+    #   - libwebkit2gtk-4.0-dev
+    #   # 2023-04-23: What about 4.1?:
+    #   - libwebkit2gtk-4.1-0
+    #   - libwebkit2gtk-4.1-dev
     - libwebkit2gtk-4.1-0
     - libwebkit2gtk-4.1-dev
     #
@@ -284,7 +295,8 @@
     # 2023-04-23: v4.2 only used libgtest-dev and google-mock, but I see 3 more
     # packages I've added, just in case...
     - googletest
-    - googletest-tools
+    # - Mint 21.3:
+    #   - googletest-tools
     - libgmock-dev
     #
     # *** libdbi 0.8.3 (SQL backend)
@@ -351,8 +363,11 @@
     # -----------------------------------
     #
     # *** isocodes (translation of currency names)
-    - libisocodes1
-    - libisocodes-dev
+    # - Mint 21.3:
+    #   - libisocodes1
+    #   - libisocodes-dev
+    # - Debian 13: iso-codes/stable,now 4.18.0-1 all
+    - iso-codes
 
     # 2023-04-23: For posterity, here are the v4.2 build notes; and the one
     # lib (libtool) that's no longer required by the latest version (v5.0).
