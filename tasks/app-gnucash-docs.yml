@@ -117,8 +117,40 @@
 - ansible.builtin.set_fact:
     GNUCASH_DOCS_BUILD_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}/build"
 
-- name: gnucash-docs » ensure build directory exists
-  ansible.builtin.file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
+# `ninja clean` is not guaranteed to work.
+#
+# - E.g., I relocated the working directory, and then:
+#
+#   $ ninja clean
+#   ninja: warning: build log version is too old; starting over
+#   [0/1] Re-running CMake...
+#   CMake Error: The source directory "/old/path/to/gnucash-docs" does not exist.
+#   Specify --help for usage, or press the help button on the CMake GUI.
+#   FAILED-: build.ninja
+#   /usr/bin/cmake --regenerate-during-build \
+#     -S/old/path/to/gnucash-docs \
+#     -B/old/path/to/gnucash-docs/build
+#   ninja: error: rebuilding 'build.ninja': subcommand failed
+#
+#     - name: gnucash-docs » Clean gnucash-docs build (using ninja)
+#       ansible.builtin.shell: ninja clean
+#       args:
+#         chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
+#
+# ALTLY:
+#   - name: gnucash-docs » remove build/ content & directory
+#     ansible.builtin.file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=absent
+#
+#   - name: gnucash-docs » ensure build directory exists
+#     ansible.builtin.file: path={{ GNUCASH_DOCS_BUILD_DIR }} state=directory
+
+- name: gnucash-docs » reset build/ directory
+  ansible.builtin.file:
+    state: "{{ item }}"
+    path: "{{ GNUCASH_DOCS_BUILD_DIR }}"
+  with_items:
+    - absent
+    - directory
 
 # **** BUILD OPT 1: Build w/ `make`
 #
