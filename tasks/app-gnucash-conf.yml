@@ -7,6 +7,11 @@
 #   https://github.com/DepoXy/macOS-onboarder#🏂
 #
 #     ~/.kit/mOS/macOS-onboarder/bin/slather-defaults.sh
+#
+# - CXREF: See also similar GNU/Linux settings script,
+#   albeit the GnuCash settings below are nought within:
+#
+#     ~/.kit/mOS/macOS-onboarder/bin/slather-gsettings.sh
 
 # ***
 
