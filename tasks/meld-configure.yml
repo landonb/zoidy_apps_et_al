@@ -4,7 +4,7 @@
 
 # CXREF/2023-04-21: meld is installed via Flatpak:
 #
-#   ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-flatpaks.yml
+#   ~/.kit/ansible/roles/zoidy_captivator/tasks/install-flatpaks.yml
 
 # TRACK/2023-05-17: There's a request for a `.meldignore` file:
 #   https://gitlab.gnome.org/GNOME/meld/-/issues/604
@@ -36,7 +36,7 @@
 #
 # - CXREF: Meld is installed by another role:
 #
-#     ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-flatpaks.yml
+#     ~/.kit/ansible/roles/zoidy_captivator/tasks/install-flatpaks.yml
 
 # SAVVY/2023-05-18: No need to restart meld for changes to apply.
 

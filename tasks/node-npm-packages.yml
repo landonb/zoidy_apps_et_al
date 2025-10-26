@@ -34,7 +34,7 @@
   # ISOFF/2023-04-25: Disabling, so you don't need to enter -K credentials.
   # - Assumes you apt-installed nodejs and npm otherwise.
   #   - CXREF: See other role that handles apt-installs:
-  #       ~/.kit/ansible/roles/zoidy_mintyfresh/tasks/install-develop-lang.yml
+  #       ~/.kit/ansible/roles/zoidy_captivator/tasks/install-develop-lang.yml
   when: False
 
 - name: Install Node NPM projects
