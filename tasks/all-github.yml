@@ -21,7 +21,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     - app-gimp-plugin-export-layers
-    - cli-parT
     - golang-delve-debugger
     - vid-ttygif
   when: zoidy_homefries_ssh_root_dir != ''
@@ -37,14 +36,13 @@
     # you can use git@github.com:user/repo URI).
     - all-init-github-ssh
     # A GH SSH prep skip tag, e.g.,
-    #   `ansible-playbook ... --tag cli-parT --skip-tags skip-github-ssh`
+    #   `ansible-playbook ... --tag email-gmail-postfix --skip-tags skip-github-ssh`
     - skip-github-ssh
     #
     # Each of the following install tasks clone a GitHub repo using SSH.
     # - USYNC: GH_SSH_TASKS
     #
     - app-gimp-plugin-export-layers
-    - cli-parT
     - golang-delve-debugger
     - vid-ttygif
 
@@ -116,16 +114,6 @@
     tasks_from: golang-delve-debugger
     apply: { tags: always }
   tags: golang-delve-debugger
-
-# ************************************************************************
-# *** parT. ***
-
-- name: parT Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: cli-parT
-    apply: { tags: always }
-  tags: cli-parT
 
 # ************************************************************************
 # *** Tmux. ***

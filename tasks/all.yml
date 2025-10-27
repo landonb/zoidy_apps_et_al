@@ -35,7 +35,6 @@
     # - USYNC: GH_SSH_TASKS
     #
     # *** One-offs
-    - cli-parT
     - golang-delve-debugger
     - vid-ttygif
     #
@@ -82,7 +81,6 @@
     - app-virtualbox-apt
     - app-virtualbox-extpack
     - app-weather-forecast-patch
-    # - cli-parT
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
