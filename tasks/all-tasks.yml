@@ -179,16 +179,6 @@
   tags: meld-configure
 
 # ************************************************************************
-# *** Node & Npms. ***
-
-- name: Node.js npm Packages Installer
-  ansible.builtin.include_role:
-    name: zoidy_apps_et_al
-    tasks_from: node-npm-packages
-    apply: { tags: always }
-  tags: node-npm-packages
-
-# ************************************************************************
 # *** Pips. ***
 
 - name: Python Sources Installer
