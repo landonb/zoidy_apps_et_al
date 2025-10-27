@@ -30,7 +30,6 @@
     - app-tmux
     - app-virtualbox-apt
     - app-virtualbox-extpack
-    - app-weather-forecast-patch
     - cli-ripgrep
     - dmn-dropbox
     - email-gmail-postfix
