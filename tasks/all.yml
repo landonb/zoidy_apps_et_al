@@ -80,7 +80,7 @@
     - app-virtualbox-apt
     - app-virtualbox-extpack
     - cli-ripgrep
-    - dmn-dropbox
+    - dmn-dropbox-from-deb
     - email-gmail-postfix
     - font-hack-classic
     - font-mania

@@ -1,0 +1,275 @@
+---
+
+# USAGE: Task downloads and installs Dropbox from deb package.
+# - STEPS: This task is only partially automated. The user must
+#   interact with a GUI to complete the installation (and though
+#   there's a headless install option, it didn't work for the
+#   author, and it's not worth my time to figure out).
+#   - Run the task, and follow the output from the final step
+#     to complete the installation manually.
+
+# ***
+
+# REFER: See the *FTP*'ish server for Debian packages:
+#
+#   https://linux.dropbox.com/packages/debian/
+#
+#   - E.g., here's the latest Debian package [2025-10-27]:
+#     https://linux.dropbox.com/packages/debian/dropbox_2025.05.20_amd64.deb
+#
+# CALSO:
+#
+#   - See also the Install-Linux landing page:
+#     https://www.dropbox.com/install-linux
+#
+#   - The landing page only lists Fedora and Ubuntu packages, e.g.:
+#     https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2025.05.20_amd64.deb
+#
+#   - You can find more assets and packages on the *FTP*ish server:
+#     https://linux.dropbox.com/packages/
+#
+#   - IIRC, I tried an Ubuntu package previously without luck; but here they are:
+#     https://linux.dropbox.com/packages/ubuntu/
+#     https://linux.dropbox.com/packages/ubuntu/dropbox_2025.05.20_amd64.deb
+#
+#   - You can also find links to the latest Stable and Beta builds in the Dropbox forums:
+#     - *Dropbox Desktop Client Builds*
+#       https://www.dropboxforum.com/category/101007/discussions/101003016
+#     - E.g., *Stable Build 235.4.5905* [2025-10-20]
+#       https://www.dropboxforum.com/discussions/101003016/stable-build-235-4-5905/848892
+#       https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.x86_64-235.4.5905.tar.gz
+#     - SAVVY/2025-10-27: Note the .deb packakge installs the latest stable build,
+#       e.g., after installing:
+#         $ cat ~/.dropbox-dist/VERSION
+#         235.4.5905
+
+# REFER: Use the latest Debian package from under:
+# https://linux.dropbox.com/packages/debian/
+- set_fact:
+    # 2019-01-03:
+    #  DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
+    # 2023-04-24:
+    #  DROPBOX_INSTALLER_WRAPPER_VER: '2022.12.05'
+    # 2025-10-27:
+    DROPBOX_INSTALLER_WRAPPER_VER: '2025.05.20'
+
+- set_fact:
+    DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
+
+- name: Install dependencies from APT sources
+  become: true
+  ansible.builtin.apt: name={{ item }}
+  loop:
+    # 2025-10-27: These are each likely already installed on Debian (or at
+    # least on the author's host, they had been installed by the time I got
+    # around to installing Dropbox).
+    #
+    # Install python-gpg, so proprietary daemon downloader can verify signatures.
+    # - Otherwise `dropbox start -i` will warn-tell you otherwise.
+    - python3-gpg
+    #
+    # 2023-04-25: deb install says requires libgtk-4-1 (>= 4.8.0).
+    - libgtk-4-1
+    - libgtk-4-dev
+
+# I.e.,
+#   https://linux.dropbox.com/packages/ubuntu/dropbox_2025.05.20_amd64.deb
+# - Also at:
+#   https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2025.05.20_amd64.deb
+- name: Fetch Dropbox 64-bit Debian package installer
+  get_url:
+    # The package is a simple script to download the latest actual Dropbox code.
+    #  url: "https://www.dropbox.com/download?dl=packages/ubuntu/{{ DROPBOX_DEB }}"
+    url: "https://linux.dropbox.com/packages/debian/{{ DROPBOX_DEB }}"
+    dest: "{{ zoidy_homefries_downloads_dir }}/"
+    # DUNNO/2025-10-27: While `dropbox start -i` says that it verifies checksums
+    # (and requires python3-gpg to do so) when it downloads the proprietary
+    # package, Dropbox does not publish a checksum for the shim package itself.
+    #  checksum: "sha256:{{ <sha> }}"
+
+- name: Install Dropbox Debian package
+  become: yes
+  ansible.builtin.apt:
+    deb: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_DEB }}"
+
+# SAVVY: You can `rm ~/.dropbox-dist` to clear the proprietary software,
+# then `dropbox start -i` to reinstall it.
+#
+# HSTRY/2025-10-27: On X, it might be possible to automate downloading
+# the proprietary software using xdotool, e.g.,
+#
+#   sleep 0.25 &&
+#     xdotool windowactivate --sync $(xdotool search --name "Dropbox Installation") \
+#       key alt+o windowactivate $(xdotool getactivewindow) &
+#   dropbox start -i
+#
+# but that's not gonna fly in Wayland.
+#
+# - So user must intervene to complete the install.
+#
+# DUNNO/2025-10-27: Alternatively, there might (should?) be a way to
+# finish installing via the command line, but it doesn't work for me.
+#
+# - Specifically, `DISPLAY='' /usr/bin/dropbox start -i` fails:
+#
+#   $ command expect -c " \
+#     spawn bash -c \"DISPLAY='' /usr/bin/dropbox start -i\"; \
+#     expect -re \".* download the proprietary daemon. \[y/n\]\"; \
+#     send \"y\n\"; \
+#     interact; \
+#   "
+#   spawn bash -c DISPLAY='' /usr/bin/dropbox start -i
+#   Starting Dropbox...
+#   Dropbox is the easiest way to share and store your files online.
+#     Want to learn more? Head to https://www.dropbox.com/
+#
+#   In order to use Dropbox, you must download the proprietary daemon. [y/n] y
+#   Downloading Dropbox... 100%
+#   Traceback (most recent call last):
+#     File "/usr/bin/dropbox", line 595, in download
+#       for _, i, total in download.unpack():
+#                         ~~~~~~~~~~~~~~~^^
+#     File "/usr/bin/dropbox", line 233, in unpack
+#       if not verify_signature(BytesIO(DROPBOX_PUBLIC_KEY), signature, self.local_file):
+#             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#     ...
+#     File "/usr/lib/python3/dist-packages/gpg/errors.py", line 129, in errorcheck
+#       raise GPGMEError(retval, extradata)
+#   gpg.errors.GPGMEError: gpgme_op_import: GnuPG: General error
+#
+#   Error: Trouble connecting to Dropbox servers. Maybe your internet connection
+#     is down, or you need to set your http_proxy environment variable.
+#   Traceback (most recent call last):
+#     File "/usr/bin/dropbox", line 595, in download
+#       for _, i, total in download.unpack():
+#                         ~~~~~~~~~~~~~~~^^
+#     File "/usr/bin/dropbox", line 233, in unpack
+#       if not verify_signature(BytesIO(DROPBOX_PUBLIC_KEY), signature, self.local_file):
+#     ...
+#     File "/usr/lib/python3/dist-packages/gpg/errors.py", line 129, in errorcheck
+#       raise GPGMEError(retval, extradata)
+#   gpg.errors.GPGMEError: gpgme_op_import: GnuPG: General error
+#
+#   During handling of the above exception, another exception occurred:
+#   ...
+#   SystemExit: -1
+#
+# - So user must run GUI to complete the install.
+#
+# TSHÖT: Ensure you're running system Python, otherwise some modules
+# might be absent, e.g., you might see:
+#
+#   ModuleNotFoundError: No module named 'gi'
+#
+# even though python3-gi is installed.
+#
+# - Or you might see a warning about verifying signatures:
+#
+#   $ DISPLAY='' dropbox start -i
+#   Starting Dropbox...
+#   Dropbox is the easiest way to share and store your files online.
+#     Want to learn more? Head to https://www.dropbox.com/
+#
+#   In order to use Dropbox, you must download the proprietary daemon.
+#   Note: python3-gpg (python3-gpgme for Ubuntu 16.10 and lower) is not installed,
+#     we will not be able to verify binary signatures. [y/n]
+#
+# SAVVY: When you run dropbox again after installing the proprietary software,
+# it'll give you a URL to open to link your account, e.g.:
+#
+#   $ dropbox status
+#   Starting...
+#   To link this computer to a Dropbox account, visit the following url:
+#   https://www.dropbox.com/cli_link_nonce?nonce=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#
+# - When you run dropbox again after running it again, after linking your account,
+#   you might need to run `dropbox status` again, and open a new nonce link.
+#
+# SAVVY: If you don't install the GNOME Shell *App Indicator* extension
+# (which you don't need), pick "Don't show again" when prompted, e.g.,
+# you might see this GUI prompt:
+#
+#     === Unsupported desktop environment ===
+#     Dropbox requires App Indicator support to display the Dropbox tray icon.
+#     Dropbox will continue to run in the background.
+#     For full access to the tray icon, you need to update your environment.
+#       [ Learn more ] [ OK ] [ Don't show again ]
+#
+#   REFER: [ Learn more ]:
+#   https://help.dropbox.com/installs/dropbox-desktop-app-for-linux#Supported-desktop-environments
+#   https://extensions.gnome.org/extension/615/appindicator-support/
+#
+# - DUNNO: If you do enable App Indicator, Dropbox shows an icon in Top Bar,
+#   but clicking it does nothing.
+
+- name: "Tell user how to finish installing Dropbox"
+  ansible.builtin.pause:
+    seconds: 0
+    prompt: |
+       
+
+      {{ lookup('ansible.builtin.pipe', '
+        fg_red () { printf "\033[31m"; }
+        attr_bold () { printf "\033[1m"; }
+        attr_reset () { printf "\033[0m"; }
+        printf "$(fg_red)$(attr_bold)  STEPS: Install Dropbox from .deb package
+        ========================================$(attr_reset)";') }}
+
+        # *** These commands have been run for you:
+        # ----------------------------------------
+
+        cd ~/.downloads/
+
+        wget https://linux.dropbox.com/packages/debian/dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb
+
+        sudo apt install python3-gi python3-gpg libgtk-4-1 libgtk-4-dev
+
+        sudo dpkg -i dropbox_2025.05.20_amd64.deb
+
+        # *** Now you'll need to run these commands:
+        # -----------------------------------------
+
+        # Optional: Install GNOME Shell *App Indicator* extension.
+        # - This adds a Dropbox icon to Top Bar, but the icon is not
+        #   interactive (or at least not on author's host); so I'd
+        #   suggest skipping it (but Dropbox will warn-tell you that
+        #   it's missing).
+        firefox https://extensions.gnome.org/extension/615/appindicator-support/
+
+        # Use system Python.
+        # - So that python3-gpg can verify binary signatures.
+        pyenv shell system
+
+        # Start Dropbox.
+        # - This'll download the proprietary daemon.
+        dropbox start -i
+
+        # Authenticate and register the daemon with your Dropbox account.
+        # - The free account plan only allows 3 hosts, so you may need to
+        #   disable an existing host connection.
+        sensible-open https://www.dropbox.com/cli_link_nonce?nonce=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        # Or pick Chrome or Firefox specifically:
+        google-chrome --new-window https://www.dropbox.com/cli_link_nonce?nonce=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        firefox https://www.dropbox.com/cli_link_nonce?nonce=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        # You might need to start the daemon and authenticate again.
+        dropbox start -i
+        sensible-open https://www.dropbox.com/cli_link_nonce?nonce=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+        # Verify that Dropbox is configured to auto-start on logon.
+        cat ~/.config/autostart/dropbox.desktop
+
+        # Verify that your files are synced.
+        cd ~/Dropbox
+        dropbox filestatus
+
+        # REFER: You'll generally never have to run the `dropbox` command again.
+        # - But here's a link for more information.
+        sensible-open https://help.dropbox.com/installs/linux-commands
+
+       
+    # ↑ This is an em space ( ), necessary to protect trailing newline(s)
+    #   from chomp().
+    #   - There's also an em space on the first line, in case you want
+    #     first line of content-containing output to be indented.
+

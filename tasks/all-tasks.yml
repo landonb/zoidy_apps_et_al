@@ -97,12 +97,12 @@
 # ************************************************************************
 # *** Dmns. ***
 
-- name: Dropbox Daemon Installer
+- name: Dropbox Daemon Installer (from Debian package)
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
-    tasks_from: dmn-dropbox
+    tasks_from: dmn-dropbox-from-deb
     apply: { tags: always }
-  tags: dmn-dropbox
+  tags: dmn-dropbox-from-deb
 
 # ************************************************************************
 # *** Emai. ***
