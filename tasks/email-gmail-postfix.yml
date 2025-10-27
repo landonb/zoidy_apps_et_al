@@ -5,43 +5,57 @@
 
 # ***
 
-# ISOFF/2019-03-24: (lb): postfix already installed, so not running these apt
-# tasks. (I think I was prompted during initial Linux Mint installation process.)
-# You can see the postfix defaults you choose when it was installed using:
-#   debconf-show postfix
+# SAVVY/2025-10-27: If you run `apt install postfix` manually, you'll be
+# prompted to configure it, which we'll automate (pre-configure, by pre-
+# seeding the debconf database with answers) via debconf-set-selections.
+# - REFER:
+#   https://manpages.debian.org/jessie/debconf/debconf-set-selections.1.en.html
+#   https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debconf_module.html
+# - REFER: After installing, use `debconf-show postfix` to view its settings, e.g.:
+#     $ debconf-show postfix 2> /dev/null | grep -e mailname -e main_mailer_type
+#     * postfix/mailname: foo.example.com
+#     * postfix/main_mailer_type: Internet Site
+# - SAVVY: Skipped on Linux Mint (what this Ansible playbook used to target),
+#   because postfix installed and setup when the OS is installed.
 
 # I.e., debconf-set-selections <<< "postfix postfix/mailname string your.hostname.com"
 - name: "Seed/Pre-answer postfix package to avoid prompting » set default ‘mailname’"
+  become: true
   ansible.builtin.debconf:
     name: postfix
     question: postfix/mailname
     value: "{{ zoidy_homefries_postfix_fqdn }}"
     vtype: string
-  when: False
+  when: ansible_lsb.id == 'Debian'
 
 # I.e., debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 - name: "Seed/Pre-answer postfix package to avoid prompting » set default ‘main_mailer_type’"
+  become: true
   ansible.builtin.debconf:
     name: postfix
     question: postfix/main_mailer_type
     value: Internet Site
     vtype: string
-  when: False
+  when: ansible_lsb.id == 'Debian'
 
-- name: Install Postfix and related packages
+- name: Install Postfix package
   become: true
   ansible.builtin.apt: name={{ item }}
   loop:
-    # 2023-04-24: Confirmed installed on Linux Mint 21.1 (not by me directly;
-    # so either stock Mint packages, or installed as deps of other packages).
-    - libsasl2-modules
     - postfix
-    # (lb): Not sure if we need; found to be already installed on my machine.
-    # - ca-certificates
-    # - libsasl2-2
-    # (lb): Not sure if we need; not already installed on my machine.
-    # - mailutils
-  when: False
+  when: ansible_lsb.id == 'Debian'
+
+- name: Install mailutils and authentication packages
+  become: true
+  ansible.builtin.apt: name={{ item }}
+  loop:
+    - libsasl2-modules
+    # Not necessary for outbound email (and forwarding), but installs
+    # `mail` command, among a few other commands.
+    - mailutils
+    # These two pkgs are already installed, but listed here documentarily:
+    - ca-certificates
+    - libsasl2-2
 
 # ***
 
