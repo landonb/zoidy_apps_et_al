@@ -1,14 +1,37 @@
 ---
 
 # USAGE: Task configures /etc/postfix/main.cf, and creates
-#            /etc/postfix/sasl_passwd[.db], and ~/.forward.
+#            /etc/postfix/sasl/sasl_passwd[.db], and ~/.forward.
 
 # TRYME: After setting up, send a test email to your user.
-# - You can send-to user@host or just user:
-#    echo "My test message." | mailx -r "from-addr" -s "You're being tested" "${LOGNAME}@$(hostname)"
-#    echo "Test email body." | mail -s "Test Subject" ${LOGNAME}
-# - If you want to use an IP addr, update /etc/hosts (author hasn't tried this), e.g.,
-#    echo "Yet another test" | mailx -r "from-addr" -s "You're being tested" "${LOGNAME}@192.168.1.123"
+#
+# - On Debian 13 (at least), `mail` and `mailx` each symlink `bsd-mailx`.
+#
+# - If you're forwarding to Gmail, the <original-from-address> you use
+#   will be replaced with {{ zoidy_homefries_postfix_user }}@gmail.com
+#   (from /etc/postfix/sasl/sasl_passwd), and you'll find the original
+#   from address in another header, e.g.:
+#
+#     X-Google-Original-From: "Your Name" <original-from-address>
+#
+#   - So if you want to know which host the email is from from the
+#     main Inbox view without opening the email, use the name part
+#     of the from-address, or use the email subject, e.g.:
+#
+#       echo "Test message." | mailx -r "\"$(hostname)\" <from-addr>" -s "Test subject" ${LOGNAME}
+#
+#     - Such an email will show the hostname as the sender name.
+#     - It'll also use the `myhostname` value from /etc/postfix/main.cf
+#       as the to-address, ${LOGNAME}@{{ zoidy_homefries_postfix_fqdn }}.
+#
+# - You can also send-to "user@host" instead of just "user",
+#   and then the to-address will be just that (i.e., user@host
+#   instead of user@{{ zoidy_homefries_postfix_fqdn }}), e.g.:
+#
+#     echo "Test email body." | mail -s "Test Subject" "${LOGNAME}@$(hostname)"
+#
+# - If you want to send-to an IP addr, update /etc/hosts (author hasn't tried this), e.g.,
+#     echo "Yet another test" | mailx -r "from-addr" -s "You're being tested" "${LOGNAME}@192.168.1.123"
 
 # ***
 
