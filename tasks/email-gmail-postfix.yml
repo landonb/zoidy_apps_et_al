@@ -3,6 +3,13 @@
 # USAGE: Task configures /etc/postfix/main.cf, and creates
 #            /etc/postfix/sasl_passwd[.db], and ~/.forward.
 
+# TRYME: After setting up, send a test email to your user.
+# - You can send-to user@host or just user:
+#    echo "My test message." | mailx -r "from-addr" -s "You're being tested" "${LOGNAME}@$(hostname)"
+#    echo "Test email body." | mail -s "Test Subject" ${LOGNAME}
+# - If you want to use an IP addr, update /etc/hosts (author hasn't tried this), e.g.,
+#    echo "Yet another test" | mailx -r "from-addr" -s "You're being tested" "${LOGNAME}@192.168.1.123"
+
 # ***
 
 # SAVVY/2025-10-27: If you run `apt install postfix` manually, you'll be
@@ -108,6 +115,8 @@
 #     myhostname = {{ ansible_hostname }}.lan
 # - to:
 #     myhostname = {{ ansible_hostname }}.your.domain
+#
+# REFER: man 5 postconf
 - name: "Configure the Postfix main.cf » Set ‘myhostname’"
   become: true
   ansible.builtin.lineinfile:
