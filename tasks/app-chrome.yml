@@ -17,7 +17,9 @@
 # ERROR/2023-04-23 18:43: What I saw running apt-install (of unrelated pkg):
 #
 #   ...
-#   W: Target Packages (main/binary-amd64/Packages) is configured multiple times in /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list:1 and /etc/apt/sources.list.d/google-chrome.list:3
+#   W: Target Packages (main/binary-amd64/Packages) is configured multiple times
+#     in /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list:1
+#     and /etc/apt/sources.list.d/google-chrome.list:3
 #   ...
 #
 # WRONG/FIXMe: So now I do think this was installed by Mint 21.1, and I can retire this task.
