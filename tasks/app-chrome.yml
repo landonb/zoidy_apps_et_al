@@ -34,61 +34,93 @@
 
 # ***
 
-# CXREF:
+# HSTRY/2025-11-11: How we used to install Google Chrome using now-deprecated apt_key module.
+# - Keeping for posterity, so you can see how apt_key and apt_repository
+#   are updated to deb822_repository.
 #
-#   https://www.google.com/chrome/thank-you.html?brand=QMKX&statcb=0&installdataindex=empty&defaultbrowser=0#
+# # CXREF:
+# #
+# #   https://www.google.com/chrome/thank-you.html?brand=QMKX&statcb=0&installdataindex=empty&defaultbrowser=0#
+# #
+# # https://www.google.com/linuxrepositories/
+# #
+# # SAVVY/2024-02-06: I installed Chrome on on LM 21.1 (2023-04-23) without
+# # adding the signing key, but on fresh LM 21.3, Chrome won't install without it.
+# # - Also, neither of these --recv-keys worked, and they seemed to override each other:
+# #
+# #   - name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Ubuntu Key Server
+# #     # ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xE88979FB9B30ACF2"
+# #     ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xEB4C1BFD4F042F6DDDCCEC917721F63BD38B4796"
+# #     register: google_gpg_import
+# #
+# # - But piping direct to a trusted GPG key file works.
+# # - REFER: https://askubuntu.com/questions/1444478/google-chrome-deprecated-key-on-ubuntu
+# #
+# # DUNNO/2025-01-13: The task didn't work on latest onboarding (Debian 12):
+# #   - name: Import Google Public Key
+# #     become: true
+# #     ansible.builtin.shell: >
+# #       wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
+# #         gpg --dearmor |
+# #         sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
+# #     register: google_gpg_import
+# # - Fails on:
+# #   NO_PUBKEY E88979FB9B30ACF2
+# # - This alt. approach worked instead:
+# #   - name: Import Google Public Key
+# #     become: true
+# #     ansible.builtin.shell: |
+# #       sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E88979FB9B30ACF2
+# # - Though really we should use the apt_key builtin.
+# - name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Google
+#   become: true
+#   ansible.builtin.apt_key:
+#     id: E88979FB9B30ACF2
+#     keyserver: hkp://keyserver.ubuntu.com:80
+#     state: present
+#
+# # SAVVY: Creates /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
+# # - Though in past I've seen two files therein, including
+# #     /etc/apt/sources.list.d/google-chrome.list
+# #   But if you remove both .list files and re-run this task, only the former
+# #   file is created.
+# # - See also:
+# #     $ apt show google-chrome-stable
+# #     ...
+# #     APT-Sources: https://dl.google.com/linux/chrome/deb stable/main amd64 Packages
+# - name: Add Google Chrome proprietary repository
+#   become: true
+#   ansible.builtin.apt_repository:
+#     repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb stable main
+#     state: present
 
-# https://www.google.com/linuxrepositories/
-
-# SAVVY/2024-02-06: I installed Chrome on on LM 21.1 (2023-04-23) without
-# adding the signing key, but on fresh LM 21.3, Chrome won't install without it.
-# - Also, neither of these --recv-keys worked, and they seemed to override each other:
-#
-#   - name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Ubuntu Key Server
-#     # ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xE88979FB9B30ACF2"
-#     ansible.builtin.command: "gpg --keyserver keyserver.ubuntu.com --recv-keys 0xEB4C1BFD4F042F6DDDCCEC917721F63BD38B4796"
-#     register: google_gpg_import
-#
-# - But piping direct to a trusted GPG key file works.
-# - REFER: https://askubuntu.com/questions/1444478/google-chrome-deprecated-key-on-ubuntu
-#
-# DUNNO/2025-01-13: The task didn't work on latest onboarding (Debian 12):
-#   - name: Import Google Public Key
-#     become: true
-#     ansible.builtin.shell: >
-#       wget -q -O - https://dl.google.com/linux/linux_signing_key.pub |
-#         gpg --dearmor |
-#         sudo tee /etc/apt/trusted.gpg.d/chrome.gpg
-#     register: google_gpg_import
-# - Fails on:
-#   NO_PUBKEY E88979FB9B30ACF2
-# - This alt. approach worked instead:
-#   - name: Import Google Public Key
-#     become: true
-#     ansible.builtin.shell: |
-#       sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E88979FB9B30ACF2
-# - Though really we should use the apt_key builtin.
-- name: Import Google Inc. (Linux Packages Signing Authority) Public Key from Google
+# Avoid error running deb822_repository module: "An exception
+# occurred ... ModuleNotFoundError: No module named 'debian'".
+- name: 'Install python3-debian for deb822_repository usage'
   become: true
-  ansible.builtin.apt_key:
-    id: E88979FB9B30ACF2
-    keyserver: hkp://keyserver.ubuntu.com:80
+  ansible.builtin.apt:
+    name: python3-debian
     state: present
 
-# SAVVY: Creates /etc/apt/sources.list.d/dl_google_com_linux_chrome_deb.list
-# - Though in past I've seen two files therein, including
-#     /etc/apt/sources.list.d/google-chrome.list
-#   But if you remove both .list files and re-run this task, only the former
-#   file is created.
-# - See also:
-#     $ apt show google-chrome-stable
-#     ...
-#     APT-Sources: https://dl.google.com/linux/chrome/deb stable/main amd64 Packages
-- name: Add Google Chrome proprietary repository
+# THANX: Phew! (I started to write deb822_repository by hand
+# but I didn't have the signing key URL. Thankfully, a Gist!)
+#   https://gist.github.com/roib20/27fde10af195cee1c1f8ac5f68be7e9b
+- name: Add google APT repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb stable main
+  ansible.builtin.deb822_repository:
+    name: google
+    types: [deb]
+    uris:
+      - "http://dl.google.com/linux/chrome/deb"
+      # Why not.
+      - "http://dl.google.com/linux/earth/deb"
+    signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
+    suites: [stable]
+    components: [main]
     state: present
+    enabled: true
+
+# ***
 
 - name: Run command "apt-get update"
   become: true
