@@ -27,11 +27,13 @@
 # MKLINK: ~/.ssh/config
 
 - name: Check if private SSH config source exists
-  ansible.builtin.stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
+  ansible.builtin.stat:
+    path: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
   register: ssh_config_src_f
 
 - name: Check if ~/.ssh/config created yet
-  ansible.builtin.stat: path="{{ ansible_env.HOME }}/.ssh/config"
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.ssh/config"
   register: ssh_config_dest_f
 
 - name: Symlink ~/.ssh/config to your private SSH config
