@@ -20,7 +20,7 @@
   ansible.builtin.shell: >
     find {{ zoidy_homefries_ssh_root_dir }}/.ssh/ -maxdepth 1 -type f \
       -iname "id_*" -exec ln -s {} \;
-  ignore_errors: yes
+  ignore_errors: true
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh/"
 
