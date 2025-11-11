@@ -92,11 +92,13 @@
 
 - name: Run command "apt-get update"
   become: true
-  ansible.builtin.apt: update_cache=yes
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install google-chrome-stable
   become: true
-  ansible.builtin.apt: name=google-chrome-stable
+  ansible.builtin.apt:
+    name: google-chrome-stable
 
 # ***
 
@@ -113,3 +115,4 @@
 #     ansible.builtin.apt:
 #       deb: "{{ zoidy_homefries_downloads_dir }}/google-chrome-stable_current_amd64.deb"
 
+# ***
