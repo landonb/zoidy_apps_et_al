@@ -69,7 +69,7 @@
 - name: "Make the AppImage executable"
   ansible.builtin.file:
     path: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
-    mode: 0755
+    mode: '0755'
 
 - name: "Symlink digiKam AppImage from user bin/"
   ansible.builtin.file:

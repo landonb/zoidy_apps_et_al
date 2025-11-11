@@ -79,7 +79,7 @@
 - name: Ensure proper permissions for SSH on .ssh files
   ansible.builtin.file:
     path: "{{ item }}"
-    mode: 0400
+    mode: '0400'
   with_items: "{{ ssh_files.stdout_lines }}"
 
 - name: Find all SSH public keys on remote host
@@ -90,7 +90,7 @@
 - name: Ensure proper permissions for SSH on .ssh public keys
   ansible.builtin.file:
     path: "{{ item }}"
-    mode: 0440
+    mode: '0440'
   with_items: "{{ pub_files.stdout_lines }}"
 
 - name: Ensure proper permissions for SSH on .ssh public meta
@@ -100,7 +100,7 @@
   #   to handle missing files except failing.
   #   file:
   #     path: "{{ item }}"
-  #     mode: 0600
+  #     mode: '0600'
   ansible.builtin.shell: '[ -f "{{ item }}" ] && chmod 600 "{{ item }}" || true'
   args:
     chdir: "{{ ansible_env.HOME }}/.ssh"
@@ -114,7 +114,7 @@
 - name: Ensure proper permissions for SSH on home .ssh
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh"
-    mode: 02750
+    mode: '2750'
 
 - name: Ensure proper permissions for SSH on user home
   ansible.builtin.file:

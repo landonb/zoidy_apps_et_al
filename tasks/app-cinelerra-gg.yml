@@ -100,7 +100,7 @@
 - name: "Make the AppImage executable"
   ansible.builtin.file:
     path: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_cinelerra_gg_appimage }}"
-    mode: 0755
+    mode: '0755'
 
 - name: "Symlink Cinelerra GG AppImage from user bin/"
   ansible.builtin.file:

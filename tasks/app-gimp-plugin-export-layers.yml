@@ -84,5 +84,5 @@
     dest: "{{ zoidy_gimp_plug_ins_dir }}/"
     remote_src: yes
     # Even if source file is executable, copied file defaults to 0664.
-    mode: 0775
+    mode: '0775'
 

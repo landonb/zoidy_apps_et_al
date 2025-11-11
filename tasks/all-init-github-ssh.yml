@@ -16,7 +16,7 @@
 - name: Ensure proper permissions on SSH config
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/config"
-    mode: 0600
+    mode: '0600'
     follow: yes
 
 # *** Verify/Setup, e.g., ~/.ssh/id_user_rsa
@@ -55,13 +55,13 @@
 - name: Ensure proper permissions on SSH GitHub key (private)
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}"
-    mode: 0400
+    mode: '0400'
     follow: yes
 
 - name: Ensure proper permissions on SSH GitHub key (public)
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}.pub"
-    mode: 0440
+    mode: '0440'
     follow: yes
 
 # *** Verify/Setup ~/.ssh/known_hosts.
@@ -98,7 +98,7 @@
 - name: Ensure proper permissions on SSH known_host
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
-    mode: 0600
+    mode: '0600'
     follow: yes
 
 # *** Verify GH SSH setup.
