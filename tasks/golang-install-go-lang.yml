@@ -26,7 +26,8 @@
 # - 2023-04-22: GOLANG_VER: '1.20.3' aka go1.20 [2023-02-01]
 # - 2024-02-04: GOLANG_VER: '1.21.6'
 # - 2024-03-23: GOLANG_VER: '1.22.1'
-- ansible.builtin.set_fact:
+- name: Set fact(s)
+  ansible.builtin.set_fact:
     # USYNC: See also same GOLANG_VER in task dispatcher:
     #
     #   ~/.kit/ansible/roles/zoidy_apps_et_al/tasks/all-init-go-lang.yml
@@ -34,13 +35,16 @@
     # SAVVY: Use linux-amd64 checksum, e.g., go1.21.6.linux-amd64.tar.gz
     GOLANG_XSUM: "aab8e15785c997ae20f9c88422ee35d962c4562212bb0f879d052a35c8307c7f"
 
-- ansible.builtin.set_fact:
+- name: Set fact(s)
+  ansible.builtin.set_fact:
     GOLANG_DIR: "go{{ GOLANG_VER }}.linux-amd64"
 
-- ansible.builtin.set_fact:
+- name: Set fact(s)
+  ansible.builtin.set_fact:
     GOLANG_TAR: "{{ GOLANG_DIR }}.tar.gz"
 
-- ansible.builtin.set_fact:
+- name: Set fact(s)
+  ansible.builtin.set_fact:
     # E.g.,
     #   https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
     GOLANG_URI: "https://dl.google.com/go/{{ GOLANG_TAR }}"
@@ -71,7 +75,7 @@
   ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_TAR }}"
     dest: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/"
-    remote_src: yes
+    remote_src: true
 
 - name: Check obsolete godoc symlink (replaced by `go doc`)
   ansible.builtin.stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
@@ -92,3 +96,4 @@
     - go
     - gofmt
 
+# ***
