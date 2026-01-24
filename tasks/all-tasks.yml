@@ -47,6 +47,13 @@
     apply: { tags: always }
   tags: app-digikam
 
+- name: Load tasks to Install Docker Desktop
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-docker-desktop
+    apply: { tags: always }
+  tags: app-docker-desktop
+
 - name: Load tasks to Install OpenJUMP
   ansible.builtin.include_role:
     name: zoidy_apps_et_al

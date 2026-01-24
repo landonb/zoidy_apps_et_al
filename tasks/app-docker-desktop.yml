@@ -1,0 +1,158 @@
+---
+
+# REFER: See Version checksums:
+# https://docs.docker.com/desktop/release-notes/
+#
+# - CALSO: Latest version download link (alt. to latest version link below):
+#   https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
+#
+# HSTRY:
+# - 2025-11-20: v4.52.0
+#   https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb
+#   https://desktop.docker.com/linux/main/amd64/210994/checksums.txt
+#     DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb'
+#     DOCKER_XSUM: '2fe26740b260342b6c2676db7961d6b9d1129f6e4c17dc5930cb91faf5886fda'
+- name: Set fact
+  ansible.builtin.set_fact:
+    DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb'
+    DOCKER_XSUM: '2fe26740b260342b6c2676db7961d6b9d1129f6e4c17dc5930cb91faf5886fda'
+
+# ***
+
+- name: Ensure dependencies are installed
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+    state: present
+  become: true
+
+- name: Ensure directory exists for APT GPG keys at /etc/apt/keyrings
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+# ***
+
+# E.g., the deb822_repository action could be performed manually by
+# the following commands — same as the official installation steps:
+# https://docs.docker.com/desktop/setup/install/linux/debian/
+#
+#   sudo apt update
+#   sudo apt install ca-certificates curl
+#
+#   # Aka, sudo mkdir -p /etc/apt/keyrings && sudo chmod 0755 /etc/apt/keyrings
+#   sudo install -m 0755 -d /etc/apt/keyrings
+#   sudo curl -fsSL https://download.docker.com/linux/debian/gpg \
+#     -o /etc/apt/keyrings/docker.asc
+#   sudo chmod a+r /etc/apt/keyrings/docker.asc
+#
+#   sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+#   Types: deb
+#   URIs: https://download.docker.com/linux/debian
+#   Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+#   Components: stable
+#   Signed-By: /etc/apt/keyrings/docker.asc
+#   EOF
+#   sudo apt-get update
+#
+#   curl -o docker-desktop-amd64.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
+#   sudo apt-get install ./docker-desktop-amd64.deb
+
+# THANX: This deb822_repository courtesy https://github.com/roib20#:
+# https://gist.github.com/roib20/27fde10af195cee1c1f8ac5f68be7e9b?permalink_comment_id=5036059#gistcomment-5036059
+
+# FIXME: SPIKE: Do we need to install .deb, and
+# to upgrade via downloading/installing new .deb?
+# - So what's the point of adding this apt repo?
+
+- name: Add Docker apt repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: docker
+    state: present
+    types: [deb]
+    # E.g., URIs: https://download.docker.com/linux/debian
+    uris: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"
+    # E.g., Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+    #       Suites: trixie
+    suites: ["{{ ansible_distribution_release|lower }}"]
+    components: [stable]
+    # E.g., Signed-By: /etc/apt/keyrings/docker.asc
+    #  signed_by: "https://download.docker.com/linux/debian/gpg"
+    signed_by: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
+    enabled: true
+
+# ***
+
+# FIXME: Download separately and verify checksum...
+
+# https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
+- name: Download and Install the latest Docker Desktop
+  # FIXME:Remove, or add toggle var.
+  # - FIXME: Or download separately to verify checksum...
+  # - FIXME: Uninstall and test installing from repo...
+  when: false
+  become: true
+  ansible.builtin.apt:
+    deb: "{{ DOCKER_URL }}"
+    state: present
+    # Runs `apt-get update`.
+    update_cache: true
+    cache_valid_time: 3600
+
+# ***
+
+# FIXME: I see entry at bottom of /etc/group, but `groups` doesn't report it...
+# - I Logged Out, but didn't restart...
+
+# Make user part of 'docker' group, at least for VS Code Dev Containers,
+# but also something I've always done, not sure what you cannot do without.
+
+# E.g., sudo usermod -aG docker $USER
+- name: Ensure user is added to the docker group
+  # when: "{{ ansible_hostname }} is not {{ lookup('ansible.builtin.pipe', 'hostname') }}"
+  user:
+    # name: "{{ item }}"
+    name: "{{ ansible_env.LOGNAME }}"
+    groups: docker
+    append: true
+  # # FIXME- Add var. above.... or use LOGNAME?
+  # with_items: "{{ docker_users or [] }}"
+  become: true
+
+- name: Apply user group change - Reset SSH connection (for remote host is managed node)
+  # [WARNING]: reset_connection task does not support when conditional
+  #  when: ansible_hostname != lookup('ansible.builtin.pipe', 'hostname')
+  meta: reset_connection
+
+# Note you can `ssh localhost` and `groups` to check it worked, but
+# for current session... FIXME: Log out or Reboot?
+- name: Apply user group change - Tell user to logoff (if localhost is managed node)
+  when: ansible_hostname == lookup('ansible.builtin.pipe', 'hostname')
+  ansible.builtin.pause:
+    seconds: 0
+    prompt: |
+       
+
+      {{ lookup('ansible.builtin.pipe', '
+        fg_red () { printf "\033[31m"; }
+        attr_bold () { printf "\033[1m"; }
+        attr_reset () { printf "\033[0m"; }
+        printf "$(fg_red)$(attr_bold)  Log out desktop to realize user group change
+        ============================================$(attr_reset)";') }}
+
+        FIXME: ~~Logoff~~ Restart if user group change needs to be realized.
+
+        - You can `ssh localhost` and `groups` to see the change immediately,
+          but author had to ~~log out GNOME Shell~~ restart Debian to realize
+          the group change in my locally-connected terminal windows.
+
+       
+    # ↑ This is an em space ( ), necessary to protect trailing newline(s)
+    #   from chomp().
+    #   - There's also an em space on the first line, in case you want
+    #     first line of content-containing output to be indented.
+
+# ***
