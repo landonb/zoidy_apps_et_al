@@ -90,6 +90,9 @@
     # package, Dropbox does not publish a checksum for the shim package itself.
     #  checksum: "sha256:{{ <sha> }}"
 
+# DUNNO: I think this adds Dropbox APT GPG key and registers APT sources repository:
+#   /etc/apt/keyrings/dropbox.asc
+#   /etc/apt/sources.list.d/dropbox.list
 - name: Install Dropbox Debian package
   become: yes
   ansible.builtin.apt:
