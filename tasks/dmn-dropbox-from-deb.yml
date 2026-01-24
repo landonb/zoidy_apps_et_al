@@ -45,7 +45,8 @@
 
 # REFER: Use the latest Debian package from under:
 # https://linux.dropbox.com/packages/debian/
-- set_fact:
+- name: Set fact
+  ansible.builtin.set_fact:
     # 2019-01-03:
     #  DROPBOX_INSTALLER_WRAPPER_VER: '2018.11.28'
     # 2023-04-24:
@@ -53,12 +54,14 @@
     # 2025-10-27:
     DROPBOX_INSTALLER_WRAPPER_VER: '2025.05.20'
 
-- set_fact:
+- name: Set fact
+  ansible.builtin.set_fact:
     DROPBOX_DEB: "dropbox_{{ DROPBOX_INSTALLER_WRAPPER_VER }}_amd64.deb"
 
 - name: Install dependencies from APT sources
   become: true
-  ansible.builtin.apt: name={{ item }}
+  ansible.builtin.apt:
+    name: {{ item }}
   loop:
     # 2025-10-27: These are each likely already installed on Debian (or at
     # least on the author's host, they had been installed by the time I got
@@ -77,7 +80,7 @@
 # - Also at:
 #   https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2025.05.20_amd64.deb
 - name: Fetch Dropbox 64-bit Debian package installer
-  get_url:
+  ansible.builtin.get_url:
     # The package is a simple script to download the latest actual Dropbox code.
     #  url: "https://www.dropbox.com/download?dl=packages/ubuntu/{{ DROPBOX_DEB }}"
     url: "https://linux.dropbox.com/packages/debian/{{ DROPBOX_DEB }}"
@@ -273,3 +276,4 @@
     #   - There's also an em space on the first line, in case you want
     #     first line of content-containing output to be indented.
 
+# ***
