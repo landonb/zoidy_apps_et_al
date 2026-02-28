@@ -2,14 +2,13 @@
 # handlers file for zoidy_apps_et_al
 
 - name: Build font information cache files
-  become: yes
+  become: true
   ansible.builtin.shell: "fc-cache -fv"
 
 # E.g., `sudo systemctl restart postfix`.
 - name: Restart Postfix
-  become: yes
+  become: true
   systemd:
     name: postfix
     state: restarted
-    enabled: yes
-
+    enabled: true
