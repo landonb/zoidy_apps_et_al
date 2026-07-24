@@ -560,4 +560,3 @@
 # Cleanup ~200M build directory.
 - name: gnucash » cleanup build directory
   ansible.builtin.file: path={{ GNUCASH_BUILD_DIR }} state=absent
-
