@@ -112,7 +112,7 @@
 
 # E.g., sudo usermod -aG docker $USER
 - name: Ensure user is added to the docker group
-  # when: "{{ ansible_hostname }} is not {{ lookup('ansible.builtin.pipe', 'hostname') }}"
+  # when: "{{ ansible_facts.hostname }} is not {{ lookup('ansible.builtin.pipe', 'hostname') }}"
   user:
     # name: "{{ item }}"
     name: "{{ ansible_env.LOGNAME }}"
@@ -124,13 +124,13 @@
 
 - name: Apply user group change - Reset SSH connection (for remote host is managed node)
   # [WARNING]: reset_connection task does not support when conditional
-  #  when: ansible_hostname != lookup('ansible.builtin.pipe', 'hostname')
+  #  when: ansible_facts.hostname != lookup('ansible.builtin.pipe', 'hostname')
   meta: reset_connection
 
 # Note you can `ssh localhost` and `groups` to check it worked, but
 # for current session... FIXME: Log out or Reboot?
 - name: Apply user group change - Tell user to logoff (if localhost is managed node)
-  when: ansible_hostname == lookup('ansible.builtin.pipe', 'hostname')
+  when: ansible_facts.hostname == lookup('ansible.builtin.pipe', 'hostname')
   ansible.builtin.pause:
     seconds: 0
     prompt: |

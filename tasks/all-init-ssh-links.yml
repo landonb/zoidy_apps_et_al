@@ -47,12 +47,12 @@
 # copy it (it contains public keys, so nothing to worry about).
 
 - name: Stat SSH host-specific authorized_keys
-  ansible.builtin.stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_hostname }}"
+  ansible.builtin.stat: path="{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_facts.hostname }}"
   register: ssh_authorized_keys_host_f
 
 - name: Copy GitHub SSH key (private)
   ansible.builtin.copy:
-    src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_hostname }}"
+    src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_facts.hostname }}"
     dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
   when: ssh_authorized_keys_host_f.stat.exists
 

@@ -135,9 +135,9 @@
 # ***
 
 # - Update myhostname, e.g., changes:
-#     myhostname = {{ ansible_hostname }}.lan
+#     myhostname = {{ ansible_facts.hostname }}.lan
 # - to:
-#     myhostname = {{ ansible_hostname }}.your.domain
+#     myhostname = {{ ansible_facts.hostname }}.your.domain
 #
 # REFER: man 5 postconf
 - name: "Configure the Postfix main.cf » Set ‘myhostname’"
