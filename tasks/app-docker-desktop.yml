@@ -78,14 +78,14 @@
     state: present
     types: [deb]
     # E.g., URIs: https://download.docker.com/linux/debian
-    uris: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"
+    uris: "https://download.docker.com/linux/{{ ansible_facts.distribution|lower }}"
     # E.g., Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
     #       Suites: trixie
     suites: ["{{ ansible_distribution_release|lower }}"]
     components: [stable]
     # E.g., Signed-By: /etc/apt/keyrings/docker.asc
     #  signed_by: "https://download.docker.com/linux/debian/gpg"
-    signed_by: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
+    signed_by: "https://download.docker.com/linux/{{ ansible_facts.distribution|lower }}/gpg"
     enabled: true
 
 # Altly: Install Docker Engine separately:
