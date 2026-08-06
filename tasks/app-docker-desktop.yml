@@ -7,15 +7,19 @@
 #   https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
 #
 # HSTRY:
-# - 2025-11-20: v4.52.0
+# - VERSN/2026-08-03: v4.85.0
+#   https://desktop.docker.com/linux/main/amd64/235549/docker-desktop-amd64.deb
+#     DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/235549/docker-desktop-amd64.deb'
+#     DOCKER_XSUM: 'c93f09455003de0c7c67c5fda005a4cc6c770f8b4d237295e55fe645d2270529'
+# - VERSN/2025-11-20: v4.52.0
 #   https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb
 #   https://desktop.docker.com/linux/main/amd64/210994/checksums.txt
 #     DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb'
 #     DOCKER_XSUM: '2fe26740b260342b6c2676db7961d6b9d1129f6e4c17dc5930cb91faf5886fda'
 - name: Set fact
   ansible.builtin.set_fact:
-    DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/210994/docker-desktop-amd64.deb'
-    DOCKER_XSUM: '2fe26740b260342b6c2676db7961d6b9d1129f6e4c17dc5930cb91faf5886fda'
+    DOCKER_URL: 'https://desktop.docker.com/linux/main/amd64/235549/docker-desktop-amd64.deb'
+    DOCKER_XSUM: 'c93f09455003de0c7c67c5fda005a4cc6c770f8b4d237295e55fe645d2270529'
 
 # ***
 
