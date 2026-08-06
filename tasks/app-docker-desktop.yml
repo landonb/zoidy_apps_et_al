@@ -88,19 +88,38 @@
     signed_by: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
     enabled: true
 
+# Altly: Install Docker Engine separately:
+#   sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# sudo systemctl status docker
+
 # ***
 
-# FIXME: Download separately and verify checksum...
+# SAVVY: Note that 'apt' does not feature checksum-checking.
+# - E.g., this won't work:
+#
+#   - name: Download and Install the latest Docker Desktop
+#     become: true
+#     ansible.builtin.apt:
+#       deb: "{{ DOCKER_URL }}"
+#       state: present
+#       update_cache: true
+#       cache_valid_time: 3600
+#
+# So make it a two-parter, download first; then install.
 
 # https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
-- name: Download and Install the latest Docker Desktop
-  # FIXME:Remove, or add toggle var.
-  # - FIXME: Or download separately to verify checksum...
-  # - FIXME: Uninstall and test installing from repo...
-  when: false
+- name: Download the .deb package and verify its checksum
+  ansible.builtin.get_url:
+    url: "{{ DOCKER_URL }}"
+    dest: "/tmp/docker-desktop-amd64.deb"
+    mode: "0644"
+    checksum: "sha256: {{ DOCKER_XSUM }}"
+
+- name: "Install the verified local .deb package (this takes ~8s)"
   become: true
   ansible.builtin.apt:
-    deb: "{{ DOCKER_URL }}"
+    deb: "/tmp/docker-desktop-amd64.deb"
     state: present
     # Runs `apt-get update`.
     update_cache: true
