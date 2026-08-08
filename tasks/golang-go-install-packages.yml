@@ -35,7 +35,7 @@
   #   command: "go get -u {{ item }}"
   ansible.builtin.command: "go install {{ item }}"
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
-    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+    PATH: "{{ ansible_facts['env']['HOME'] }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_facts['env']['HOME'] }}/.gopath"
   loop: "{{ go_install_list }}"
 

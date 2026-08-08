@@ -74,6 +74,6 @@
 - name: "Symlink digiKam AppImage from user bin/"
   ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ zoidy_digikam_appimage }}"
-    dest: "{{ ansible_env.HOME }}/.local/bin/digiKam"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/digiKam"
     state: link
 

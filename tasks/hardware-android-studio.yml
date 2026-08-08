@@ -83,6 +83,6 @@
 - name: Symlink studio.sh from user bin
   ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/android-studio/bin/studio.sh"
-    dest: "{{ ansible_env.HOME }}/.local/bin/studio.sh"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/studio.sh"
     state: link
 

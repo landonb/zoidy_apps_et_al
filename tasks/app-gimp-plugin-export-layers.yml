@@ -11,7 +11,7 @@
 #       zoidy_gimp_minor_version: "2.10"
 #
 #   - ansible.builtin.set_fact:
-#       zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.gimp-{{ zoidy_gimp_minor_version }}/plug-ins"
+#       zoidy_gimp_plug_ins_dir: "{{ ansible_facts['env']['HOME'] }}/.gimp-{{ zoidy_gimp_minor_version }}/plug-ins"
 #
 # But Flatpak GIMP (which we now expect) installs elsewhere.
 #
@@ -36,9 +36,9 @@
 
 - ansible.builtin.set_fact:
     # E.g., ~/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins
-    #  zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins"
+    #  zoidy_gimp_plug_ins_dir: "{{ ansible_facts['env']['HOME'] }}/.var/app/org.gimp.GIMP/config/GIMP/2.10/plug-ins"
     # E.g., ~/.config/GIMP/2.10/plug-ins
-    zoidy_gimp_plug_ins_dir: "{{ ansible_env.HOME }}/.config/GIMP/2.10/plug-ins"
+    zoidy_gimp_plug_ins_dir: "{{ ansible_facts['env']['HOME'] }}/.config/GIMP/2.10/plug-ins"
 
 # ***
 

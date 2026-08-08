@@ -28,5 +28,5 @@
     target: install
   args:
     params:
-      PREFIX: "{{ ansible_env.HOME }}/.local"
+      PREFIX: "{{ ansible_facts['env']['HOME'] }}/.local"
 

@@ -4,7 +4,7 @@
 
 - name: Ensure User Home SSH Directory Exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.ssh/"
+    path: "{{ ansible_facts['env']['HOME'] }}/.ssh/"
     state: directory
 
 # RMLINKS: ~/.ssh/*
@@ -12,7 +12,7 @@
 - name: Remove symlinks from ~/.ssh/
   ansible.builtin.command: 'find . -maxdepth 1 -type l -name "id_*" -o -name "config" -exec rm -- {} +'
   args:
-    chdir: "{{ ansible_env.HOME }}/.ssh/"
+    chdir: "{{ ansible_facts['env']['HOME'] }}/.ssh/"
 
 # MKLINKS: ~/.ssh/id_*
 
@@ -22,7 +22,7 @@
       -iname "id_*" -exec ln -s {} \;
   ignore_errors: true
   args:
-    chdir: "{{ ansible_env.HOME }}/.ssh/"
+    chdir: "{{ ansible_facts['env']['HOME'] }}/.ssh/"
 
 # MKLINK: ~/.ssh/config
 
@@ -33,13 +33,13 @@
 
 - name: Check if ~/.ssh/config created yet
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.ssh/config"
+    path: "{{ ansible_facts['env']['HOME'] }}/.ssh/config"
   register: ssh_config_dest_f
 
 - name: Symlink ~/.ssh/config to your private SSH config
   ansible.builtin.file:
     src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/config"
-    dest: "{{ ansible_env.HOME }}/.ssh/config"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.ssh/config"
     state: link
   when: ssh_config_src_f.stat.exists and not ssh_config_dest_f.stat.exists
 
@@ -53,7 +53,7 @@
 - name: Copy GitHub SSH key (private)
   ansible.builtin.copy:
     src: "{{ zoidy_homefries_ssh_root_dir }}/.ssh/authorized_keys-{{ ansible_facts.hostname }}"
-    dest: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.ssh/authorized_keys"
   when: ssh_authorized_keys_host_f.stat.exists
 
 # Skip ~/.ssh/known_hosts, which SSH will manage and we don't need to store.
@@ -70,12 +70,12 @@
 
 # Note that there's a with_fileglob: option, e.g.,
 #   with_fileglob:
-#     - "{{ ansible_env.HOME }}/.ssh/*.pub"
+#     - "{{ ansible_facts['env']['HOME'] }}/.ssh/*.pub"
 # but it only works on the local host, unfortch.
 # But we can work around with a prior lookup.
 
 - name: Find all SSH files on remote host
-  ansible.builtin.shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*
+  ansible.builtin.shell: /usr/bin/env ls {{ ansible_facts['env']['HOME'] }}/.ssh/*
   register: ssh_files
 
 - name: Ensure proper permissions for SSH on .ssh files
@@ -85,7 +85,7 @@
   with_items: "{{ ssh_files.stdout_lines }}"
 
 - name: Find all SSH public keys on remote host
-  ansible.builtin.shell: /usr/bin/env ls {{ ansible_env.HOME }}/.ssh/*.pub
+  ansible.builtin.shell: /usr/bin/env ls {{ ansible_facts['env']['HOME'] }}/.ssh/*.pub
   ignore_errors: yes
   register: pub_files
 
@@ -105,7 +105,7 @@
   #     mode: '0600'
   ansible.builtin.shell: '[ -f "{{ item }}" ] && chmod 600 "{{ item }}" || true'
   args:
-    chdir: "{{ ansible_env.HOME }}/.ssh"
+    chdir: "{{ ansible_facts['env']['HOME'] }}/.ssh"
     executable: /bin/bash
   loop:
     - "authorized_keys"
@@ -115,12 +115,12 @@
 
 - name: Ensure proper permissions for SSH on home .ssh
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.ssh"
+    path: "{{ ansible_facts['env']['HOME'] }}/.ssh"
     mode: '2750'
 
 - name: Ensure proper permissions for SSH on user home
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}"
+    path: "{{ ansible_facts['env']['HOME'] }}"
     mode: "g-w,o-w"
 
 # ***

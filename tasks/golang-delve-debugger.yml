@@ -17,7 +17,7 @@
 # But I've already got this task rolling, so whatever.
 
 - ansible.builtin.set_fact:
-    gopath_src_delve: "{{ ansible_env.HOME }}/.gopath/src/github.com/go-delve"
+    gopath_src_delve: "{{ ansible_facts['env']['HOME'] }}/.gopath/src/github.com/go-delve"
 
 - name: Ensure Delve Go directory exists
   ansible.builtin.file: path="{{ gopath_src_delve }}" state=directory
@@ -34,14 +34,14 @@
 #       chdir: "{{ gopath_src_delve }}/delve"
 #       target: install
 #     environment:
-#       PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
-#       GOPATH: "{{ ansible_env.HOME }}/.gopath"
+#       PATH: "{{ ansible_facts['env']['HOME'] }}/.local/bin:{{ ansible_env.PATH }}"
+#       GOPATH: "{{ ansible_facts['env']['HOME'] }}/.gopath"
 
 - name: Install delve
   ansible.builtin.shell: go install github.com/go-delve/delve/cmd/dlv
   args:
     chdir: "{{ gopath_src_delve }}/delve"
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
-    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+    PATH: "{{ ansible_facts['env']['HOME'] }}/.local/bin:{{ ansible_env.PATH }}"
+    GOPATH: "{{ ansible_facts['env']['HOME'] }}/.gopath"
 

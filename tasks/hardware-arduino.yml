@@ -82,7 +82,7 @@
 - name: Symlink Arduino executable from user bin
   ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ ARDUINO_DIR }}/arduino-ide"
-    dest: "{{ ansible_env.HOME }}/.local/bin/arduino-ide"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/arduino-ide"
     state: link
 
 # Fix it so normal users can hook US port (otherwise you have to `sudo arduino`, blech).

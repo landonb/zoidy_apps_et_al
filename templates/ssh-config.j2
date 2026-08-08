@@ -7,5 +7,5 @@ Host github.com
 	HostName github.com
 	IdentitiesOnly yes
 	User {{ zoidy_homefries_github_user }}
-	IdentityFile {{ ansible_env.HOME }}/.ssh/{{ zoidy_homefries_github_file }}
+	IdentityFile {{ ansible_facts['env']['HOME'] }}/.ssh/{{ zoidy_homefries_github_file }}
 

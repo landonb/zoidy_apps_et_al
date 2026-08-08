@@ -106,7 +106,7 @@
     && printf 'OK'
     || true
   args:
-    chdir: "{{ ansible_env.HOME }}/.local/bin"
+    chdir: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
   register: gncvers_output
   ignore_errors: yes
 
@@ -442,22 +442,22 @@
 #   - But let's be selective, so we don't clobber some user files.
 
 - name: Clean build » Remove GnuCash executable
-  ansible.builtin.file: state=absent path="{{ ansible_env.HOME }}/.local/bin/gnucash"
+  ansible.builtin.file: state=absent path="{{ ansible_facts['env']['HOME'] }}/.local/bin/gnucash"
 
 # - name: Clean build » Remove GnuCash configuration information
-#   file: state=absent path="{{ ansible_env.HOME }}/.local/etc/gnucash/"
+#   file: state=absent path="{{ ansible_facts['env']['HOME'] }}/.local/etc/gnucash/"
 
 - name: Clean build » Remove GnuCash libraries (lib/gnucash/*.so)
-  ansible.builtin.file: state=absent path="{{ ansible_env.HOME }}/.local/lib/gnucash/"
+  ansible.builtin.file: state=absent path="{{ ansible_facts['env']['HOME'] }}/.local/lib/gnucash/"
 
 - name: Clean build » Remove GnuCash libraries (lib/libgnc-*.so)
   ansible.builtin.file: state=absent path="{{ item }}"
-  with_fileglob: "{{ ansible_env.HOME }}/.local/lib/libgnc-*.so"
+  with_fileglob: "{{ ansible_facts['env']['HOME'] }}/.local/lib/libgnc-*.so"
 
 # This includes user's customs reports: ~/.local/share/gnucash/saved-reports-2.8
 #
 #  - name: Clean build » Remove GnuCash help files
-#    file: state="absent" path="{{ ansible_env.HOME }}/.local/share/gnucash/"
+#    file: state="absent" path="{{ ansible_facts['env']['HOME'] }}/.local/share/gnucash/"
 
 # ***
 
@@ -494,7 +494,7 @@
 
 # # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 # - name: Prepare GnuCash build (using make)
-#   ansible.builtin.shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+#   ansible.builtin.shell: cmake -DCMAKE_INSTALL_PREFIX="{{ ansible_facts['env']['HOME'] }}/.local" -DWITH_PYTHON=ON ../gnucash
 #   args:
 #     chdir: "{{ GNUCASH_BUILD_DIR }}"
 #
@@ -512,26 +512,26 @@
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: Prepare GnuCash build (using ninja)
   ansible.builtin.shell: >
-    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
-      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+    if [ -e "{{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_facts['env']['HOME'] }}/.pyenv";
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
-      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      eval "$({{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv init -)";
       pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;
     \
-    cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../gnucash
+    cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_facts['env']['HOME'] }}/.local" -DWITH_PYTHON=ON ../gnucash
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
 - name: "gnucash ninja: build gnucash and libs"
   ansible.builtin.shell: >
-    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
-      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+    if [ -e "{{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_facts['env']['HOME'] }}/.pyenv";
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
-      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      eval "$({{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv init -)";
       pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;
@@ -542,11 +542,11 @@
 
 - name: "gnucash ninja install: install gnucash"
   ansible.builtin.shell: >
-    if [ -e "{{ ansible_env.HOME }}/.local/bin/pyenv" ]; then
-      export PYENV_ROOT="{{ ansible_env.HOME }}/.pyenv";
+    if [ -e "{{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv" ]; then
+      export PYENV_ROOT="{{ ansible_facts['env']['HOME'] }}/.pyenv";
       [ -d "${PYENV_ROOT}/bin" ] &&
         export PATH="${PYENV_ROOT}/bin:${PATH}"; 
-      eval "$({{ ansible_env.HOME }}/.local/bin/pyenv init -)";
+      eval "$({{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv init -)";
       pyenv install -s {{ PYENV_VERS }};
       pyenv shell {{ PYENV_VERS }};
     fi ;

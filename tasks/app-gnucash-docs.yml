@@ -166,7 +166,7 @@
 
 # Enable GnuCash Python binding (`import gnucash`) with -DWITH_PYTHON=ON.
 - name: gnucash-docs » Prepare gnucash-docs build (using ninja)
-  ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_env.HOME }}/.local" -DWITH_PYTHON=ON ../
+  ansible.builtin.shell: cmake -GNinja -DCMAKE_INSTALL_PREFIX="{{ ansible_facts['env']['HOME'] }}/.local" -DWITH_PYTHON=ON ../
   args:
     chdir: "{{ GNUCASH_DOCS_BUILD_DIR }}"
 

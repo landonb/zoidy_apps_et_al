@@ -84,7 +84,7 @@
 
 - name: Ensure destination font directories exist
   ansible.builtin.file:
-    path="{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
+    path="{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
     state=directory
   loop: "{{ FONT_URL_ZIPS }}"
 
@@ -110,7 +110,7 @@
   ansible.builtin.unarchive:
     remote_src: yes
     src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
   loop: "{{ FONT_URL_ZIPS }}"
   notify: Build font information cache files
 
@@ -119,7 +119,7 @@
 - name: Fetch font TTF files
   ansible.builtin.get_url:
     url: "{{ item.url_base }}/{{ item.ttf_base }}"
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.ttf_base }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.ttf_base }}"
   loop: "{{ FONT_URL_TTFS }}"
   notify: Build font information cache files
 

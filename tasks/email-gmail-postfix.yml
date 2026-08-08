@@ -300,7 +300,7 @@
 # Because you setup postfix SMTP relay, can also setup user mail forwarding.
 - name: "Configure email forwarding"
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.forward"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.forward"
     content: "{{ zoidy_homefries_email_forward }}"
   when: zoidy_homefries_email_forward != ''
 

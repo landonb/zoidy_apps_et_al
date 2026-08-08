@@ -64,9 +64,9 @@
 
 - name: "tmux: configure"
   ansible.builtin.shell: >
-    CPPFLAGS="-I{{ ansible_env.HOME }}/.local/include" \
-      LDFLAGS="-L{{ ansible_env.HOME }}/.local/lib" \
-      ./configure --prefix={{ ansible_env.HOME }}/.local
+    CPPFLAGS="-I{{ ansible_facts['env']['HOME'] }}/.local/include" \
+      LDFLAGS="-L{{ ansible_facts['env']['HOME'] }}/.local/lib" \
+      ./configure --prefix={{ ansible_facts['env']['HOME'] }}/.local
   args:
     chdir: "{{ TMUX_DIR }}"
 
@@ -84,7 +84,7 @@
 - name: "tmux: symlink man"
   ansible.builtin.file:
     src: "{{ TMUX_DIR }}/tmux.1"
-    dest: "{{ ansible_env.HOME }}/.local/man/man1/tmux.1"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/man/man1/tmux.1"
     state: link
 
 - name: "tmux: rebuild man"

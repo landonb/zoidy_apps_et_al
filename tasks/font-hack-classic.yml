@@ -62,12 +62,12 @@
     dest: "{{ zoidy_homefries_downloads_dir }}/"
 
 - name: Ensure user home font directory directory exists
-  ansible.builtin.file: path="{{ ansible_env.HOME }}/.fonts/{{ HACK_FILE }}/" state=directory
+  ansible.builtin.file: path="{{ ansible_facts['env']['HOME'] }}/.fonts/{{ HACK_FILE }}/" state=directory
 
 - name: Unarchive the Hack font release archive (Install Font- HACK!)
   ansible.builtin.unarchive:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ HACK_FILE }}.zip"
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ HACK_FILE }}/"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.fonts/{{ HACK_FILE }}/"
     remote_src: yes
   notify: Build font information cache files
 

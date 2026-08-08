@@ -74,7 +74,7 @@
 - name: Symlink ripgrep binary from user bin/
   ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ RIPGREP_DIR }}/rg"
-    dest: "{{ ansible_env.HOME }}/.local/bin/rg"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/rg"
     state: link
 
 # ***
@@ -85,8 +85,8 @@
       - "github.com/aykamko/tag@latest"
 
 - name: "Go-Lang | Run install commands"
-  ansible.builtin.shell: "{{ ansible_env.HOME }}/.local/bin/go install {{ item }}"
+  ansible.builtin.shell: "{{ ansible_facts['env']['HOME'] }}/.local/bin/go install {{ item }}"
   environment:
-    GOPATH: "{{ ansible_env.HOME }}/.gopath"
+    GOPATH: "{{ ansible_facts['env']['HOME'] }}/.gopath"
   with_items: "{{ go_install }}"
 

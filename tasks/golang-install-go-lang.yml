@@ -79,19 +79,19 @@
     remote_src: true
 
 - name: Check obsolete godoc symlink (replaced by `go doc`)
-  ansible.builtin.stat: path="{{ ansible_env.HOME }}/.local/bin/godoc"
+  ansible.builtin.stat: path="{{ ansible_facts['env']['HOME'] }}/.local/bin/godoc"
   register: local_bin_godoc
 
 - name: Remove obsolete godoc symlink (replaced by `go doc`)
   ansible.builtin.file:
     state: absent
-    path: "{{ ansible_env.HOME }}/.local/bin/godoc"
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/bin/godoc"
   when: local_bin_godoc.stat.exists and local_bin_godoc.stat.islnk
 
 - name: Symlink golang binary from user local bin
   ansible.builtin.file:
     src: "{{ zoidy_homefries_downloads_dir }}/{{ GOLANG_DIR }}/go/bin/{{ item }}"
-    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/{{ item }}"
     state: link
   loop:
     - go

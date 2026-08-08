@@ -74,12 +74,12 @@
 - name: Symlink oj_linux.sh from user bin
   ansible.builtin.file:
     src: "{{ OPENJUMP_DIR }}/{{ OPENJUMP_PLUS_DIR }}/bin/oj_linux.sh"
-    dest: "{{ ansible_env.HOME }}/.local/bin/oj_linux.sh"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/oj_linux.sh"
     state: link
 
 - name: Symlink OpenJUMP from user bin
   ansible.builtin.file:
     src: "{{ OPENJUMP_DIR }}/{{ OPENJUMP_PLUS_DIR }}/bin/oj_linux.sh"
-    dest: "{{ ansible_env.HOME }}/.local/bin/OpenJUMP"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/bin/OpenJUMP"
     state: link
 
