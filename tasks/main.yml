@@ -7,7 +7,7 @@
 - name: Load zoidy_apps_et_al tasks dispatcher for file tags
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
-    tasks_from: all
+    tasks_from: all-everything
   tags:
     - all-github
     - all-init-ensure-dirs
@@ -15,7 +15,7 @@
     - all-init-go-lang
     - all-init-ssh-links
     - all-tasks
-    - all
+    - all-everything
     - app-chrome
     - app-cinelerra-gg
     - app-darktable
