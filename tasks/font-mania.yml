@@ -42,12 +42,13 @@
       - url_base: https://www.cufonfonts.com/download/font
         zip_base: arial-mt
         real_dst: arial-mt-cufonfonts.zip
-        # MEH: Add option to name ~/.fonts destination.
+        # MEH: Add option to name ~~ ~/.fonts ~~ ~/.local/share/fonts destination.
         # - If you visit https://www.cufonfonts.com/font/arial-mt and click
         #   *Download*, it opens file download dialog and suggests the name,
         #   `arial-mt-cufonfonts.zip` (though with the direct link, the file
         #   is simply named `arial-mt`). Either way, to match other directories
-        #   in ~/.fonts, we could specify the destination name, e.g.,
+        #   in ~~ ~/.fonts ~~ ~/.local/share/fonts, we could specify the
+        #   destination name, e.g.,
         #  dst_base: ArialMT
 
       # Frutiger LT Std.
@@ -84,7 +85,7 @@
 
 - name: Ensure destination font directories exist
   ansible.builtin.file:
-    path="{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
+    path="{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
     state=directory
   loop: "{{ FONT_URL_ZIPS }}"
 
@@ -105,12 +106,12 @@
   loop: "{{ FONT_URL_ZIPS }}"
   when: item.real_dst | default("") | length > 0
 
-# Copy the archive contents to the ~/.fonts directory, named without the .zip extension.
+# Copy the archive contents to the ~/.local/share/fonts directory, named without the .zip extension.
 - name: Unarchive the font archives
   ansible.builtin.unarchive:
     remote_src: yes
     src: "{{ zoidy_homefries_dls_fonts_dir }}/{{ item.zip_base }}"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/{{ item.zip_base | regex_replace(zip_file_regex) }}/"
   loop: "{{ FONT_URL_ZIPS }}"
   notify: Build font information cache files
 
@@ -119,7 +120,7 @@
 - name: Fetch font TTF files
   ansible.builtin.get_url:
     url: "{{ item.url_base }}/{{ item.ttf_base }}"
-    dest: "{{ ansible_facts['env']['HOME'] }}/.fonts/{{ item.ttf_base }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/{{ item.ttf_base }}"
   loop: "{{ FONT_URL_TTFS }}"
   notify: Build font information cache files
 
