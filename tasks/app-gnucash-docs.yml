@@ -15,7 +15,8 @@
 #   https://github.com/Gnucash/gnucash-docs/tags
 
 # LATER/2020-05-02: Somehow periodically check for new versions...
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DOCS_BRANCH
+  ansible.builtin.set_fact:
     # More of a tag, really. [2020-05-02: Will cause detached HEAD, right?]
     # 2023-04-23: Versions: 3.11 is last 3.x; then 4.0 → 4.14; now 5.0 [2023-03-25].
     #  GNUCASH_DOCS_BRANCH: "3.10"
@@ -25,10 +26,12 @@
 
 # ***
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DOCS_DIR
+  ansible.builtin.set_fact:
     GNUCASH_DOCS_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}"
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DOCS_DIR
+  ansible.builtin.set_fact:
     GNUCASH_DOCS_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash-docs"
   when: GNUCASH_DOCS_DIR == ""
 
@@ -114,7 +117,8 @@
 
 # ***
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DOCS_BUILD_DIR
+  ansible.builtin.set_fact:
     GNUCASH_DOCS_BUILD_DIR: "{{ zoidy_homefries_gnucash_docs_repo_path }}/build"
 
 # `ninja clean` is not guaranteed to work.

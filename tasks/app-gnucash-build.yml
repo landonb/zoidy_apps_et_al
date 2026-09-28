@@ -45,7 +45,8 @@
 #
 #   https://github.com/Gnucash/gnucash/releases
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_BRANCH
+  ansible.builtin.set_fact:
     # USYNC: Keep current with GNUCASH_DOCS_BRANCH in app-gnucash-docs.yml.
     # 2025-09-23: v5.12 2025-06-28:
     GNUCASH_BRANCH: "5.12"
@@ -66,12 +67,14 @@
     # This app rocks.
     #  GNUCASH_BRANCH: "3.10"
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_FORCE
+  ansible.builtin.set_fact:
     # DEV: Call using GNUCASH_FORCE=true to always build,
     # and to not stop if gnucash at current version.
     GNUCASH_FORCE: "{{ lookup('ansible.builtin.env', 'GNUCASH_FORCE', default='False') }}"
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » PYENV_VERS
+  ansible.builtin.set_fact:
     # USYNC/2024-02-26: Keep current with DepoXy's DEPOXY_PYENV_PYVERS
     #   https://github.com/DepoXy/depoxy-archetype/blob/release/home/.config/depoxy/depoxyrc.EVAL
     #     ~/.depoxy/ambers/archetype/home/.config/depoxy/depoxyrc.EVAL
@@ -80,10 +83,12 @@
 
 # ***
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DIR/1
+  ansible.builtin.set_fact:
     GNUCASH_DIR: "{{ zoidy_homefries_gnucash_repo_path }}"
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_DIR/2
+  ansible.builtin.set_fact:
     # Default checkout path if not specially specified.
     GNUCASH_DIR: "{{ zoidy_homefries_downloads_dir }}/gnucash"
   when: GNUCASH_DIR == ""
@@ -116,7 +121,8 @@
           Your GnuCash is already up to date!
   when: gncvers_output.stdout == 'OK'
 
-- ansible.builtin.meta: end_play
+- name: GnuCash » end play if up to date
+  ansible.builtin.meta: end_play
   when: gncvers_output.stdout == 'OK' and not GNUCASH_FORCE
 
 # ***
@@ -461,7 +467,8 @@
 
 # ***
 
-- ansible.builtin.set_fact:
+- name: GnuCash » Set fact » GNUCASH_BUILD_DIR
+  ansible.builtin.set_fact:
     GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../build-gnucash-{{ GNUCASH_BRANCH }}"
 
 - name: gnucash » ensure build directory exists
