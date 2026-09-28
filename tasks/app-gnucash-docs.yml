@@ -49,7 +49,7 @@
   args:
     chdir: "{{ GNUCASH_DOCS_DIR }}"
   register: gitco_output
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: GnuCash-docs » create version branch
   ansible.builtin.shell: git checkout tags/{{ GNUCASH_DOCS_BRANCH }} -b rel/{{ GNUCASH_DOCS_BRANCH }}
