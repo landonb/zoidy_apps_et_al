@@ -116,6 +116,10 @@
     chdir: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
   register: gncvers_output
   ignore_errors: true
+  # Avoid no-changed-when lint error, "Commands should not change things
+  # if nothing needs doing", which is default ansible.builtin.command or
+  # ansible.builtin.shell lint unless changed_when used.
+  changed_when: false
 
 - name: GnuCash » Announce if up to date
   ansible.builtin.debug:
