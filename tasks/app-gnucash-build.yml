@@ -104,7 +104,7 @@
 #   Error: could not initialize graphical user interface and option add-price-quotes was not set.
 #          Perhaps you need to set the $DISPLAY environment variable ?
 #
-- name: gnucash » Check active version
+- name: GnuCash » Check active version
   ansible.builtin.shell: >
     DISPLAY=:0 ./gnucash --version | head -1 \
     | grep -q '^GnuCash {{ GNUCASH_BRANCH }}\b' \
@@ -115,19 +115,19 @@
   register: gncvers_output
   ignore_errors: true
 
-- name: gnucash » Announce version results
+- name: GnuCash » Announce version results
   ansible.builtin.debug:
     msg: >
           Your GnuCash is already up to date!
   when: gncvers_output.stdout == 'OK'
 
-- name: GnuCash » end play if up to date
+- name: GnuCash » End play if up to date
   ansible.builtin.meta: end_play
   when: gncvers_output.stdout == 'OK' and not GNUCASH_FORCE
 
 # ***
 
-- name: gnucash ∷ git clone
+- name: GnuCash ∷ git clone
   ansible.builtin.git:
     repo: "git@github.com:Gnucash/gnucash.git"
     dest: "{{ GNUCASH_DIR }}"
@@ -164,14 +164,14 @@
   # want/need to wait for git-clone, which takes a short moment.
   when: not GNUCASH_FORCE
 
-- name: gnucash » checkout version branch
+- name: GnuCash » checkout version branch
   ansible.builtin.shell: git checkout rel/{{ GNUCASH_BRANCH }}
   args:
     chdir: "{{ GNUCASH_DIR }}"
   register: gitco_output
   ignore_errors: true
 
-- name: gnucash » create version branch
+- name: GnuCash » create version branch
   ansible.builtin.shell: git checkout tags/{{ GNUCASH_BRANCH }} -b rel/{{ GNUCASH_BRANCH }}
   args:
     chdir: "{{ GNUCASH_DIR }}"
@@ -209,7 +209,7 @@
 #     sure what GnuCash needs (probably headers, so dev packages, but
 #     the build doc doesn't specify, and I haven't investigated further).
 
-- name: gnucash » install build dependencies (individually)
+- name: GnuCash » install build dependencies (individually)
   ansible.builtin.apt: name="{{ item }}" state="present"
   become: true
   loop:
@@ -471,7 +471,7 @@
   ansible.builtin.set_fact:
     GNUCASH_BUILD_DIR: "{{ zoidy_homefries_gnucash_repo_path }}/../build-gnucash-{{ GNUCASH_BRANCH }}"
 
-- name: gnucash » ensure build directory exists
+- name: GnuCash » ensure build directory exists
   ansible.builtin.file: path={{ GNUCASH_BUILD_DIR }} state=directory
 
 # ***
@@ -532,7 +532,7 @@
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
-- name: "gnucash ninja: build gnucash and libs"
+- name: "GnuCash ninja: build gnucash and libs"
   ansible.builtin.shell: >
     if [ -e "{{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv" ]; then
       export PYENV_ROOT="{{ ansible_facts['env']['HOME'] }}/.pyenv";
@@ -547,7 +547,7 @@
   args:
     chdir: "{{ GNUCASH_BUILD_DIR }}"
 
-- name: "gnucash ninja install: install gnucash"
+- name: "GnuCash ninja install: install gnucash"
   ansible.builtin.shell: >
     if [ -e "{{ ansible_facts['env']['HOME'] }}/.local/bin/pyenv" ]; then
       export PYENV_ROOT="{{ ansible_facts['env']['HOME'] }}/.pyenv";
@@ -565,5 +565,5 @@
 # **** CLEANUP
 
 # Cleanup ~200M build directory.
-- name: gnucash » cleanup build directory
+- name: GnuCash » cleanup build directory
   ansible.builtin.file: path={{ GNUCASH_BUILD_DIR }} state=absent
