@@ -113,7 +113,7 @@
   args:
     chdir: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
   register: gncvers_output
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: gnucash » Announce version results
   ansible.builtin.debug:
@@ -169,7 +169,7 @@
   args:
     chdir: "{{ GNUCASH_DIR }}"
   register: gitco_output
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: gnucash » create version branch
   ansible.builtin.shell: git checkout tags/{{ GNUCASH_BRANCH }} -b rel/{{ GNUCASH_BRANCH }}
@@ -182,7 +182,7 @@
 - name: Run command "apt-get update" (app-gnucash-build)
   become: true
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
   # When forcing, assume previously installed, and user doesn't
