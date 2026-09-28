@@ -45,7 +45,10 @@
     version: "stable"
 
 - name: GnuCash-docs » checkout version branch
-  ansible.builtin.shell: git checkout rel/{{ GNUCASH_DOCS_BRANCH }}
+  ansible.builtin.shell: >
+    git checkout rel/{{ GNUCASH_DOCS_BRANCH }} >/dev/null 2>&1 \
+      && printf 'OK' \
+      || true
   args:
     chdir: "{{ GNUCASH_DOCS_DIR }}"
   register: gitco_output
@@ -55,7 +58,7 @@
   ansible.builtin.shell: git checkout tags/{{ GNUCASH_DOCS_BRANCH }} -b rel/{{ GNUCASH_DOCS_BRANCH }}
   args:
     chdir: "{{ GNUCASH_DOCS_DIR }}"
-  when: gitco_output.rc != 0
+  when: gitco_output.stdout != 'OK'
 
 # ***
 
