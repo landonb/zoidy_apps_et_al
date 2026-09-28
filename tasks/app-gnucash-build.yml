@@ -73,7 +73,7 @@
   ansible.builtin.set_fact:
     # DEV: Call using GNUCASH_FORCE=true to always build,
     # and to not stop if gnucash at current version.
-    GNUCASH_FORCE: "{{ lookup('ansible.builtin.env', 'GNUCASH_FORCE', default='False') }}"
+    GNUCASH_FORCE: "{{ lookup('ansible.builtin.env', 'GNUCASH_FORCE', default='false') | bool }}"
 
 - name: GnuCash » Set fact » PYENV_VERS
   ansible.builtin.set_fact:
