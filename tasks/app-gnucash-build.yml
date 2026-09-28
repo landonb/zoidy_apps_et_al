@@ -48,8 +48,10 @@
 - name: GnuCash » Set fact » GNUCASH_BRANCH
   ansible.builtin.set_fact:
     # USYNC: Keep current with GNUCASH_DOCS_BRANCH in app-gnucash-docs.yml.
+    # 2026-09-28: v5.17 2025-09-27:
+    GNUCASH_BRANCH: "5.17"
     # 2025-09-23: v5.12 2025-06-28:
-    GNUCASH_BRANCH: "5.12"
+    #  GNUCASH_BRANCH: "5.12"
     # 2023-12-17:
     #  GNUCASH_BRANCH: "5.5"
     # 2023-04-23:
