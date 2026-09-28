@@ -212,7 +212,9 @@
 #     the build doc doesn't specify, and I haven't investigated further).
 
 - name: GnuCash » install build dependencies (individually)
-  ansible.builtin.apt: name="{{ item }}" state="present"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
   become: true
   loop:
     # v5.0 Required Dependencies
