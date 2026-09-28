@@ -117,7 +117,7 @@
   register: gncvers_output
   ignore_errors: true
 
-- name: GnuCash » Announce version results
+- name: GnuCash » Announce if up to date
   ansible.builtin.debug:
     msg: >
           Your GnuCash is already up to date!
