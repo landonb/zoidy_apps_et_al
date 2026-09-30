@@ -94,7 +94,7 @@
 #   /etc/apt/keyrings/dropbox.asc
 #   /etc/apt/sources.list.d/dropbox.list
 - name: Install Dropbox Debian package
-  become: yes
+  become: true
   ansible.builtin.apt:
     deb: "{{ zoidy_homefries_downloads_dir }}/{{ DROPBOX_DEB }}"
 

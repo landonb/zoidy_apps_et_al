@@ -85,7 +85,7 @@
 - name: GnuCash-docs » Run command "apt-get update"
   become: true
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 # INERT/2023-04-24: build-dep could work, if only I knew the URI.
