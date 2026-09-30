@@ -61,7 +61,7 @@
 - name: Install dependencies from APT sources
   become: true
   ansible.builtin.apt:
-    name: {{ item }}
+    name: "{{ item }}"
   loop:
     # 2025-10-27: These are each likely already installed on Debian (or at
     # least on the author's host, they had been installed by the time I got
