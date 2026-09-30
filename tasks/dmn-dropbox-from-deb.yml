@@ -14,8 +14,8 @@
 #
 #   https://linux.dropbox.com/packages/debian/
 #
-#   - E.g., here's the latest Debian package [2025-10-27]:
-#     https://linux.dropbox.com/packages/debian/dropbox_2025.05.20_amd64.deb
+#   - E.g., here's the latest Debian package [as of 2026-09-28]:
+#     https://linux.dropbox.com/packages/debian/dropbox_2026.05.06_amd64.deb
 #
 # CALSO:
 #
@@ -52,7 +52,9 @@
     # 2023-04-24:
     #  DROPBOX_INSTALLER_WRAPPER_VER: '2022.12.05'
     # 2025-10-27:
-    DROPBOX_INSTALLER_WRAPPER_VER: '2025.05.20'
+    #  DROPBOX_INSTALLER_WRAPPER_VER: '2025.05.20'
+    # 2026-09-28:
+    DROPBOX_INSTALLER_WRAPPER_VER: '2026.05.06'
 
 - name: Set fact
   ansible.builtin.set_fact:
