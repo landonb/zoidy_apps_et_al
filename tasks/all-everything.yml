@@ -1,5 +1,7 @@
 ---
 
+# PREVY/2026-10-14: I.e., 'all.yml', but renamed to precede other all-*.yml.
+
 # *** Task Setup (Ensures-Dirs)
 
 # Ensures dirs: ~/.downloads, ~/.local/, etc.
