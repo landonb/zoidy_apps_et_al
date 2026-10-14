@@ -54,6 +54,13 @@
     apply: { tags: always }
   tags: app-docker-desktop
 
+- name: Load tasks to Install Mozilla Firefox
+  ansible.builtin.include_role:
+    name: zoidy_apps_et_al
+    tasks_from: app-firefox
+    apply: { tags: always }
+  tags: app-firefox
+
 - name: Load tasks to Install OpenJUMP
   ansible.builtin.include_role:
     name: zoidy_apps_et_al
