@@ -29,7 +29,11 @@
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
+    owner: root
+    group: root
+    mode: "0755"
+    modification_time: preserve
+    access_time: preserve
   become: true
 
 # "Import the Mozilla APT repository signing key:
