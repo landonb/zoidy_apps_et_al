@@ -1,0 +1,14 @@
+Package: signal-desktop
+# "Origin" Pin Type: "Target every pkg. coming from a specific ext. URL/domain."
+Pin: origin updates.signal.org
+# "When deciding between multiple available repositories,
+#  APT selects the package version with the highest priority"
+# "P >= 1000 (Force Downgrade): Installs the version even if it
+#  is a downgrade from what is currently on your system."
+Pin-Priority: 1000
+
+# Block all other packages
+Package: *
+Pin: origin updates.signal.org
+# P < 0 (Blocklist): Prevents installation completely.
+Pin-Priority: -1

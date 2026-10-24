@@ -1,0 +1,154 @@
+---
+
+# USAGE: Task installs Signal from third-party apt repo.
+
+# ***
+
+# Avoid error running deb822_repository module: "An exception
+# occurred ... ModuleNotFoundError: No module named 'debian'".
+- name: 'Install python3-debian for deb822_repository usage'
+  become: true
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+
+# ***
+
+- name: Assure /etc/apt/keyrings folder
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+    modification_time: preserve
+    access_time: preserve
+  become: true
+
+# ***
+
+# ALTLY: We'll let deb822_repository download the signing key,
+# but there's an Signal-installing Ansible role on GH which
+# sets up the keys manually.
+#
+# REFER:
+# https://github.com/hrafnthor/ansible-signal
+# https://github.com/hrafnthor/ansible-signal/blob/main/tasks/main.yml
+#
+#   - name: "HTH | Signal | Stat signing key"
+#     ansible.builtin.stat:
+#       path: "/etc/apt/keyrings/packages.signal.org.gpg"
+#     register: signal_signing_key_stat
+#
+#   - block:
+#
+#     - name: "HTH | Signal | Copy over repository signing key"
+#       ansible.builtin.copy:
+#         src: "{{ signal.signing.ascii_key_file }}"
+#         dest: "/tmp/signal-desktop-signing-key.asc"
+#         owner: root
+#         group: root
+#         mode: 0644
+#       when:
+#         - not signal_signing_key_stat.stat.exists
+#
+#     - name: "HTH | Signal | Dearmor repository signing key"
+#       ansible.builtin.shell: |
+#         gpg --batch --dearmor -o /etc/apt/keyrings/packages.signal.org.gpg /tmp/signal-desktop-signing-key.asc
+#       args:
+#         creates: "/etc/apt/keyrings/packages.signal.org.gpg"
+#       when:
+#         - not signal_signing_key_stat.stat.exists
+#
+#     always:
+#       - name: "HTH | Signal | Cleanup temporary files"
+#         ansible.builtin.file:
+#           path: /tmp/signal-desktop-signing-key.asc
+#           state: absent
+
+# ***
+
+# REFER/THANX:
+# https://signal.org/download/linux/
+#
+# - Refer:
+#   curl https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+#   cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+#   curl -o signal-desktop.sources https://updates.signal.org/static/desktop/apt/signal-desktop.sources
+#   cat signal-desktop.sources | sudo tee /etc/apt/sources.list.d/signal-desktop.sources > /dev/null
+
+# REFER:
+# https://updates.signal.org/static/desktop/apt/signal-desktop.sources
+#
+# - Refer:
+#   Types: deb
+#   URIs: https://updates.signal.org/desktop/apt
+#   Components: main
+#   Architectures: amd64
+#   Signed-By: /usr/share/keyrings/signal-desktop-keyring.gpg
+
+# CXREF: Creates:
+# /etc/apt/keyrings/signal-desktop.asc
+# /etc/apt/sources.list.d/signal-desktop.sources
+
+- name: Add Signal APT repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: signal-desktop
+    types: [deb]
+    uris: https://updates.signal.org/desktop/apt
+    # ALTLY:
+    #   signed_by: /etc/apt/keyrings/packages.signal.org
+    signed_by: "https://updates.signal.org/desktop/apt/keys.asc"
+    # Xenial 16.04, from 2016! (Not, e.g., '[stable]'.)
+    suites: xenial
+    components: [main]
+    architectures: amd64
+    state: present
+    enabled: true
+
+# ***
+
+# THANX: Inspired by (copied from):
+# https://github.com/hrafnthor/ansible-signal
+# https://github.com/hrafnthor/ansible-signal/blob/main/files/signal-desktop-preferences-d
+# - Seems a bit pedantic — don't need to Pin for things to work, and
+#   in practice shouldn't affect anything — but also feels good from
+#   OpSec perspective (restricts APT to only signal-desktop, so it
+#   ignores all other packages from their repo).
+
+- name: "Prioritize repository"
+  become: true
+  ansible.builtin.copy:
+    src: signal-desktop-preferences-d
+    dest: "/etc/apt/preferences.d/signal-desktop"
+    owner: root
+    group: root
+    mode: "0644"
+  when: true
+
+# ALTLY: Nix the priority file:
+- name: "HTH | Signal | Remove repository priority"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/apt/preferences.d/signal-desktop"
+    state: absent
+  when: false
+
+# ***
+
+# - Manly:
+#   sudo apt-get update
+#   sudo apt-get install signal-desktop
+
+- name: Run command "apt-get update"
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install "signal-desktop"
+  become: true
+  ansible.builtin.apt:
+    name: signal-desktop
+
+# ***
